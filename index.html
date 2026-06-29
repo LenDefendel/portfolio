@@ -1,10 +1,43 @@
-<!DOCTYPE html>
-<html lang="">
+<!doctype html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <meta charset="UTF-8" />
+    <script>
+      ;(function () {
+        var theme
+
+        try {
+          theme = localStorage.getItem('portfolio-theme')
+        } catch (_error) {
+          // Fall back to the system preference when storage is unavailable.
+        }
+
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+
+        document.documentElement.classList.add(theme)
+        document.documentElement.style.colorScheme = theme
+      })()
+    </script>
+    <style>
+      html.dark {
+        background-color: #0a0a0f;
+      }
+
+      html.light {
+        background-color: #f5f5fa;
+      }
+    </style>
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Portfolio</title>
   </head>
   <body>
     <div id="app"></div>
