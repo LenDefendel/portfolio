@@ -14,17 +14,12 @@ const filteredProjects = computed(() => {
   }
   return portfolio.projects.filter((p) => p.workplaceId === workplaceId.value)
 })
-
 </script>
 
 <template>
   <div class="projects-page">
     <div v-if="filteredProjects.length" class="projects-grid">
-      <ProjectCard
-        v-for="project in filteredProjects"
-        :key="project.id"
-        :project="project"
-      />
+      <ProjectCard v-for="project in filteredProjects" :key="project.id" :project="project" />
     </div>
     <div v-else class="empty">
       <span class="material-symbols-outlined empty-icon">folder_off</span>
@@ -35,22 +30,12 @@ const filteredProjects = computed(() => {
 
 <style scoped>
 .projects-page {
-  padding: 2rem 2rem 4rem;
-}
-
-h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  padding: 2rem 8rem 8rem;
 }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 }
 
@@ -69,14 +54,13 @@ h2 {
 }
 
 @media (max-width: 768px) {
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .projects-page {
+    padding: 2rem 1rem 4rem;
   }
-}
 
-@media (max-width: 480px) {
   .projects-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
   }
 }
 </style>

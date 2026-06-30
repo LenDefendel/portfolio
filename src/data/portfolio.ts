@@ -36,7 +36,7 @@ export interface PortfolioData {
 
 export const portfolio: PortfolioData = {
   name: 'Your Name',
-  title: 'UI/UX Designer',
+  title: 'Designer',
   about:
     "I'm a UI/UX designer with experience creating digital products. I enjoy turning complex problems into simple, beautiful solutions. Passionate about clean design, usability, and user experience.",
   stats: [
