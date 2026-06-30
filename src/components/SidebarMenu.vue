@@ -2,7 +2,7 @@
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { portfolio } from '@/data/portfolio'
-import ThemeToggle from '@/components/ThemeToggle.vue'
+
 
 const route = useRoute()
 
@@ -128,9 +128,6 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
       </nav>
     </div>
 
-    <div class="sidebar-bottom">
-      <ThemeToggle />
-    </div>
   </aside>
 </template>
 
@@ -328,13 +325,6 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   height: 1px;
   background: var(--border);
   margin: 0.35rem 0.75rem;
-}
-
-.sidebar-bottom {
-  padding: 0 1.5rem;
-  display: flex;
-  justify-content: center;
-  margin-top: auto;
 }
 
 @media (max-width: 768px) {
