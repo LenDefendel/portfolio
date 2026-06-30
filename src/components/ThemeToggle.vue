@@ -10,7 +10,7 @@ const { isDark, toggle } = useTheme()
     @click="toggle"
     :title="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
   >
-    <span class="icon">{{ isDark ? '\u2600' : '\u263E' }}</span>
+    <span class="material-symbols-outlined icon">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
   </button>
 </template>
 
@@ -25,7 +25,6 @@ const { isDark, toggle } = useTheme()
   border-radius: 50%;
   border: 1px solid var(--border);
   background: var(--bg-card);
-  color: var(--text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -33,7 +32,11 @@ const { isDark, toggle } = useTheme()
   transition:
     border-color 0.3s,
     transform 0.2s;
-  font-size: 1.15rem;
+}
+
+.icon {
+  color: var(--accent);
+  font-size: 1.25rem;
 }
 
 .theme-toggle:hover {

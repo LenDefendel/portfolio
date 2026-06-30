@@ -1552,6 +1552,11 @@ magic-string@^0.30.21, magic-string@^0.30.4:
   dependencies:
     "@jridgewell/sourcemap-codec" "^1.5.5"
 
+material-symbols@^0.45.4:
+  version "0.45.4"
+  resolved "https://registry.yarnpkg.com/material-symbols/-/material-symbols-0.45.4.tgz#4060f4dacf5a2949fd7cfa56cd9f2353a383b061"
+  integrity sha512-yBdiCnRbXenVfovbQBqT+lBakq1Vc+XEL2/vZIBDeYTi+yuTog9OG7A9cLtM/KeDrldNJDrj6+F9eUFRlUrZOQ==
+
 memorystream@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/memorystream/-/memorystream-0.3.1.tgz#86d7090b30ce455d63fbae12dda51a47ddcaf9b2"
