@@ -16,10 +16,6 @@ const { isDark, toggle } = useTheme()
 
 <style scoped>
 .theme-toggle {
-  position: fixed;
-  top: 1.25rem;
-  right: 1.25rem;
-  z-index: 100;
   width: 40px;
   height: 40px;
   border-radius: 50%;

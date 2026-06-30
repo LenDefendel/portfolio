@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import HeroSection from '@/components/HeroSection.vue'
-import AboutSection from '@/components/AboutSection.vue'
-import SkillsSection from '@/components/SkillsSection.vue'
-import ProjectsSection from '@/components/ProjectsSection.vue'
-import ContactSection from '@/components/ContactSection.vue'
-import ThemeToggle from '@/components/ThemeToggle.vue'
+import SidebarMenu from '@/components/SidebarMenu.vue'
 </script>
 
 <template>
-  <ThemeToggle />
-  <HeroSection />
-  <AboutSection />
-  <SkillsSection />
-  <ProjectsSection />
-  <ContactSection />
+  <div class="app-layout">
+    <SidebarMenu />
+    <main class="main-content">
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <style>
@@ -82,10 +77,21 @@ html.theme-transition body {
     color 0.3s;
 }
 
-section {
-  padding: 5rem 1.5rem;
-  max-width: 900px;
-  margin: 0 auto;
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
 }
 
 h2 {
