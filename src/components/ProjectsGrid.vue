@@ -10,7 +10,7 @@ const workplaceId = computed(() => route.params.id as string)
 
 const filteredProjects = computed(() => {
   if (workplaceId.value === 'all') {
-    return portfolio.projects
+    return [...portfolio.projects].reverse()
   }
   return portfolio.projects.filter((p) => p.workplaceId === workplaceId.value)
 })
