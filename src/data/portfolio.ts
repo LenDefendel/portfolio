@@ -50,8 +50,8 @@ export const portfolio: PortfolioData = {
   workplaces: [
     {
       id: 'agency-a',
-      name: 'Дизайн-студия «А»',
-      role: 'Senior UI/UX Designer',
+      name: 'Pinegin Фрески и фотообои',
+      role: 'Designer',
       period: '2024 — наст. время',
       icon: 'A',
     },
