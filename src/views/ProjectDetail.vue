@@ -30,8 +30,24 @@ const goBack = () => {
 
     <div class="detail-content">
       <div class="detail-image">
-        <div class="placeholder-img">
+        <img
+          v-if="project.image"
+          :src="project.image"
+          :alt="project.title"
+          class="detail-img"
+        />
+        <div v-else class="placeholder-img">
           <span class="placeholder-text">{{ project.title.charAt(0) }}</span>
+        </div>
+        <div v-if="project.images && project.images.length > 1" class="image-gallery">
+          <img
+            v-for="(img, idx) in project.images"
+            :key="idx"
+            :src="img"
+            :alt="`${project.title} ${idx + 1}`"
+            class="gallery-thumb"
+            :class="{ active: idx === 0 }"
+          />
         </div>
       </div>
 
@@ -102,10 +118,15 @@ const goBack = () => {
 
 .detail-image {
   flex: 1;
+}
+
+.detail-img {
+  width: 100%;
   border-radius: 12px;
-  overflow: hidden;
   border: 1px solid var(--border);
   aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
 }
 
 .placeholder-img {
@@ -115,6 +136,9 @@ const goBack = () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  aspect-ratio: 4 / 3;
 }
 
 .placeholder-text {
@@ -122,6 +146,27 @@ const goBack = () => {
   font-weight: 700;
   color: var(--accent);
   opacity: 0.4;
+}
+
+.image-gallery {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.gallery-thumb {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.gallery-thumb:hover {
+  border-color: var(--accent);
 }
 
 .detail-info {

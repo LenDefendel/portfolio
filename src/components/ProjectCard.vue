@@ -9,7 +9,8 @@ defineProps<{
 <template>
   <router-link :to="`/project/${project.id}`" class="project-card">
     <div class="card-image">
-      <div class="placeholder-img">
+      <img v-if="project.image" :src="project.image" :alt="project.title" class="card-img" />
+      <div v-else class="placeholder-img">
         <span class="placeholder-text">{{ project.title.charAt(0) }}</span>
       </div>
       <div class="card-overlay">
@@ -42,6 +43,12 @@ defineProps<{
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .placeholder-img {

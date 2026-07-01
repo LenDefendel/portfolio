@@ -14,6 +14,7 @@ export interface Project {
   workplaceId: string
   tags: string[]
   link?: string
+  images?: string[]
 }
 
 export interface Skill {
@@ -34,6 +35,8 @@ export interface PortfolioData {
   skills: Skill[]
 }
 
+import { folderImages } from './wallpaperAssets'
+
 export const portfolio: PortfolioData = {
   name: 'Your Name',
   title: 'Designer',
@@ -49,11 +52,11 @@ export const portfolio: PortfolioData = {
   linkedin: 'https://linkedin.com/in/yourusername',
   workplaces: [
     {
-      id: 'agency-a',
+      id: 'wallpaper',
       name: 'Pinegin Фрески и фотообои',
-      role: 'Designer',
-      period: '2024 — наст. время',
-      icon: 'A',
+      role: 'Product Designer',
+      period: '2023 — наст. время',
+      icon: 'W',
     },
     {
       id: 'freelance',
@@ -71,33 +74,6 @@ export const portfolio: PortfolioData = {
     },
   ],
   projects: [
-    {
-      id: 'proj-1',
-      title: 'Маркетплейс товаров',
-      description:
-        'Дизайн интернет-магазина с каталогом, корзиной и личным кабинетом. Проведено исследование пользователей, создана информационная архитектура и адаптивный прототип.',
-      image: '/placeholder-1.jpg',
-      workplaceId: 'agency-a',
-      tags: ['UI/UX', 'Исследование', 'Figma'],
-    },
-    {
-      id: 'proj-2',
-      title: 'Мобильное приложение банка',
-      description:
-        'Редизайн мобильного банкинга: улучшение навигации, добавление тёмной темы, переработка экрана переводов. Рост конверсии на 25%.',
-      image: '/placeholder-2.jpg',
-      workplaceId: 'agency-a',
-      tags: ['Mobile', 'Fintech', 'Research'],
-    },
-    {
-      id: 'proj-3',
-      title: 'CRM для логистики',
-      description:
-        'Разработка интерфейса системы управления перевозками: дашборды, отчёты, управление заказами в реальном времени.',
-      image: '/placeholder-3.jpg',
-      workplaceId: 'agency-a',
-      tags: ['Dashboard', 'B2B', 'Data Viz'],
-    },
     {
       id: 'proj-4',
       title: 'Сайт портфолио фотографа',
@@ -142,6 +118,69 @@ export const portfolio: PortfolioData = {
       image: '/placeholder-8.jpg',
       workplaceId: 'agency-b',
       tags: ['Landing', 'Marketing', 'Animation'],
+    },
+    {
+      id: 'wall-birds',
+      title: 'Птицы',
+      description: 'Коллекция обоев с птицами.',
+      image: folderImages['birds']?.[0] ?? '',
+      workplaceId: 'wallpaper',
+      tags: ['Wallpaper', 'Nature', 'Birds'],
+      images: folderImages['birds'] ?? [],
+    },
+    {
+      id: 'wall-chinoiserie',
+      title: 'Шинуази',
+      description: 'Коллекция обоев в стиле шинуази.',
+      image: folderImages['chinoiserie']?.[0] ?? '',
+      workplaceId: 'wallpaper',
+      tags: ['Wallpaper', 'Chinoiserie', 'Classic'],
+      images: folderImages['chinoiserie'] ?? [],
+    },
+    {
+      id: 'wall-forest',
+      title: 'Лес',
+      description: 'Коллекция обоев с лесными мотивами.',
+      image: folderImages['forest']?.[0] ?? '',
+      workplaceId: 'wallpaper',
+      tags: ['Wallpaper', 'Nature', 'Forest'],
+      images: folderImages['forest'] ?? [],
+    },
+    {
+      id: 'wall-llamaUnicorns',
+      title: 'Ламы и Единороги',
+      description: 'Коллекция обоев с ламами и единорогами.',
+      image: folderImages['llamaUnicorns']?.[0] ?? '',
+      workplaceId: 'wallpaper',
+      tags: ['Wallpaper', 'Animals', 'Fantasy'],
+      images: folderImages['llamaUnicorns'] ?? [],
+    },
+    {
+      id: 'wall-robo',
+      title: 'Роботы',
+      description: 'Коллекция обоев с роботами.',
+      image: folderImages['robo']?.[0] ?? '',
+      workplaceId: 'wallpaper',
+      tags: ['Wallpaper', 'Tech', 'Robots'],
+      images: folderImages['robo'] ?? [],
+    },
+    {
+      id: 'wall-tropicalBirds',
+      title: 'Тропические птицы',
+      description: 'Коллекция обоев с тропическими птицами.',
+      image: folderImages['tropicalBirds']?.[0] ?? '',
+      workplaceId: 'wallpaper',
+      tags: ['Wallpaper', 'Nature', 'Tropical'],
+      images: folderImages['tropicalBirds'] ?? [],
+    },
+    {
+      id: 'wall-tropics',
+      title: 'Тропики',
+      description: 'Коллекция обоев с тропическими мотивами.',
+      image: folderImages['tropics']?.[0] ?? '',
+      workplaceId: 'wallpaper',
+      tags: ['Wallpaper', 'Tropical', 'Nature'],
+      images: folderImages['tropics'] ?? [],
     },
   ],
   skills: [
