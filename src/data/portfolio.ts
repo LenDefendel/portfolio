@@ -70,60 +70,8 @@ export const portfolio: PortfolioData = {
       period: '2022 — 2024',
       icon: 'F',
     },
-    {
-      id: 'agency-b',
-      name: 'Агентство «Б»',
-      role: 'Junior Designer',
-      period: '2021 — 2022',
-      icon: 'B',
-    },
   ],
   projects: [
-    {
-      id: 'proj-4',
-      title: 'Сайт портфолио фотографа',
-      description:
-        'Дизайн лендинга с галереей, фильтрацией по категориям и формой бронирования съёмок.',
-      image: { src: '/placeholder-4.jpg', width: 1920, height: 1080 },
-      workplaceId: 'freelance',
-      tags: ['Web Design', 'Portfolio', 'Responsive'],
-    },
-    {
-      id: 'proj-5',
-      title: 'Приложение доставки еды',
-      description:
-        'UX/UI дизайн приложения для заказа еды: персонализированные рекомендации, трекинг курьера, отзывы.',
-      image: { src: '/placeholder-5.jpg', width: 1920, height: 1080 },
-      workplaceId: 'freelance',
-      tags: ['Mobile', 'FoodTech', 'UX'],
-    },
-    {
-      id: 'proj-6',
-      title: 'Сайт IT-конференции',
-      description:
-        'Разработка дизайна сайта мероприятия: программа, регистрация, карта площадки, интеграция с тикет-системой.',
-      image: { src: '/placeholder-6.jpg', width: 1920, height: 1080 },
-      workplaceId: 'freelance',
-      tags: ['Event', 'Web Design', 'Branding'],
-    },
-    {
-      id: 'proj-7',
-      title: 'Дашборд аналитики',
-      description:
-        'Интерактивная панель мониторинга ключевых метрик продукта с визуализацией данных и экспортом отчётов.',
-      image: { src: '/placeholder-7.jpg', width: 1920, height: 1080 },
-      workplaceId: 'agency-b',
-      tags: ['Dashboard', 'Analytics', 'Data Viz'],
-    },
-    {
-      id: 'proj-8',
-      title: 'Лендинг стартапа',
-      description:
-        'Дизайн посадочной страницы для презентации продукта: анимации, блок с кейсами, форма сбора email.',
-      image: { src: '/placeholder-8.jpg', width: 1920, height: 1080 },
-      workplaceId: 'agency-b',
-      tags: ['Landing', 'Marketing', 'Animation'],
-    },
     {
       id: 'proj-freelance3d',
       title: '3D Art',
