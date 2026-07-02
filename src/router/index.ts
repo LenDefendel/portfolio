@@ -1,12 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import { portfolio } from '@/data/portfolio'
 import ProjectsGrid from '@/components/ProjectsGrid.vue'
 import AboutSection from '@/components/AboutSection.vue'
 import SkillsSection from '@/components/SkillsSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
-import ProjectDetail from '@/views/ProjectDetail.vue'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: `/workplace/${portfolio.workplaces[0]!.id}`,
@@ -33,14 +33,28 @@ const routes = [
   },
   {
     path: '/project/:id',
-    name: 'project',
-    component: ProjectDetail,
+    redirect: (to) => {
+      const project = portfolio.projects.find((item) => item.id === to.params.id)
+
+      return project
+        ? {
+            name: 'workplace',
+            params: { id: project.workplaceId },
+            hash: `#${project.id}-image-0`,
+          }
+        : '/workplace/all'
+    },
   },
 ]
 
 const router = createRouter({
   history: createWebHashHistory('/portfolio/'),
   routes,
+  scrollBehavior(to, _from, savedPosition) {
+    if (savedPosition) return savedPosition
+    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    return { top: 0 }
+  },
 })
 
 export default router

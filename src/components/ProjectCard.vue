@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import type { Project } from '@/data/portfolio'
 
-defineProps<{
+const props = defineProps<{
   project: Project
+  image: string
+  imageIndex: number
 }>()
+
+const target = {
+  name: 'workplace',
+  params: { id: props.project.workplaceId },
+  hash: `#${props.project.id}-image-${props.imageIndex}`,
+}
 </script>
 
 <template>
-  <router-link :to="`/project/${project.id}`" class="project-card">
+  <router-link :to="target" class="project-card">
     <div class="card-image">
-      <img v-if="project.image" :src="project.image" :alt="project.title" class="card-img" />
-      <div v-else class="placeholder-img">
-        <span class="placeholder-text">{{ project.title.charAt(0) }}</span>
-      </div>
+      <img :src="image" :alt="project.title" class="card-img" loading="lazy" />
       <div class="card-overlay">
         <h3 class="card-title">{{ project.title }}</h3>
         <div class="card-tags">
@@ -26,11 +31,11 @@ defineProps<{
 <style scoped>
 .project-card {
   display: block;
-  text-decoration: none;
-  border-radius: 8px;
   overflow: hidden;
   aspect-ratio: 1;
   border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
   transition: border-color 0.3s, transform 0.2s;
 }
 
@@ -51,43 +56,28 @@ defineProps<{
   object-fit: cover;
 }
 
-.placeholder-img {
-  width: 100%;
-  height: 100%;
-  background: var(--bg-card);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.placeholder-text {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--accent);
-  opacity: 0.5;
-}
-
 .card-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 1rem;
+  background: rgba(0, 0, 0, 0.7);
   opacity: 0;
   transition: opacity 0.3s;
 }
 
-.project-card:hover .card-overlay {
+.project-card:hover .card-overlay,
+.project-card:focus-visible .card-overlay {
   opacity: 1;
 }
 
 .card-title {
+  margin-bottom: 0.4rem;
+  color: #fff;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.4rem;
 }
 
 .card-tags {
@@ -97,11 +87,11 @@ defineProps<{
 }
 
 .card-tag {
-  font-size: 0.7rem;
-  color: var(--accent);
-  background: rgba(167, 139, 250, 0.15);
   padding: 0.15rem 0.5rem;
-  border-radius: 10px;
   border: 1px solid rgba(167, 139, 250, 0.2);
+  border-radius: 10px;
+  background: rgba(167, 139, 250, 0.15);
+  color: var(--accent);
+  font-size: 0.7rem;
 }
 </style>
