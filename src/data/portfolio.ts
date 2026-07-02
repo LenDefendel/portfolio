@@ -11,6 +11,8 @@ export interface Project {
   title: string
   description: string
   image: string
+  width?: number
+  height?: number
   workplaceId: string
   tags: string[]
   link?: string
@@ -125,6 +127,8 @@ export const portfolio: PortfolioData = {
       description:
         'Коллекция 3D работ для мебельного магазина "Вишнёвый сад". Коллекция представлена на сайте производителя: https://вишневыйсадъ.рф/products/kreslo-albero-s, а также на 3ddd стоке для дизайнеров: https://3ddd.ru/3dmodels/show/albero_solido_loveseat_sofa_om',
       image: freelance3dImages[0] ?? '',
+      width: 1280,
+      height: 1280,
       workplaceId: 'freelance3d',
       tags: ['3D', 'Art', 'Blender'],
       images: freelance3dImages,
@@ -134,6 +138,8 @@ export const portfolio: PortfolioData = {
       title: 'Птицы',
       description: 'Коллекция обоев с птицами.',
       image: folderImages['birds']?.[0] ?? '',
+      width: 1920,
+      height: 1280,
       workplaceId: 'wallpaper',
       tags: ['Wallpaper', 'Nature', 'Birds'],
       images: folderImages['birds'] ?? [],
@@ -143,6 +149,8 @@ export const portfolio: PortfolioData = {
       title: 'Шинуази',
       description: 'Коллекция обоев в стиле шинуази.',
       image: folderImages['chinoiserie']?.[0] ?? '',
+      width: 3190,
+      height: 3150,
       workplaceId: 'wallpaper',
       tags: ['Wallpaper', 'Chinoiserie', 'Classic'],
       images: folderImages['chinoiserie'] ?? [],
@@ -152,6 +160,8 @@ export const portfolio: PortfolioData = {
       title: 'Лес',
       description: 'Коллекция обоев с лесными мотивами.',
       image: folderImages['forest']?.[0] ?? '',
+      width: 5906,
+      height: 4005,
       workplaceId: 'wallpaper',
       tags: ['Wallpaper', 'Nature', 'Forest'],
       images: folderImages['forest'] ?? [],
@@ -161,6 +171,8 @@ export const portfolio: PortfolioData = {
       title: 'Ламы и Единороги',
       description: 'Коллекция обоев с ламами и единорогами.',
       image: folderImages['llamaUnicorns']?.[0] ?? '',
+      width: 3011,
+      height: 2700,
       workplaceId: 'wallpaper',
       tags: ['Wallpaper', 'Animals', 'Fantasy'],
       images: folderImages['llamaUnicorns'] ?? [],
@@ -170,6 +182,8 @@ export const portfolio: PortfolioData = {
       title: 'Роботы',
       description: 'Коллекция обоев с роботами.',
       image: folderImages['robo']?.[0] ?? '',
+      width: 1448,
+      height: 1086,
       workplaceId: 'wallpaper',
       tags: ['Wallpaper', 'Tech', 'Robots'],
       images: folderImages['robo'] ?? [],
@@ -179,6 +193,8 @@ export const portfolio: PortfolioData = {
       title: 'Тропические птицы',
       description: 'Коллекция обоев с тропическими птицами.',
       image: folderImages['tropicalBirds']?.[0] ?? '',
+      width: 531,
+      height: 740,
       workplaceId: 'wallpaper',
       tags: ['Wallpaper', 'Nature', 'Tropical'],
       images: folderImages['tropicalBirds'] ?? [],
@@ -188,6 +204,8 @@ export const portfolio: PortfolioData = {
       title: 'Тропики',
       description: 'Коллекция обоев с тропическими мотивами.',
       image: folderImages['tropics']?.[0] ?? '',
+      width: 1448,
+      height: 1086,
       workplaceId: 'wallpaper',
       tags: ['Wallpaper', 'Tropical', 'Nature'],
       images: folderImages['tropics'] ?? [],
@@ -213,3 +231,46 @@ export const workplaceNames: Record<string, string> = {}
 for (const w of portfolio.workplaces) {
   workplaceNames[w.id] = w.name
 }
+
+export const imageDimensions: Record<string, { width: number; height: number }> = {
+  "/src/assets/freelance3d/00.jpg": { width: 1280, height: 1280 },
+  "/src/assets/freelance3d/01.jpg": { width: 1200, height: 1200 },
+  "/src/assets/freelance3d/02.jpg": { width: 1200, height: 1200 },
+  "/src/assets/freelance3d/03.jpg": { width: 1200, height: 1200 },
+  "/src/assets/freelance3d/04.jpg": { width: 1200, height: 1200 },
+  "/src/assets/freelance3d/05.jpg": { width: 1505, height: 1804 },
+  "/src/assets/freelance3d/06.jpg": { width: 1536, height: 1443 },
+  "/src/assets/freelance3d/07.jpg": { width: 1478, height: 1189 },
+  "/src/assets/freelance3d/08.jpg": { width: 1338, height: 962 },
+  "/src/assets/freelance3d/09.jpg": { width: 978, height: 955 },
+  "/src/assets/freelance3d/10.jpg": { width: 1324, height: 948 },
+  "/src/assets/freelance3d/11.jpg": { width: 833, height: 593 },
+  "/src/assets/freelance3d/12.jpg": { width: 1280, height: 1280 },
+  "/src/assets/freelance3d/13.jpg": { width: 1280, height: 1280 },
+  "/src/assets/freelance3d/14.jpg": { width: 1280, height: 1280 },
+  "/src/assets/freelance3d/15.jpg": { width: 1280, height: 1280 },
+  "/src/assets/freelance3d/16.jpg": { width: 1200, height: 1200 },
+  "/src/assets/freelance3d/17.jpg": { width: 1200, height: 1200 },
+  "/src/assets/wallpaper/birds/birds.jpg": { width: 1920, height: 1280 },
+  "/src/assets/wallpaper/chinoiserie/chinoiserie1.jpg": { width: 3190, height: 3150 },
+  "/src/assets/wallpaper/chinoiserie/chinoiserie2.jpg": { width: 4000, height: 2666 },
+  "/src/assets/wallpaper/chinoiserie/chinoiserie3.jpg": { width: 2835, height: 2232 },
+  "/src/assets/wallpaper/chinoiserie/chinoiserie4.jpg": { width: 1280, height: 782 },
+  "/src/assets/wallpaper/forest/forest1.jpg": { width: 5906, height: 4005 },
+  "/src/assets/wallpaper/forest/forest2.jpg": { width: 700, height: 420 },
+  "/src/assets/wallpaper/forest/forest3.jpg": { width: 5906, height: 2215 },
+  "/src/assets/wallpaper/forest/forest4.jpg": { width: 3300, height: 2732 },
+  "/src/assets/wallpaper/llamaUnicorns/llamaUnicorns1.jpg": { width: 3011, height: 2700 },
+  "/src/assets/wallpaper/llamaUnicorns/llamaUnicorns2.jpg": { width: 3000, height: 2000 },
+  "/src/assets/wallpaper/llamaUnicorns/llamaUnicorns3.jpg": { width: 2835, height: 2430 },
+  "/src/assets/wallpaper/robo/robo1.png": { width: 1448, height: 1086 },
+  "/src/assets/wallpaper/robo/robo2.jpg": { width: 2734, height: 5906 },
+  "/src/assets/wallpaper/tropicalBirds/tropicalBirds1.jpg": { width: 531, height: 740 },
+  "/src/assets/wallpaper/tropicalBirds/tropicalBirds2.png": { width: 1198, height: 1313 },
+  "/src/assets/wallpaper/tropicalBirds/tropicalBirds3.jpg": { width: 962, height: 902 },
+  "/src/assets/wallpaper/tropicalBirds/tropicalBirds4.jpg": { width: 836, height: 901 },
+  "/src/assets/wallpaper/tropicalBirds/tropicalBirds5.jpg": { width: 952, height: 903 },
+  "/src/assets/wallpaper/tropics/tropics1.png": { width: 1448, height: 1086 },
+  "/src/assets/wallpaper/tropics/tropics2.jpg": { width: 5906, height: 2307 },
+}
+
