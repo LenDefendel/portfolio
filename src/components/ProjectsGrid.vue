@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { portfolio, type Project } from '@/data/portfolio'
 import ProjectCard from '@/components/ProjectCard.vue'
@@ -61,6 +61,25 @@ function linkify(text: string): string {
     (url) => `<a href="${url}" target="_blank" rel="noopener" class="desc-link">${url}</a>`,
   )
 }
+
+const lightboxImage = ref<string | null>(null)
+
+function openLightbox(image: string): void {
+  lightboxImage.value = image
+}
+
+function closeLightbox(): void {
+  lightboxImage.value = null
+}
+
+function onKeyDown(e: KeyboardEvent): void {
+  if (e.key === 'Escape') {
+    closeLightbox()
+  }
+}
+
+onMounted(() => document.addEventListener('keydown', onKeyDown))
+onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 </script>
 
 <template>
@@ -113,6 +132,7 @@ function linkify(text: string): string {
             :alt="`${project.title}, изображение ${imageIndex + 1}`"
             class="project-image"
             loading="lazy"
+            @click="openLightbox(image)"
           />
         </div>
       </section>
@@ -128,6 +148,15 @@ function linkify(text: string): string {
     <span class="material-symbols-outlined empty-icon">folder_off</span>
     <p>Место работы не найдено</p>
   </div>
+
+  <Teleport to="body">
+    <div v-if="lightboxImage" class="lightbox-overlay" @click.self="closeLightbox" @keydown.escape="closeLightbox">
+      <button class="lightbox-close" @click="closeLightbox">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <img :src="lightboxImage" class="lightbox-image" alt="Полноразмерное изображение" />
+    </div>
+  </Teleport>
 </template>
 
 <style scoped>
@@ -234,6 +263,12 @@ function linkify(text: string): string {
   border-radius: 12px;
   object-fit: cover;
   background: var(--bg-card);
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.project-image:hover {
+  opacity: 0.85;
 }
 
 .empty {
@@ -248,6 +283,47 @@ function linkify(text: string): string {
 .empty-icon {
   margin-bottom: 1rem;
   font-size: 3rem;
+}
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  cursor: zoom-out;
+  padding: 2rem;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.lightbox-close:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: default;
 }
 
 @media (max-width: 768px) {
