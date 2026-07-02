@@ -35,7 +35,7 @@ export interface PortfolioData {
   skills: Skill[]
 }
 
-import { folderImages } from './wallpaperAssets'
+import { folderImages, freelance3dImages } from './wallpaperAssets'
 
 export const portfolio: PortfolioData = {
   name: 'Your Name',
@@ -59,9 +59,9 @@ export const portfolio: PortfolioData = {
       icon: 'W',
     },
     {
-      id: 'freelance',
-      name: 'Фриланс',
-      role: 'Product Designer',
+      id: 'freelance3d',
+      name: 'Фриланс 3D',
+      role: '3D Artist',
       period: '2022 — 2024',
       icon: 'F',
     },
@@ -118,6 +118,16 @@ export const portfolio: PortfolioData = {
       image: '/placeholder-8.jpg',
       workplaceId: 'agency-b',
       tags: ['Landing', 'Marketing', 'Animation'],
+    },
+    {
+      id: 'proj-freelance3d',
+      title: '3D Art',
+      description:
+        'Коллекция 3D работ для мебельного магазина "Вишнёвый сад". Коллекция представлена на сайте производителя: https://вишневыйсадъ.рф/products/kreslo-albero-s, а также на 3ddd стоке для дизайнеров: https://3ddd.ru/3dmodels/show/albero_solido_loveseat_sofa_om',
+      image: freelance3dImages[0] ?? '',
+      workplaceId: 'freelance3d',
+      tags: ['3D', 'Art', 'Blender'],
+      images: freelance3dImages,
     },
     {
       id: 'wall-birds',

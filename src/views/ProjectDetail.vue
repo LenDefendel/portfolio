@@ -19,6 +19,13 @@ const workplaceName = computed(() => {
 const goBack = () => {
   router.back()
 }
+
+function linkify(text: string): string {
+  return text.replace(
+    /https?:\/\/[^\s,)]+/g,
+    (url) => `<a href="${url}" target="_blank" rel="noopener" class="desc-link">${url}</a>`,
+  )
+}
 </script>
 
 <template>
@@ -54,7 +61,7 @@ const goBack = () => {
       <div class="detail-info">
         <h1>{{ project.title }}</h1>
         <p class="workplace">{{ workplaceName }}</p>
-        <p class="description">{{ project.description }}</p>
+        <p class="description" v-html="linkify(project.description)" />
 
         <div class="tags">
           <span v-for="tag in project.tags" :key="tag" class="tag">{{ tag }}</span>
@@ -167,6 +174,11 @@ const goBack = () => {
 
 .gallery-thumb:hover {
   border-color: var(--accent);
+}
+
+.desc-link {
+  color: var(--accent);
+  word-break: break-all;
 }
 
 .detail-info {
