@@ -14,6 +14,11 @@ interface GalleryItem {
   imageIndex: number
 }
 
+interface DescriptionPart {
+  text: string
+  href?: string
+}
+
 const route = useRoute()
 
 const workplaceId = computed(() => route.params.id as string)
@@ -55,11 +60,41 @@ function imageAnchor(projectId: string, imageIndex: number): string {
   return `${projectId}-image-${imageIndex}`
 }
 
-function linkify(text: string): string {
-  return text.replace(
-    /https?:\/\/[^\s,)]+/g,
-    (url) => `<a href="${url}" target="_blank" rel="noopener" class="desc-link">${url}</a>`,
-  )
+function descriptionParts(text: string): DescriptionPart[] {
+  const parts: DescriptionPart[] = []
+  const urlPattern = /https?:\/\/[^\s,)]+/g
+  let lastIndex = 0
+
+  for (const match of text.matchAll(urlPattern)) {
+    const rawUrl = match[0]
+    const start = match.index ?? 0
+
+    if (start > lastIndex) {
+      parts.push({ text: text.slice(lastIndex, start) })
+    }
+
+    let href = rawUrl
+    let trailing = ''
+
+    while (/[.!?:;]$/.test(href)) {
+      trailing = href.charAt(href.length - 1) + trailing
+      href = href.slice(0, -1)
+    }
+
+    parts.push({ text: href, href })
+
+    if (trailing) {
+      parts.push({ text: trailing })
+    }
+
+    lastIndex = start + rawUrl.length
+  }
+
+  if (lastIndex < text.length) {
+    parts.push({ text: text.slice(lastIndex) })
+  }
+
+  return parts
 }
 
 const lightboxImage = ref<string | null>(null)
@@ -117,7 +152,23 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
       >
         <div class="project-heading">
           <h2>{{ project.title }}</h2>
-          <p class="description" v-html="linkify(project.description)" />
+          <p class="description">
+            <template
+              v-for="(part, partIndex) in descriptionParts(project.description)"
+              :key="`${project.id}-description-${partIndex}`"
+            >
+              <a
+                v-if="part.href"
+                :href="part.href"
+                target="_blank"
+                rel="noopener"
+                class="desc-link"
+              >
+                {{ part.text }}
+              </a>
+              <span v-else>{{ part.text }}</span>
+            </template>
+          </p>
           <div class="tags">
             <span v-for="tag in project.tags" :key="tag" class="tag">{{ tag }}</span>
           </div>
@@ -234,7 +285,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   line-height: 1.8;
 }
 
-.description :deep(.desc-link) {
+.description .desc-link {
   color: var(--accent);
   overflow-wrap: anywhere;
 }
