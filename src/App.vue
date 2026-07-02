@@ -15,37 +15,45 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
 
 <style>
 :root {
-  --accent: #a78bfa;
-  --accent-hover: #b99bff;
-  --gradient: linear-gradient(135deg, #a78bfa, #60a5fa);
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: rgba(37, 99, 235, 0.1);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.22);
 }
 
 .dark {
-  --bg: #0a0a0f;
-  --bg-card: #12121a;
-  --text-primary: #e4e4e7;
-  --text-secondary: #a1a1aa;
-  --text-tertiary: #71717a;
-  --border: #1f1f2a;
-  --border-hover: #a78bfa;
-  --shadow: rgba(167, 139, 250, 0.3);
-  --shadow-sm: rgba(167, 139, 250, 0.15);
-  --tag-bg: rgba(167, 139, 250, 0.1);
-  --tag-border: rgba(167, 139, 250, 0.2);
+  --bg: #0b0b0d;
+  --bg-elevated: #111113;
+  --bg-card: #151518;
+  --text-primary: #f4f4f5;
+  --text-secondary: #b9bbc3;
+  --text-tertiary: #7b7f8a;
+  --border: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(37, 99, 235, 0.8);
+  --shadow: rgba(0, 0, 0, 0.35);
+  --shadow-sm: rgba(0, 0, 0, 0.22);
+  --tag-bg: rgba(255, 255, 255, 0.04);
+  --tag-border: rgba(255, 255, 255, 0.12);
+  --overlay: rgba(0, 0, 0, 0.74);
 }
 
 .light {
-  --bg: #f5f5fa;
+  --bg: #fafafa;
+  --bg-elevated: #ffffff;
   --bg-card: #ffffff;
-  --text-primary: #18181b;
+  --text-primary: #101014;
   --text-secondary: #52525b;
-  --text-tertiary: #a1a1aa;
-  --border: #e4e4e9;
-  --border-hover: #a78bfa;
-  --shadow: rgba(167, 139, 250, 0.25);
-  --shadow-sm: rgba(167, 139, 250, 0.1);
-  --tag-bg: rgba(167, 139, 250, 0.08);
-  --tag-border: rgba(167, 139, 250, 0.25);
+  --text-tertiary: #8a8f98;
+  --border: #e4e4e7;
+  --border-hover: rgba(37, 99, 235, 0.78);
+  --shadow: rgba(16, 16, 20, 0.1);
+  --shadow-sm: rgba(16, 16, 20, 0.06);
+  --tag-bg: #f4f4f5;
+  --tag-border: #e4e4e7;
+  --overlay: rgba(10, 10, 12, 0.64);
 }
 
 *,
@@ -71,6 +79,8 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  font-size: 16px;
+  letter-spacing: 0;
 }
 
 html.theme-transition body {
@@ -90,6 +100,17 @@ html.theme-transition body {
   min-height: 100vh;
 }
 
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
@@ -97,13 +118,12 @@ html.theme-transition body {
 }
 
 h2 {
-  font-size: 2rem;
+  color: var(--text-primary);
+  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+  font-size: clamp(1.55rem, 2.4vw, 2.35rem);
   font-weight: 700;
-  margin-bottom: 3rem;
+  line-height: 1.1;
+  margin-bottom: 2.25rem;
   text-align: center;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 </style>

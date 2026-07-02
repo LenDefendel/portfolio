@@ -45,7 +45,7 @@ import { portfolio } from '@/data/portfolio'
   gap: 0.75rem;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 1rem 1.5rem;
   text-decoration: none;
   color: var(--text-primary);
@@ -55,7 +55,7 @@ import { portfolio } from '@/data/portfolio'
 }
 
 .contact-card:hover {
-  border-color: var(--accent);
+  border-color: var(--border-hover);
   transform: translateY(-2px);
 }
 
@@ -63,6 +63,6 @@ import { portfolio } from '@/data/portfolio'
   font-size: 1.2rem;
   width: 1.5rem;
   text-align: center;
-  color: var(--accent);
+  color: var(--text-primary);
 }
 </style>

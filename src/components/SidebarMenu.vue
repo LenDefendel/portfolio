@@ -135,11 +135,12 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   top: 0.75rem;
   left: 0.75rem;
   z-index: 200;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 8px;
   border: 1px solid var(--border);
-  background: var(--bg-card);
+  background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+  backdrop-filter: blur(14px);
   cursor: pointer;
   display: none;
   flex-direction: column;
@@ -150,7 +151,7 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
 }
 
 .hamburger:hover {
-  border-color: var(--accent);
+  border-color: var(--border-hover);
 }
 
 .hamburger-line {
@@ -179,7 +180,8 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay);
+  backdrop-filter: blur(2px);
   z-index: 150;
 }
 
@@ -194,7 +196,7 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 1.5rem 0;
+  padding: 1.25rem 0;
   overflow-y: auto;
   z-index: 100;
 }
@@ -202,7 +204,7 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
 .sidebar-top {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .profile {
@@ -210,37 +212,37 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 1.5rem 1rem;
+  padding: 0 1.25rem 1rem;
   cursor: pointer;
 }
 
 .avatar {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--border);
   border-radius: 50%;
-  background: var(--gradient);
+  background: var(--bg-elevated);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
   font-weight: 700;
-  color: #fff;
-  box-shadow: 0 0 30px var(--shadow);
+  color: var(--text-primary);
+  box-shadow: 0 12px 28px var(--shadow-sm);
   margin-bottom: 0.75rem;
 }
 
 .name {
-  font-size: 1.2rem;
+  color: var(--text-primary);
+  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+  font-size: 1.05rem;
   font-weight: 700;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   text-align: center;
+  line-height: 1.15;
 }
 
 .title {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--text-tertiary);
   text-align: center;
   margin-top: 0.15rem;
@@ -249,7 +251,7 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.2rem;
   padding: 0 0.75rem;
 }
 
@@ -257,24 +259,28 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.65rem 0.75rem;
-  border-radius: 10px;
+  padding: 0.68rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
   text-decoration: none;
   color: var(--text-secondary);
   font-size: 0.9rem;
   font-weight: 500;
   transition:
     background 0.2s,
+    border-color 0.2s,
     color 0.2s;
 }
 
 .nav-item:hover {
-  background: var(--tag-bg);
+  background: var(--bg-elevated);
+  border-color: var(--border);
   color: var(--text-primary);
 }
 
 .nav-item.active {
-  background: var(--tag-bg);
+  background: var(--bg-elevated);
+  border-color: var(--border-hover);
   color: var(--accent);
 }
 
@@ -287,9 +293,10 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
 .nav-icon {
   width: 1.5rem;
   height: 1.5rem;
-  border-radius: 8px;
-  background: var(--gradient);
-  color: #fff;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--tag-bg);
+  color: var(--text-primary);
   font-size: 0.75rem;
   font-weight: 700;
   display: flex;
@@ -322,7 +329,7 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
 .nav-divider {
   height: 1px;
   background: var(--border);
-  margin: 0.35rem 0.75rem;
+  margin: 0.45rem 0.75rem;
 }
 
 @media (max-width: 768px) {
@@ -342,22 +349,22 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   }
 
   .avatar {
-    width: 80px;
-    height: 80px;
-    font-size: 2.2rem;
+    width: 68px;
+    height: 68px;
+    font-size: 2rem;
   }
 
   .name {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
 
   .title {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
   }
 
   .nav-item {
-    padding: 1rem 1.25rem;
-    font-size: 1.2rem;
+    padding: 0.95rem 1.1rem;
+    font-size: 1.05rem;
     gap: 1rem;
   }
 
@@ -374,11 +381,11 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   }
 
   .nav-name {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
   }
 
   .nav-role {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 }
 </style>

@@ -44,12 +44,10 @@ p {
 
 .stat-value {
   display: block;
+  color: var(--text-primary);
+  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
   font-size: 2rem;
-  font-weight: 700;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-weight: 800;
 }
 
 .stat-label {

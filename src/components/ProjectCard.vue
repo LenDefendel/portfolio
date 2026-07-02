@@ -45,16 +45,19 @@ const target = {
   overflow: hidden;
   aspect-ratio: 1;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
   text-decoration: none;
   transition:
     border-color 0.3s,
+    box-shadow 0.2s,
     transform 0.2s;
 }
 
 .project-card:hover {
-  border-color: var(--accent);
-  transform: scale(1.02);
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 32px var(--shadow-sm);
+  transform: translateY(-2px);
 }
 
 .card-image {
@@ -67,6 +70,15 @@ const target = {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition:
+    filter 0.25s,
+    transform 0.25s;
+}
+
+.project-card:hover .card-img,
+.project-card:focus-visible .card-img {
+  filter: brightness(0.78);
+  transform: scale(1.015);
 }
 
 .card-overlay {
@@ -75,8 +87,8 @@ const target = {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.7);
+  padding: 0.9rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.06) 72%);
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -89,7 +101,8 @@ const target = {
 .card-title {
   margin-bottom: 0.4rem;
   color: #fff;
-  font-size: 0.95rem;
+  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+  font-size: 0.92rem;
   font-weight: 600;
 }
 
@@ -100,11 +113,11 @@ const target = {
 }
 
 .card-tag {
-  padding: 0.15rem 0.5rem;
-  border: 1px solid rgba(167, 139, 250, 0.2);
-  border-radius: 10px;
-  background: rgba(167, 139, 250, 0.15);
-  color: var(--accent);
+  padding: 0.12rem 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
   font-size: 0.7rem;
 }
 </style>

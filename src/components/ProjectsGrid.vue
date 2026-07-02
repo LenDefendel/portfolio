@@ -220,24 +220,24 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 <style scoped>
 .projects-page,
 .workplace-page {
-  padding: 2rem 8rem 8rem;
+  padding: 2.5rem clamp(1.5rem, 6vw, 7rem) 8rem;
 }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.85rem;
 }
 
 .workplace-page {
-  max-width: 1280px;
+  max-width: 1360px;
 }
 
 .workplace-header {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 5rem;
+  margin-bottom: 4.5rem;
 }
 
 .workplace-icon {
@@ -245,16 +245,19 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   width: 3.5rem;
   aspect-ratio: 1;
   place-items: center;
-  border-radius: 12px;
-  background: var(--gradient);
-  color: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   font-size: 1.3rem;
   font-weight: 700;
 }
 
 .workplace-header h1 {
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  line-height: 1.15;
+  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
+  font-size: clamp(2rem, 5vw, 4.25rem);
+  font-weight: 800;
+  line-height: 0.98;
 }
 
 .workplace-header p,
@@ -264,7 +267,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 
 .project-list {
   display: grid;
-  gap: 7rem;
+  gap: 6.5rem;
 }
 
 .project-section {
@@ -272,44 +275,46 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 }
 
 .project-heading {
-  max-width: 760px;
-  margin-bottom: 2rem;
+  max-width: 780px;
+  margin-bottom: 1.75rem;
 }
 
 .project-heading h2 {
-  margin-bottom: 1rem;
+  margin-bottom: 0.85rem;
   text-align: left;
 }
 
 .description {
-  line-height: 1.8;
+  line-height: 1.75;
 }
 
 .description .desc-link {
   color: var(--accent);
+  text-underline-offset: 0.2em;
   overflow-wrap: anywhere;
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1.25rem;
+  gap: 0.45rem;
+  margin-top: 1.15rem;
 }
 
 .tag {
-  padding: 0.35rem 0.85rem;
+  padding: 0.28rem 0.65rem;
   border: 1px solid var(--tag-border);
-  border-radius: 20px;
+  border-radius: 999px;
   background: var(--tag-bg);
-  color: var(--accent);
-  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 .image-gallery {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .project-image {
@@ -318,15 +323,20 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   min-height: 240px;
   scroll-margin-top: 2rem;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   object-fit: cover;
   background: var(--bg-card);
   cursor: pointer;
-  transition: opacity 0.3s;
+  transition:
+    border-color 0.2s,
+    filter 0.2s,
+    transform 0.2s;
 }
 
 .project-image:hover {
-  opacity: 0.85;
+  border-color: var(--border-hover);
+  filter: brightness(0.94);
+  transform: translateY(-1px);
 }
 
 .empty {
@@ -350,7 +360,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   cursor: zoom-out;
   padding: 2rem;
 }
@@ -363,9 +373,9 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   place-items: center;
   width: 2.5rem;
   height: 2.5rem;
-  border: none;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
@@ -373,25 +383,25 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 }
 
 .lightbox-close:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .lightbox-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: default;
 }
 
 @media (max-width: 768px) {
   .projects-page,
   .workplace-page {
-    padding: 4.5rem 1rem 4rem;
+    padding: 4.75rem 1rem 4rem;
   }
 
   .projects-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.5rem;
   }
 

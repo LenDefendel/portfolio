@@ -24,7 +24,7 @@ import { portfolio } from '@/data/portfolio'
 .skill-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   padding: 1.25rem;
   text-align: center;
   transition:
@@ -33,8 +33,8 @@ import { portfolio } from '@/data/portfolio'
 }
 
 .skill-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-3px);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
 }
 
 .skill-name {

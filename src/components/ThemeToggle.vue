@@ -22,9 +22,10 @@ const { isDark, toggle } = useTheme()
   z-index: 200;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  background: var(--bg-card);
+  background: color-mix(in srgb, var(--bg-card) 92%, transparent);
+  backdrop-filter: blur(14px);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -35,12 +36,12 @@ const { isDark, toggle } = useTheme()
 }
 
 .icon {
-  color: var(--accent);
+  color: var(--text-primary);
   font-size: 1.25rem;
 }
 
 .theme-toggle:hover {
-  border-color: var(--accent);
-  transform: scale(1.1);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
 }
 </style>
