@@ -2,120 +2,104 @@ import { readdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import sharp from 'sharp'
 
+interface ImageEntry {
+  path: string
+  width: number
+  height: number
+}
+
 const ASSETS_DIR = join(import.meta.dirname, '..', 'src', 'assets')
 const OUTPUT = join(import.meta.dirname, '..', 'src', 'data', 'generatedImages.ts')
 const EXT = /\.(jpg|jpeg|png|gif|webp|svg)$/i
 
-async function getDims(dir: string, prefix: string): Promise<Record<string, { w: number; h: number }>> {
-  const result: Record<string, { w: number; h: number }> = {}
-  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+async function getImages(dir: string, prefix = ''): Promise<ImageEntry[]> {
+  const result: ImageEntry[] = []
+
+  for (const entry of readdirSync(dir, { withFileTypes: true }).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )) {
     const full = join(dir, entry.name)
+
     if (entry.isDirectory()) {
-      Object.assign(result, await getDims(full, `${prefix}${entry.name}/`))
+      result.push(...(await getImages(full, `${prefix}${entry.name}/`)))
     } else if (EXT.test(entry.name)) {
       const meta = await sharp(full).metadata()
-      result[`${prefix}${entry.name}`] = { w: meta.width ?? 0, h: meta.height ?? 0 }
+      result.push({
+        path: `${prefix}${entry.name}`,
+        width: meta.width ?? 0,
+        height: meta.height ?? 0,
+      })
     }
   }
+
   return result
 }
 
-function esc(v: string): string {
-  return v.replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+function esc(value: string): string {
+  return value.replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+}
+
+function pascalCase(value: string): string {
+  return value.charAt(0).toUpperCase() + value.slice(1)
+}
+
+function imageId(group: string, path: string): string {
+  return `_img_${group}_${path.replace(/[^a-zA-Z0-9]/g, '_')}`
+}
+
+function importLine(id: string, path: string): string {
+  return `import ${id} from '${esc(path)}?url'`
+}
+
+function imageLine(id: string, entry: ImageEntry): string {
+  return `  image(${id}, ${entry.width}, ${entry.height}),`
+}
+
+function imageArray(name: string, entries: ImageEntry[], group: string): string {
+  const lines = entries.map((entry) => imageLine(imageId(group, entry.path), entry))
+
+  return `export const _${name}Urls: ProjectImage[] = [\n${lines.join('\n')}\n]\n`
 }
 
 async function main(): Promise<void> {
-  const freelanceDims = await getDims(join(ASSETS_DIR, 'freelance3d'), '')
-  const wallpaperDims = await getDims(join(ASSETS_DIR, 'wallpaper'), '')
+  const freelanceImages = await getImages(join(ASSETS_DIR, 'freelance3d'))
+  const wallpaperImages = await getImages(join(ASSETS_DIR, 'wallpaper'))
+  const subdirs = [...new Set(wallpaperImages.map((entry) => entry.path.split('/')[0]))].sort()
 
-  const subdirs = readdirSync(join(ASSETS_DIR, 'wallpaper'), { withFileTypes: true })
-    .filter((e) => e.isDirectory())
-    .map((e) => e.name)
-    .sort()
+  const imports = [
+    ...freelanceImages.map((entry) =>
+      importLine(imageId('freelance3d', entry.path), `@/assets/freelance3d/${entry.path}`),
+    ),
+    ...wallpaperImages.map((entry) =>
+      importLine(imageId('wallpaper', entry.path), `@/assets/wallpaper/${entry.path}`),
+    ),
+  ]
 
-  // --- freelance dims map ---
-  let fd = 'const _freelanceDims: Record<string, { w: number; h: number }> = {\n'
-  for (const [name, d] of Object.entries(freelanceDims).sort()) {
-    fd += `  '${esc(name)}': { w: ${d.w}, h: ${d.h} },\n`
-  }
-  fd += '}\n'
-
-  // --- wallpaper dims map ---
-  let wd = 'const _wallpaperDims: Record<string, { w: number; h: number }> = {\n'
-  for (const [name, d] of Object.entries(wallpaperDims).sort()) {
-    wd += `  '${esc(name)}': { w: ${d.w}, h: ${d.h} },\n`
-  }
-  wd += '}\n'
-
-  // --- generate exports ---
-  let exportsCode = ''
-
-  // freelance
-  exportsCode += `
-export const _Freelance3dUrls: ProjectImage[] = Object.entries(_freelanceModules)
-  .sort(([a], [b]) => a.localeCompare(b))
-  .map(([fp, src]) => {
-    const f = fp.split('/').pop() ?? ''
-    const d = _freelanceDims[f] ?? { w: 0, h: 0 }
-    return { src, width: d.w, height: d.h }
-  })
-`
-
-  // wallpaper per-subdir arrays
-  for (const subdir of subdirs) {
-    const name = subdir.charAt(0).toUpperCase() + subdir.slice(1)
-    exportsCode += `
-export const _${name}Urls: ProjectImage[] = []
-`
-  }
-
-  exportsCode += `
-for (const [fp, src] of Object.entries(_wallpaperModules)) {
-  const m = fp.match(/wallpaper\\/([^/]+)\\/(.+)$/)
-  if (m) {
-    const key = m[1] + '/' + m[2]
-    const d = _wallpaperDims[key] ?? { w: 0, h: 0 }
-    const img: ProjectImage = { src, width: d.w, height: d.h }
-    switch (m[1]) {
-`
-  for (const subdir of subdirs) {
-    exportsCode += `      case '${esc(subdir)}': _${subdir.charAt(0).toUpperCase() + subdir.slice(1)}Urls.push(img); break\n`
-  }
-
-  exportsCode += `    }
-  }
-}
-
-// sort all wallpaper arrays
-`
-  for (const subdir of subdirs) {
-    const name = subdir.charAt(0).toUpperCase() + subdir.slice(1)
-    exportsCode += `_${name}Urls.sort((a, b) => a.src.localeCompare(b.src))\n`
-  }
+  const arrays = [
+    imageArray('Freelance3d', freelanceImages, 'freelance3d'),
+    ...subdirs.map((subdir) =>
+      imageArray(
+        pascalCase(subdir),
+        wallpaperImages.filter((entry) => entry.path.startsWith(`${subdir}/`)),
+        'wallpaper',
+      ),
+    ),
+  ]
 
   const code = `// Auto-generated by scripts/update-image-dimensions.ts
 
 import type { ProjectImage } from './portfolio'
+${imports.join('\n')}
 
-const _freelanceModules = import.meta.glob('@/assets/freelance3d/*.{jpg,png,svg,gif,webp}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-}) as Record<string, string>
+function image(src: string, width: number, height: number): ProjectImage {
+  return { src, width, height }
+}
 
-${fd}
-const _wallpaperModules = import.meta.glob('@/assets/wallpaper/**/*.{jpg,png,svg,gif,webp}', {
-  eager: true,
-  query: '?url',
-  import: 'default',
-}) as Record<string, string>
-
-${wd}
-${exportsCode}
+${arrays.join('\n')}
 `
 
   writeFileSync(OUTPUT, code, 'utf-8')
-  console.log(`✓ Generated ${OUTPUT}`)
+  console.log(`Generated ${OUTPUT}`)
 }
 
 await main()
