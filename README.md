@@ -1,48 +1,163 @@
-# portfolio
+# Дизайнерское портфолио
 
-This template should help get you started developing with Vue 3 in Vite.
+Одностраничное портфолио дизайнера на Vue 3 и Vite. Проект показывает опыт по организациям и местам работы: у каждой организации есть отдельная страница, а внутри нее собраны связанные проекты, изображения, описания и теги.
 
-## Recommended IDE Setup
+Главный сценарий приложения - быстро посмотреть все работы в общей галерее, открыть интересный проект и перейти ровно к нему на странице соответствующей организации.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Что есть в проекте
 
-## Recommended Browser Setup
+- Боковое меню с разделом "Все проекты", списком организаций, а также второстепенными страницами "Обо мне", "Навыки" и "Контакты".
+- Общая галерея всех изображений портфолио на странице `/workplace/all`.
+- Отдельные страницы организаций по маршруту `/workplace/:id`.
+- Переход из общей галереи к конкретному изображению проекта через hash-якорь, например `/workplace/wallpaper#wall-forest-image-0`.
+- Плавный скролл к выбранному проекту или изображению.
+- Открытие изображения в полноразмерном просмотре по клику.
+- Переключение светлой и темной темы с сохранением выбора в `localStorage`.
+- Адаптивное боковое меню: на мобильных экранах оно превращается в hamburger-меню.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Стек
 
-## Type Support for `.vue` Imports in TS
+- Vue 3
+- TypeScript
+- Vue Router
+- Vite
+- Material Symbols
+- Sharp для генерации размеров изображений
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Структура
 
-## Customize configuration
+```text
+src/
+  App.vue                       # Общий layout: тема, сайдбар, RouterView
+  main.ts                       # Точка входа приложения
+  router/index.ts               # Маршруты и поведение скролла
+  data/
+    portfolio.ts                # Основные данные портфолио
+    generatedImages.ts          # Автогенерируемые списки изображений с размерами
+  components/
+    SidebarMenu.vue             # Боковое меню и мобильное меню
+    ProjectsGrid.vue            # Общая галерея и страницы организаций
+    ProjectCard.vue             # Карточка изображения в общей галерее
+    ThemeToggle.vue             # Переключатель темы
+    AboutSection.vue            # Раздел "Обо мне"
+    SkillsSection.vue           # Раздел "Навыки"
+    ContactSection.vue          # Раздел "Контакты"
+  assets/
+    freelance3d/                # Изображения 3D-проектов
+    wallpaper/                  # Изображения проектов обоев по папкам коллекций
+scripts/
+  update-image-dimensions.ts    # Обновляет generatedImages.ts
+```
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Данные портфолио
 
-## Project Setup
+Основной файл с контентом - `src/data/portfolio.ts`.
+
+В нем описаны:
+
+- `workplaces` - организации или места работы;
+- `projects` - проекты, связанные с организациями через `workplaceId`;
+- `skills` - навыки для отдельного раздела;
+- базовая информация профиля: имя, должность, описание, контакты.
+
+Каждая организация имеет `id`, `name`, `role`, `period` и `icon`. Значение `id` используется в URL и связывает организацию с проектами.
+
+Каждый проект имеет:
+
+- `id` - уникальный идентификатор проекта;
+- `title` - название;
+- `description` - описание, ссылки в тексте автоматически становятся кликабельными;
+- `image` - основное изображение;
+- `workplaceId` - id организации;
+- `tags` - теги;
+- `images` - необязательная галерея изображений проекта.
+
+## Навигация
+
+Приложение использует hash history с базой `/portfolio/`, что удобно для статического размещения.
+
+Основные маршруты:
+
+- `/` - редирект на первую организацию из `portfolio.workplaces`;
+- `/workplace/all` - общая галерея всех проектов;
+- `/workplace/:id` - страница организации;
+- `/about` - обо мне;
+- `/skills` - навыки;
+- `/contact` - контакты;
+- `/project/:id` - служебный редирект на страницу организации с якорем первого изображения проекта.
+
+Карточка в общей галерее ведет на страницу организации и добавляет hash конкретного изображения:
+
+```text
+/workplace/{workplaceId}#{projectId}-image-{imageIndex}
+```
+
+Vue Router обрабатывает hash в `scrollBehavior` и плавно прокручивает страницу к нужному изображению.
+
+## Изображения
+
+Изображения лежат в `src/assets`.
+
+Списки изображений и их размеры собираются в `src/data/generatedImages.ts`. Этот файл автогенерируется скриптом:
+
+```sh
+yarn update-image-dimensions
+```
+
+Скрипт проходит по папкам `src/assets/freelance3d` и `src/assets/wallpaper`, получает размеры через `sharp` и обновляет массивы изображений для использования в `portfolio.ts`.
+
+После добавления новых файлов изображений стоит запустить этот скрипт, чтобы в приложении появились корректные `width` и `height`.
+
+## Темы
+
+Переключение темы реализовано в `src/composables/useTheme.ts` и компоненте `ThemeToggle.vue`.
+
+Выбранная тема сохраняется в `localStorage` по ключу `portfolio-theme`. Для оформления используются CSS-переменные в `App.vue`: отдельно для `.dark` и `.light`.
+
+## Команды
+
+Установка зависимостей:
 
 ```sh
 yarn
 ```
 
-### Compile and Hot-Reload for Development
+Запуск разработки:
 
 ```sh
 yarn dev
 ```
 
-### Type-Check, Compile and Minify for Production
+Сборка:
 
 ```sh
 yarn build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+Проверка и автоисправление линтером:
 
 ```sh
 yarn lint
 ```
+
+Обновление данных изображений:
+
+```sh
+yarn update-image-dimensions
+```
+
+## Как добавить новую организацию
+
+1. Добавить объект в `workplaces` в `src/data/portfolio.ts`.
+2. Указать уникальный `id`.
+3. Добавить проекты в `projects` и прописать им такой же `workplaceId`.
+4. Если у проектов есть изображения, положить файлы в `src/assets` и обновить `generatedImages.ts` через `yarn update-image-dimensions`.
+
+## Как добавить новый проект
+
+1. Добавить объект проекта в массив `projects`.
+2. Связать проект с организацией через `workplaceId`.
+3. Указать основное изображение в `image`.
+4. При необходимости добавить массив `images`, чтобы на странице организации отображалась галерея.
+
+Проекты, у которых `workplaceId` не совпадает ни с одной организацией, не попадают в общую галерею.
