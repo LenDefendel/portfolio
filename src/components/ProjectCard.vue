@@ -3,7 +3,11 @@ import type { Project } from '@/data/portfolio'
 
 const props = defineProps<{
   project: Project
-  image: string
+  image: {
+    src: string
+    width: number
+    height: number
+  }
   imageIndex: number
 }>()
 
@@ -17,7 +21,14 @@ const target = {
 <template>
   <router-link :to="target" class="project-card">
     <div class="card-image">
-      <img :src="image" :alt="project.title" class="card-img" loading="lazy" />
+      <img
+        :src="image.src"
+        :height="image.height"
+        :width="image.width"
+        :alt="project.title"
+        class="card-img"
+        loading="lazy"
+      />
       <div class="card-overlay">
         <h3 class="card-title">{{ project.title }}</h3>
         <div class="card-tags">
@@ -36,7 +47,9 @@ const target = {
   border: 1px solid var(--border);
   border-radius: 8px;
   text-decoration: none;
-  transition: border-color 0.3s, transform 0.2s;
+  transition:
+    border-color 0.3s,
+    transform 0.2s;
 }
 
 .project-card:hover {

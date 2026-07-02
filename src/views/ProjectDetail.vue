@@ -6,9 +6,7 @@ import { portfolio } from '@/data/portfolio'
 const route = useRoute()
 const router = useRouter()
 
-const project = computed(() =>
-  portfolio.projects.find((p) => p.id === route.params.id),
-)
+const project = computed(() => portfolio.projects.find((p) => p.id === route.params.id))
 
 const workplaceName = computed(() => {
   if (!project.value) return ''
@@ -38,19 +36,19 @@ function linkify(text: string): string {
     <div class="detail-content">
       <div class="detail-image">
         <img
-          v-if="project.image"
-          :src="project.image"
+          :src="project.image.src"
+          :height="project.image.height"
+          :width="project.image.width"
           :alt="project.title"
           class="detail-img"
         />
-        <div v-else class="placeholder-img">
-          <span class="placeholder-text">{{ project.title.charAt(0) }}</span>
-        </div>
         <div v-if="project.images && project.images.length > 1" class="image-gallery">
           <img
             v-for="(img, idx) in project.images"
             :key="idx"
-            :src="img"
+            :src="img.src"
+            :height="img.height"
+            :width="img.width"
             :alt="`${project.title} ${idx + 1}`"
             class="gallery-thumb"
             :class="{ active: idx === 0 }"
@@ -67,13 +65,7 @@ function linkify(text: string): string {
           <span v-for="tag in project.tags" :key="tag" class="tag">{{ tag }}</span>
         </div>
 
-        <a
-          v-if="project.link"
-          :href="project.link"
-          target="_blank"
-          rel="noopener"
-          class="btn"
-        >
+        <a v-if="project.link" :href="project.link" target="_blank" rel="noopener" class="btn">
           <span class="material-symbols-outlined">open_in_new</span>
           Открыть проект
         </a>
@@ -104,7 +96,9 @@ function linkify(text: string): string {
   border-radius: 8px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
   margin-bottom: 2rem;
 }
 
@@ -232,7 +226,9 @@ h1 {
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .btn:hover {

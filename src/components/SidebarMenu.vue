@@ -3,7 +3,6 @@ import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { portfolio } from '@/data/portfolio'
 
-
 const route = useRoute()
 
 const isOpen = ref(false)
@@ -127,7 +126,6 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
         </router-link>
       </nav>
     </div>
-
   </aside>
 </template>
 

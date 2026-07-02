@@ -6,24 +6,24 @@ import ProjectCard from '@/components/ProjectCard.vue'
 
 interface GalleryItem {
   project: Project
-  image: string
+  image: {
+    src: string
+    width: number
+    height: number
+  }
   imageIndex: number
 }
 
 const route = useRoute()
 
 const workplaceId = computed(() => route.params.id as string)
-const workplace = computed(() =>
-  portfolio.workplaces.find((item) => item.id === workplaceId.value),
-)
+const workplace = computed(() => portfolio.workplaces.find((item) => item.id === workplaceId.value))
 const workplaceProjects = computed(() =>
   portfolio.projects.filter((project) => project.workplaceId === workplaceId.value),
 )
 
-function projectImages(project: Project): string[] {
-  const images = project.images?.length ? project.images : project.image ? [project.image] : []
-
-  return images.filter((image) => !image.startsWith('/placeholder-'))
+function projectImages(project: Project) {
+  return project.images?.length ? project.images : [project.image]
 }
 
 function shuffle<T>(items: T[]): T[] {
@@ -128,11 +128,13 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
             v-for="(image, imageIndex) in projectImages(project)"
             :id="imageAnchor(project.id, imageIndex)"
             :key="imageIndex"
-            :src="image"
+            :src="image.src"
+            :height="image.height"
+            :width="image.width"
             :alt="`${project.title}, изображение ${imageIndex + 1}`"
             class="project-image"
             loading="lazy"
-            @click="openLightbox(image)"
+            @click="openLightbox(image.src)"
           />
         </div>
       </section>
@@ -150,7 +152,12 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   </div>
 
   <Teleport to="body">
-    <div v-if="lightboxImage" class="lightbox-overlay" @click.self="closeLightbox" @keydown.escape="closeLightbox">
+    <div
+      v-if="lightboxImage"
+      class="lightbox-overlay"
+      @click.self="closeLightbox"
+      @keydown.escape="closeLightbox"
+    >
       <button class="lightbox-close" @click="closeLightbox">
         <span class="material-symbols-outlined">close</span>
       </button>
