@@ -1,25 +1,16 @@
 <script setup lang="ts">
-const aboutText =
-  "I'm a full-stack developer with experience building modern web applications. I enjoy turning complex problems into simple, beautiful solutions. Passionate about clean code, performance, and user experience."
+import { portfolio } from '@/data/portfolio'
 </script>
 
 <template>
   <section id="about">
-    <h2>About Me</h2>
+    <h2>Обо мне</h2>
     <div class="about-content">
-      <p>{{ aboutText }}</p>
+      <p>{{ portfolio.about }}</p>
       <div class="stats">
-        <div class="stat">
-          <span class="stat-value">3+</span>
-          <span class="stat-label">Years Experience</span>
-        </div>
-        <div class="stat">
-          <span class="stat-value">20+</span>
-          <span class="stat-label">Projects</span>
-        </div>
-        <div class="stat">
-          <span class="stat-value">10+</span>
-          <span class="stat-label">Technologies</span>
+        <div v-for="stat in portfolio.stats" :key="stat.label" class="stat">
+          <span class="stat-value">{{ stat.value }}</span>
+          <span class="stat-label">{{ stat.label }}</span>
         </div>
       </div>
     </div>

@@ -1,26 +1,22 @@
 <script setup lang="ts">
-const email = 'your.email@example.com'
-const github = 'https://github.com/yourusername'
-const linkedin = 'https://linkedin.com/in/yourusername'
+import { portfolio } from '@/data/portfolio'
 </script>
 
 <template>
   <section id="contact">
-    <h2>Get in Touch</h2>
-    <p class="contact-text">
-      I'm always open to new opportunities and collaborations. Feel free to reach out!
-    </p>
+    <h2>Контакты</h2>
+    <p class="contact-text">Открыта к новым проектам и сотрудничеству.</p>
     <div class="contact-links">
-      <a :href="`mailto:${email}`" class="contact-card">
-        <span class="icon">✉</span>
-        <span>{{ email }}</span>
+      <a :href="`mailto:${portfolio.email}`" class="contact-card">
+        <span class="material-symbols-outlined icon">mail</span>
+        <span>{{ portfolio.email }}</span>
       </a>
-      <a :href="github" target="_blank" rel="noopener" class="contact-card">
-        <span class="icon">⌨</span>
+      <a :href="portfolio.github" target="_blank" rel="noopener" class="contact-card">
+        <span class="material-symbols-outlined icon">code</span>
         <span>GitHub</span>
       </a>
-      <a :href="linkedin" target="_blank" rel="noopener" class="contact-card">
-        <span class="icon">🔗</span>
+      <a :href="portfolio.linkedin" target="_blank" rel="noopener" class="contact-card">
+        <span class="material-symbols-outlined icon">link</span>
         <span>LinkedIn</span>
       </a>
     </div>
@@ -67,5 +63,6 @@ const linkedin = 'https://linkedin.com/in/yourusername'
   font-size: 1.2rem;
   width: 1.5rem;
   text-align: center;
+  color: var(--accent);
 }
 </style>

@@ -1,30 +1,12 @@
 <script setup lang="ts">
-interface Skill {
-  name: string
-  category: string
-}
-
-const skills: Skill[] = [
-  { name: 'TypeScript', category: 'Languages' },
-  { name: 'JavaScript', category: 'Languages' },
-  { name: 'Python', category: 'Languages' },
-  { name: 'Vue.js', category: 'Frontend' },
-  { name: 'React', category: 'Frontend' },
-  { name: 'HTML/CSS', category: 'Frontend' },
-  { name: 'Node.js', category: 'Backend' },
-  { name: 'Express', category: 'Backend' },
-  { name: 'PostgreSQL', category: 'Database' },
-  { name: 'MongoDB', category: 'Database' },
-  { name: 'Docker', category: 'DevOps' },
-  { name: 'Git', category: 'DevOps' },
-]
+import { portfolio } from '@/data/portfolio'
 </script>
 
 <template>
   <section id="skills">
-    <h2>Skills</h2>
+    <h2>Навыки</h2>
     <div class="skills-grid">
-      <div v-for="skill in skills" :key="skill.name" class="skill-card">
+      <div v-for="skill in portfolio.skills" :key="skill.name" class="skill-card">
         <span class="skill-name">{{ skill.name }}</span>
         <span class="skill-category">{{ skill.category }}</span>
       </div>
