@@ -161,8 +161,3 @@ export const portfolio: PortfolioData = {
     { name: 'HTML/CSS', category: 'Frontend' },
   ],
 }
-
-export const workplaceNames: Record<string, string> = {}
-for (const w of portfolio.workplaces) {
-  workplaceNames[w.id] = w.name
-}
