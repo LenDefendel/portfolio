@@ -172,9 +172,6 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
               <span v-else>{{ part.text }}</span>
             </template>
           </p>
-          <div class="tags">
-            <span v-for="tag in project.tags" :key="tag" class="tag">{{ tag }}</span>
-          </div>
         </div>
 
         <div class="image-gallery">
@@ -302,23 +299,6 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   color: var(--accent);
   text-underline-offset: 0.2em;
   overflow-wrap: anywhere;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 1.15rem;
-}
-
-.tag {
-  padding: 0.28rem 0.65rem;
-  border: 1px solid var(--tag-border);
-  border-radius: 999px;
-  background: var(--tag-bg);
-  color: var(--text-secondary);
-  font-size: 0.78rem;
-  font-weight: 500;
 }
 
 .image-gallery {

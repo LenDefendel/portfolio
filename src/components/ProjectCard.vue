@@ -35,9 +35,6 @@ const target = {
       />
       <div class="card-overlay">
         <h3 class="card-title">{{ project.title }}</h3>
-        <div class="card-tags">
-          <span v-for="tag in project.tags.slice(0, 3)" :key="tag" class="card-tag">{{ tag }}</span>
-        </div>
       </div>
     </div>
   </router-link>
@@ -92,7 +89,7 @@ const target = {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 0.9rem;
+  padding: 0.65rem;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.06) 72%);
   opacity: 0;
   transition: opacity 0.3s;
@@ -109,21 +106,6 @@ const target = {
   font-family: 'Archivo', 'Inter', system-ui, sans-serif;
   font-size: 0.92rem;
   font-weight: 600;
-}
-
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-}
-
-.card-tag {
-  padding: 0.12rem 0.45rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  font-size: 0.7rem;
 }
 
 @media (max-width: 720px) {
@@ -147,7 +129,7 @@ const target = {
     top: auto;
     bottom: 0;
     display: block;
-    padding: 0.45rem;
+    padding: 0.35rem 0.42rem;
     background: rgba(0, 0, 0, 0.62);
     opacity: 1;
   }
@@ -161,10 +143,6 @@ const target = {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-  }
-
-  .all-projects-card .card-tags {
-    display: none;
   }
 }
 </style>
