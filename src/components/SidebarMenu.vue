@@ -86,7 +86,7 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
           :class="{ active: isWorkplaceActive(w.id) }"
           @click="close"
         >
-          <span class="nav-icon">{{ w.icon }}</span>
+          <span class="nav-dot" aria-hidden="true" />
           <div class="nav-text">
             <span class="nav-name">{{ w.name }}</span>
             <span class="nav-role">{{ w.role }}</span>
@@ -290,19 +290,27 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   text-align: center;
 }
 
-.nav-icon {
+.nav-dot {
   width: 1.5rem;
   height: 1.5rem;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: var(--tag-bg);
-  color: var(--text-primary);
-  font-size: 0.75rem;
-  font-weight: 700;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.nav-dot::before {
+  content: '';
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  opacity: 1;
+}
+
+.nav-item.active .nav-dot::before {
+  background: var(--accent);
 }
 
 .nav-text {
@@ -373,11 +381,14 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
     width: 2rem;
   }
 
-  .nav-icon {
+  .nav-dot {
     width: 2rem;
     height: 2rem;
-    font-size: 1rem;
-    border-radius: 10px;
+  }
+
+  .nav-dot::before {
+    width: 0.45rem;
+    height: 0.45rem;
   }
 
   .nav-name {
