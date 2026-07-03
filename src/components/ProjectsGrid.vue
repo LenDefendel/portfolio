@@ -58,21 +58,6 @@ const allImages = computed<GalleryItem[]>(() =>
   ),
 )
 
-function bentoVariant(index: number): 'feature' | 'wide' | 'tall' | 'standard' | 'compact' {
-  const pattern = [
-    'feature',
-    'standard',
-    'tall',
-    'wide',
-    'compact',
-    'standard',
-    'wide',
-    'tall',
-  ] as const
-
-  return pattern[index % pattern.length]!
-}
-
 function imageAnchor(projectId: string, imageIndex: number): string {
   return `${projectId}-image-${imageIndex}`
 }
@@ -138,12 +123,11 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   <div v-if="workplaceId === 'all'" class="projects-page">
     <div v-if="allImages.length" class="projects-grid">
       <ProjectCard
-        v-for="(item, index) in allImages"
+        v-for="item in allImages"
         :key="`${item.project.id}-${item.imageIndex}`"
         :project="item.project"
         :image="item.image"
         :image-index="item.imageIndex"
-        :variant="bentoVariant(index)"
         class="all-projects-card"
       />
     </div>
@@ -246,11 +230,13 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 }
 
 .projects-grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-auto-flow: dense;
-  grid-auto-rows: 92px;
-  gap: 0.9rem;
+  column-count: 4;
+  column-gap: 1.15rem;
+}
+
+.all-projects-card {
+  break-inside: avoid;
+  margin-bottom: 1.15rem;
 }
 
 .workplace-page {
@@ -425,9 +411,13 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   }
 
   .projects-grid {
+    display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-rows: auto;
     gap: 0.5rem;
+  }
+
+  .all-projects-card {
+    margin-bottom: 0;
   }
 
   .workplace-header {
@@ -455,7 +445,13 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 
 @media (max-width: 1100px) and (min-width: 721px) {
   .projects-grid {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+    column-count: 3;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 721px) {
+  .projects-grid {
+    column-count: 2;
   }
 }
 </style>
