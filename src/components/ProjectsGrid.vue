@@ -144,6 +144,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
         :image="item.image"
         :image-index="item.imageIndex"
         :variant="bentoVariant(index)"
+        class="all-projects-card"
       />
     </div>
     <div v-else class="empty">
@@ -424,7 +425,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   }
 
   .projects-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-rows: auto;
     gap: 0.5rem;
   }

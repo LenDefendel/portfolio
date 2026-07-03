@@ -171,7 +171,41 @@ const target = {
   .project-card--compact {
     grid-column: span 1;
     grid-row: span 1;
-    aspect-ratio: 1;
+    aspect-ratio: 3 / 4;
+  }
+
+  .all-projects-card .card-image {
+    display: block;
+  }
+
+  .all-projects-card .card-img {
+    min-height: 0;
+    filter: none;
+    transform: none;
+  }
+
+  .all-projects-card .card-overlay {
+    top: auto;
+    bottom: 0;
+    display: block;
+    padding: 0.45rem;
+    background: rgba(0, 0, 0, 0.62);
+    opacity: 1;
+  }
+
+  .all-projects-card .card-title {
+    margin-bottom: 0;
+    color: #fff;
+    font-size: clamp(0.62rem, 2.7vw, 0.78rem);
+    line-height: 1.12;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .all-projects-card .card-tags {
+    display: none;
   }
 }
 </style>
