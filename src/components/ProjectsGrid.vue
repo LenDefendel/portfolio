@@ -49,12 +49,29 @@ const allImages = computed<GalleryItem[]>(() =>
         (workplaceItem) => workplaceItem.id === project.workplaceId,
       )
 
-      return workplaceExists
-        ? projectImages(project).map((image, imageIndex) => ({ project, image, imageIndex }))
-        : []
+      if (!workplaceExists) return []
+
+      const image = projectImages(project)[0]
+
+      return image ? [{ project, image, imageIndex: 0 }] : []
     }),
   ),
 )
+
+function bentoVariant(index: number): 'feature' | 'wide' | 'tall' | 'standard' | 'compact' {
+  const pattern = [
+    'feature',
+    'standard',
+    'tall',
+    'wide',
+    'compact',
+    'standard',
+    'wide',
+    'tall',
+  ] as const
+
+  return pattern[index % pattern.length]!
+}
 
 function imageAnchor(projectId: string, imageIndex: number): string {
   return `${projectId}-image-${imageIndex}`
@@ -121,11 +138,12 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   <div v-if="workplaceId === 'all'" class="projects-page">
     <div v-if="allImages.length" class="projects-grid">
       <ProjectCard
-        v-for="item in allImages"
+        v-for="(item, index) in allImages"
         :key="`${item.project.id}-${item.imageIndex}`"
         :project="item.project"
         :image="item.image"
         :image-index="item.imageIndex"
+        :variant="bentoVariant(index)"
       />
     </div>
     <div v-else class="empty">
@@ -218,15 +236,20 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 </template>
 
 <style scoped>
-.projects-page,
 .workplace-page {
+  padding: 2.5rem clamp(1.5rem, 6vw, 7rem) 8rem;
+}
+
+.projects-page {
   padding: 2.5rem clamp(1.5rem, 6vw, 7rem) 8rem;
 }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 0.85rem;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  grid-auto-rows: 92px;
+  gap: 0.9rem;
 }
 
 .workplace-page {
@@ -402,6 +425,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 
   .projects-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
     gap: 0.5rem;
   }
 
@@ -419,6 +443,18 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 
   .project-image {
     min-height: 0;
+  }
+}
+
+@media (min-width: 721px) {
+  .projects-page {
+    padding: clamp(4rem, 7vw, 7rem) clamp(3rem, 8vw, 9rem) 9rem;
+  }
+}
+
+@media (max-width: 1100px) and (min-width: 721px) {
+  .projects-grid {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 }
 </style>

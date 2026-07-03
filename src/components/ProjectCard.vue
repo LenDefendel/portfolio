@@ -9,6 +9,7 @@ const props = defineProps<{
     height: number
   }
   imageIndex: number
+  variant?: 'feature' | 'wide' | 'tall' | 'standard' | 'compact'
 }>()
 
 const target = {
@@ -19,7 +20,7 @@ const target = {
 </script>
 
 <template>
-  <router-link :to="target" class="project-card">
+  <router-link :to="target" class="project-card" :class="`project-card--${variant ?? 'standard'}`">
     <div class="card-image">
       <img
         :src="image.src"
@@ -43,7 +44,7 @@ const target = {
 .project-card {
   display: block;
   overflow: hidden;
-  aspect-ratio: 1;
+  min-height: 0;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--bg-card);
@@ -52,6 +53,31 @@ const target = {
     border-color 0.3s,
     box-shadow 0.2s,
     transform 0.2s;
+}
+
+.project-card--feature {
+  grid-column: span 6;
+  grid-row: span 4;
+}
+
+.project-card--wide {
+  grid-column: span 6;
+  grid-row: span 3;
+}
+
+.project-card--tall {
+  grid-column: span 3;
+  grid-row: span 4;
+}
+
+.project-card--standard {
+  grid-column: span 3;
+  grid-row: span 3;
+}
+
+.project-card--compact {
+  grid-column: span 3;
+  grid-row: span 2;
 }
 
 .project-card:hover {
@@ -119,5 +145,33 @@ const target = {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   font-size: 0.7rem;
+}
+
+@media (max-width: 1100px) {
+  .project-card--feature,
+  .project-card--wide {
+    grid-column: span 8;
+    grid-row: span 3;
+  }
+
+  .project-card--tall,
+  .project-card--standard,
+  .project-card--compact {
+    grid-column: span 4;
+    grid-row: span 3;
+  }
+}
+
+@media (max-width: 720px) {
+  .project-card,
+  .project-card--feature,
+  .project-card--wide,
+  .project-card--tall,
+  .project-card--standard,
+  .project-card--compact {
+    grid-column: span 1;
+    grid-row: span 1;
+    aspect-ratio: 1;
+  }
 }
 </style>
