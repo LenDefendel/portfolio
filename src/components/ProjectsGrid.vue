@@ -218,9 +218,13 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
               :height="image.height"
               :width="image.width"
               class="project-image project-video"
-              controls
+              autoplay
+              disablepictureinpicture
+              muted
+              loop
               playsinline
-              preload="metadata"
+              controlslist="nodownload nofullscreen noremoteplayback"
+              preload="auto"
             />
             <img
               v-else

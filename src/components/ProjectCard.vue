@@ -34,10 +34,13 @@ const target = {
         :height="image.height"
         :width="image.width"
         class="card-img"
+        autoplay
+        disablepictureinpicture
         muted
         loop
         playsinline
-        preload="metadata"
+        controlslist="nodownload nofullscreen noremoteplayback"
+        preload="auto"
       />
       <img
         v-else
