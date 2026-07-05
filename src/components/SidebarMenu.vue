@@ -9,6 +9,7 @@ const SIDEBAR_STORAGE_KEY = 'portfolio-sidebar-width'
 const DEFAULT_SIDEBAR_WIDTH = 260
 const MIN_SIDEBAR_WIDTH = 220
 const MAX_SIDEBAR_WIDTH = 420
+const MOBILE_MEDIA_QUERY = '(max-width: 768px)'
 
 const isOpen = ref(false)
 const isMobile = ref(false)
@@ -32,7 +33,7 @@ function setSidebarWidth(width: number, shouldSave = true): void {
 }
 
 const checkMobile = () => {
-  isMobile.value = window.innerWidth < 768
+  isMobile.value = window.matchMedia(MOBILE_MEDIA_QUERY).matches
 }
 
 function onResizeMove(e: PointerEvent): void {
@@ -366,6 +367,15 @@ watch(route, () => {
   z-index: 100;
 }
 
+@media (min-width: 769px) {
+  .sidebar {
+    transform: none;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+  }
+}
+
 .sidebar--resizing {
   border-right-color: var(--border-hover);
 }
@@ -597,12 +607,17 @@ button.nav-item {
   .sidebar {
     width: 100vw;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    visibility: hidden;
+    pointer-events: none;
+    transition: none;
     z-index: 175;
   }
 
   .sidebar.sidebar--open {
     transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition: transform 0.3s ease;
   }
 
   .avatar {
