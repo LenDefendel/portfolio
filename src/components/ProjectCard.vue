@@ -12,8 +12,8 @@ const props = defineProps<{
 }>()
 
 const target = {
-  name: 'workplace',
-  params: { id: props.project.workplaceId },
+  name: 'category',
+  params: { id: props.project.categoryId },
   hash: `#${props.project.id}-image-${props.imageIndex}`,
 }
 </script>

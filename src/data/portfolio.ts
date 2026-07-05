@@ -1,8 +1,7 @@
-export interface Workplace {
+export interface Category {
   id: string
   name: string
-  role: string
-  period: string
+  summary: string
   icon: string
 }
 
@@ -17,7 +16,7 @@ export interface Project {
   title: string
   description: string
   image: ProjectImage
-  workplaceId: string
+  categoryId: string
   tags: string[]
   link?: string
   images?: ProjectImage[]
@@ -36,7 +35,7 @@ export interface PortfolioData {
   email: string
   github: string
   linkedin: string
-  workplaces: Workplace[]
+  categories: Category[]
   projects: Project[]
   skills: Skill[]
 }
@@ -55,20 +54,18 @@ export const portfolio: PortfolioData = {
   email: 'your.email@example.com',
   github: 'https://github.com/yourusername',
   linkedin: 'https://linkedin.com/in/yourusername',
-  workplaces: [
+  categories: [
     {
       id: 'wallpaper',
-      name: 'Pinegin Фрески и фотообои',
-      role: 'Product Designer',
-      period: '2023 — наст. время',
-      icon: 'W',
+      name: 'Сюжеты для фресок',
+      summary: 'Иллюстрации и паттерны для фресок, фотообоев и интерьерной печати.',
+      icon: 'wall_art',
     },
     {
       id: 'freelance3d',
-      name: 'Фриланс 3D',
-      role: '3D Artist',
-      period: '2022 — 2024',
-      icon: 'F',
+      name: '3D модели',
+      summary: 'Предметная 3D-графика, модели мебели и визуализации для каталогов.',
+      icon: 'deployed_code',
     },
   ],
   projects: [
@@ -78,7 +75,7 @@ export const portfolio: PortfolioData = {
       description:
         'Коллекция 3D работ для мебельного магазина "Вишнёвый сад". Коллекция представлена на сайте производителя: https://вишневыйсадъ.рф/products/kreslo-albero-s, а также на 3ddd стоке для дизайнеров: https://3ddd.ru/3dmodels/show/albero_solido_loveseat_sofa_om',
       image: images._Freelance3dUrls[0] ?? { src: '', width: 0, height: 0 },
-      workplaceId: 'freelance3d',
+      categoryId: 'freelance3d',
       tags: ['3D', 'Art', 'Blender'],
       images: images._Freelance3dUrls,
     },
@@ -87,7 +84,7 @@ export const portfolio: PortfolioData = {
       title: 'Птицы',
       description: 'Коллекция обоев с птицами.',
       image: images._BirdsUrls[0] ?? { src: '', width: 0, height: 0 },
-      workplaceId: 'wallpaper',
+      categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Nature', 'Birds'],
       images: images._BirdsUrls,
     },
@@ -96,7 +93,7 @@ export const portfolio: PortfolioData = {
       title: 'Шинуази',
       description: 'Коллекция обоев в стиле шинуази.',
       image: images._ChinoiserieUrls[0] ?? { src: '', width: 0, height: 0 },
-      workplaceId: 'wallpaper',
+      categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Chinoiserie', 'Classic'],
       images: images._ChinoiserieUrls,
     },
@@ -105,7 +102,7 @@ export const portfolio: PortfolioData = {
       title: 'Лес',
       description: 'Коллекция обоев с лесными мотивами.',
       image: images._ForestUrls[0] ?? { src: '', width: 0, height: 0 },
-      workplaceId: 'wallpaper',
+      categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Nature', 'Forest'],
       images: images._ForestUrls,
     },
@@ -114,7 +111,7 @@ export const portfolio: PortfolioData = {
       title: 'Ламы и Единороги',
       description: 'Коллекция обоев с ламами и единорогами.',
       image: images._LlamaUnicornsUrls[0] ?? { src: '', width: 0, height: 0 },
-      workplaceId: 'wallpaper',
+      categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Animals', 'Fantasy'],
       images: images._LlamaUnicornsUrls,
     },
@@ -123,7 +120,7 @@ export const portfolio: PortfolioData = {
       title: 'Роботы',
       description: 'Коллекция обоев с роботами.',
       image: images._RoboUrls[0] ?? { src: '', width: 0, height: 0 },
-      workplaceId: 'wallpaper',
+      categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Tech', 'Robots'],
       images: images._RoboUrls,
     },
@@ -132,7 +129,7 @@ export const portfolio: PortfolioData = {
       title: 'Тропические птицы',
       description: 'Коллекция обоев с тропическими птицами.',
       image: images._TropicalBirdsUrls[0] ?? { src: '', width: 0, height: 0 },
-      workplaceId: 'wallpaper',
+      categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Nature', 'Tropical'],
       images: images._TropicalBirdsUrls,
     },
@@ -141,7 +138,7 @@ export const portfolio: PortfolioData = {
       title: 'Тропики',
       description: 'Коллекция обоев с тропическими мотивами.',
       image: images._TropicsUrls[0] ?? { src: '', width: 0, height: 0 },
-      workplaceId: 'wallpaper',
+      categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Tropical', 'Nature'],
       images: images._TropicsUrls,
     },

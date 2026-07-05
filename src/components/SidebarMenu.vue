@@ -35,7 +35,7 @@ watch(route, () => {
 
 const isActive = (path: string) => route.path === path
 
-const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
+const isCategoryActive = (id: string) => route.path === `/category/${id}`
 </script>
 
 <template>
@@ -67,29 +67,29 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
 
       <nav class="nav">
         <router-link
-          to="/workplace/all"
+          to="/category/all"
           class="nav-item"
-          :class="{ active: isActive('/workplace/all') }"
+          :class="{ active: isActive('/category/all') }"
           @click="close"
         >
           <span class="material-symbols-outlined">grid_view</span>
-          <span>Все проекты</span>
+          <span>Все работы</span>
         </router-link>
 
         <div class="nav-divider" />
 
         <router-link
-          v-for="w in portfolio.workplaces"
-          :key="w.id"
-          :to="`/workplace/${w.id}`"
+          v-for="category in portfolio.categories"
+          :key="category.id"
+          :to="`/category/${category.id}`"
           class="nav-item"
-          :class="{ active: isWorkplaceActive(w.id) }"
+          :class="{ active: isCategoryActive(category.id) }"
           @click="close"
         >
-          <span class="nav-dot" aria-hidden="true" />
+          <span class="material-symbols-outlined nav-icon">{{ category.icon }}</span>
           <div class="nav-text">
-            <span class="nav-name">{{ w.name }}</span>
-            <span class="nav-role">{{ w.role }}</span>
+            <span class="nav-name">{{ category.name }}</span>
+            <span class="nav-summary">{{ category.summary }}</span>
           </div>
         </router-link>
 
@@ -290,27 +290,14 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   text-align: center;
 }
 
-.nav-dot {
-  width: 1.5rem;
-  height: 1.5rem;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.nav-icon {
   flex-shrink: 0;
+  color: var(--text-tertiary);
+  transition: color 0.2s;
 }
 
-.nav-dot::before {
-  content: '';
-  width: 0.38rem;
-  height: 0.38rem;
-  border-radius: 50%;
-  background: var(--text-tertiary);
-  opacity: 1;
-}
-
-.nav-item.active .nav-dot::before {
-  background: var(--accent);
+.nav-item.active .nav-icon {
+  color: var(--accent);
 }
 
 .nav-text {
@@ -326,7 +313,7 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
   text-overflow: ellipsis;
 }
 
-.nav-role {
+.nav-summary {
   font-size: 0.75rem;
   color: var(--text-tertiary);
   white-space: nowrap;
@@ -381,21 +368,11 @@ const isWorkplaceActive = (id: string) => route.path === `/workplace/${id}`
     width: 2rem;
   }
 
-  .nav-dot {
-    width: 2rem;
-    height: 2rem;
-  }
-
-  .nav-dot::before {
-    width: 0.45rem;
-    height: 0.45rem;
-  }
-
   .nav-name {
     font-size: 1.05rem;
   }
 
-  .nav-role {
+  .nav-summary {
     font-size: 0.9rem;
   }
 }

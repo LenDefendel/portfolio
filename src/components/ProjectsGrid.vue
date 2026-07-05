@@ -21,10 +21,10 @@ interface DescriptionPart {
 
 const route = useRoute()
 
-const workplaceId = computed(() => route.params.id as string)
-const workplace = computed(() => portfolio.workplaces.find((item) => item.id === workplaceId.value))
-const workplaceProjects = computed(() =>
-  portfolio.projects.filter((project) => project.workplaceId === workplaceId.value),
+const categoryId = computed(() => route.params.id as string)
+const category = computed(() => portfolio.categories.find((item) => item.id === categoryId.value))
+const categoryProjects = computed(() =>
+  portfolio.projects.filter((project) => project.categoryId === categoryId.value),
 )
 
 function projectImages(project: Project) {
@@ -45,11 +45,11 @@ function shuffle<T>(items: T[]): T[] {
 const allImages = computed<GalleryItem[]>(() =>
   shuffle(
     portfolio.projects.flatMap((project) => {
-      const workplaceExists = portfolio.workplaces.some(
-        (workplaceItem) => workplaceItem.id === project.workplaceId,
+      const categoryExists = portfolio.categories.some(
+        (categoryItem) => categoryItem.id === project.categoryId,
       )
 
-      if (!workplaceExists) return []
+      if (!categoryExists) return []
 
       const image = projectImages(project)[0]
 
@@ -120,7 +120,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 </script>
 
 <template>
-  <div v-if="workplaceId === 'all'" class="projects-page">
+  <div v-if="categoryId === 'all'" class="projects-page">
     <div v-if="allImages.length" class="projects-grid">
       <ProjectCard
         v-for="item in allImages"
@@ -137,18 +137,18 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
     </div>
   </div>
 
-  <article v-else-if="workplace" class="workplace-page">
-    <header class="workplace-header">
-      <span class="workplace-icon">{{ workplace.icon }}</span>
+  <article v-else-if="category" class="category-page">
+    <header class="category-header">
+      <span class="material-symbols-outlined category-icon">{{ category.icon }}</span>
       <div>
-        <h1>{{ workplace.name }}</h1>
-        <p>{{ workplace.role }} · {{ workplace.period }}</p>
+        <h1>{{ category.name }}</h1>
+        <p>{{ category.summary }}</p>
       </div>
     </header>
 
-    <div v-if="workplaceProjects.length" class="project-list">
+    <div v-if="categoryProjects.length" class="project-list">
       <section
-        v-for="project in workplaceProjects"
+        v-for="project in categoryProjects"
         :id="project.id"
         :key="project.id"
         class="project-section"
@@ -199,7 +199,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 
   <div v-else class="empty projects-page">
     <span class="material-symbols-outlined empty-icon">folder_off</span>
-    <p>Место работы не найдено</p>
+    <p>Категория не найдена</p>
   </div>
 
   <Teleport to="body">
@@ -218,7 +218,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 </template>
 
 <style scoped>
-.workplace-page {
+.category-page {
   padding: 2.5rem clamp(1.5rem, 6vw, 7rem) 8rem;
 }
 
@@ -236,18 +236,18 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   margin-bottom: 1.15rem;
 }
 
-.workplace-page {
+.category-page {
   max-width: 1360px;
 }
 
-.workplace-header {
+.category-header {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 4.5rem;
 }
 
-.workplace-icon {
+.category-icon {
   display: grid;
   width: 3.5rem;
   aspect-ratio: 1;
@@ -256,18 +256,18 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   border-radius: var(--radius-lg);
   background: var(--bg-elevated);
   color: var(--text-primary);
-  font-size: 1.3rem;
+  font-size: 1.55rem;
   font-weight: 700;
 }
 
-.workplace-header h1 {
+.category-header h1 {
   font-family: 'Archivo', 'Inter', system-ui, sans-serif;
   font-size: clamp(2rem, 5vw, 4.25rem);
   font-weight: 800;
   line-height: 0.98;
 }
 
-.workplace-header p,
+.category-header p,
 .description {
   color: var(--text-secondary);
 }
@@ -386,7 +386,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 
 @media (max-width: 768px) {
   .projects-page,
-  .workplace-page {
+  .category-page {
     padding: 4.75rem 1rem 4rem;
   }
 
@@ -400,7 +400,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
     margin-bottom: 0;
   }
 
-  .workplace-header {
+  .category-header {
     margin-bottom: 3rem;
   }
 

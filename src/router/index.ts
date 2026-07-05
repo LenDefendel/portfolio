@@ -9,12 +9,24 @@ import ContactSection from '@/components/ContactSection.vue'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: `/workplace/${portfolio.workplaces[0]!.id}`,
+    redirect: `/category/${portfolio.categories[0]!.id}`,
+  },
+  {
+    path: '/category/:id',
+    name: 'category',
+    component: ProjectsGrid,
+  },
+  {
+    path: '/workplace/all',
+    redirect: '/category/all',
   },
   {
     path: '/workplace/:id',
-    name: 'workplace',
-    component: ProjectsGrid,
+    redirect: (to) => ({
+      name: 'category',
+      params: { id: to.params.id },
+      hash: to.hash,
+    }),
   },
   {
     path: '/about',
@@ -38,11 +50,11 @@ const routes: RouteRecordRaw[] = [
 
       return project
         ? {
-            name: 'workplace',
-            params: { id: project.workplaceId },
+            name: 'category',
+            params: { id: project.categoryId },
             hash: `#${project.id}-image-0`,
           }
-        : '/workplace/all'
+        : '/category/all'
     },
   },
 ]
