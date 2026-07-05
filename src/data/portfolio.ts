@@ -62,10 +62,22 @@ export const portfolio: PortfolioData = {
       icon: 'wall_art',
     },
     {
+      id: 'marketplace-cards',
+      name: 'Карточки для маркетплейсов',
+      summary: 'Дизайн карточек товаров, инфографика и визуалы для онлайн-витрин.',
+      icon: 'storefront',
+    },
+    {
       id: 'freelance3d',
       name: '3D модели',
       summary: 'Предметная 3D-графика, модели мебели и визуализации для каталогов.',
       icon: 'deployed_code',
+    },
+    {
+      id: 'other-projects',
+      name: 'Другие проекты',
+      summary: 'Разные визуальные задачи, эксперименты и работы вне основных направлений.',
+      icon: 'category',
     },
   ],
   projects: [
