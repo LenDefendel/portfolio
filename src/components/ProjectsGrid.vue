@@ -51,16 +51,6 @@ function shuffle<T>(items: T[]): T[] {
   return result
 }
 
-function subcategoryTarget(id: string) {
-  return {
-    name: 'category',
-    params: {
-      id: categoryId.value,
-      subcategoryId: id,
-    },
-  }
-}
-
 const allImages = computed<GalleryItem[]>(() =>
   shuffle(
     portfolio.projects.flatMap((project) => {
@@ -167,19 +157,6 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
         <p>{{ selectedSubcategory?.summary ?? category.summary }}</p>
       </div>
     </header>
-
-    <nav v-if="category.subcategories?.length" class="subcategory-nav" aria-label="Подразделы">
-      <router-link
-        v-for="subcategory in category.subcategories"
-        :key="subcategory.id"
-        :to="subcategoryTarget(subcategory.id)"
-        class="subcategory-link"
-        :class="{ active: subcategory.id === subcategoryId }"
-      >
-        <span>{{ subcategory.name }}</span>
-        <small>{{ subcategory.summary }}</small>
-      </router-link>
-    </nav>
 
     <div v-if="categoryProjects.length" class="project-list">
       <section
@@ -323,55 +300,6 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   color: var(--text-secondary);
 }
 
-.subcategory-nav {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.75rem;
-  margin: -2.25rem 0 4.5rem;
-}
-
-.subcategory-link {
-  display: flex;
-  min-height: 6.25rem;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.85rem;
-  padding: 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--bg-card);
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition:
-    border-color 0.2s,
-    background 0.2s,
-    color 0.2s,
-    transform 0.2s;
-}
-
-.subcategory-link:hover,
-.subcategory-link.active {
-  border-color: var(--border-hover);
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-}
-
-.subcategory-link:hover {
-  transform: translateY(-1px);
-}
-
-.subcategory-link span {
-  color: var(--text-primary);
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.subcategory-link small {
-  color: var(--text-tertiary);
-  font-size: 0.78rem;
-  line-height: 1.35;
-}
-
 .project-list {
   display: grid;
   gap: 6.5rem;
@@ -502,11 +430,6 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 
   .category-header {
     margin-bottom: 3rem;
-  }
-
-  .subcategory-nav {
-    grid-template-columns: 1fr;
-    margin: -1.5rem 0 3rem;
   }
 
   .project-list {
