@@ -50,7 +50,7 @@ export interface PortfolioData {
 
 import * as images from './generatedImages'
 export const portfolio: PortfolioData = {
-  name: 'Your Name',
+  name: 'Maria Filippova',
   title: 'Designer',
   about:
     "I'm a UI/UX designer with experience creating digital products. I enjoy turning complex problems into simple, beautiful solutions. Passionate about clean design, usability, and user experience.",
