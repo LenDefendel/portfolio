@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { portfolio, type Project } from '@/data/portfolio'
+import { portfolio, type Project, type ProjectMedia } from '@/data/portfolio'
 import ProjectCard from '@/components/ProjectCard.vue'
 
 interface GalleryItem {
   project: Project
-  image: {
-    src: string
-    width: number
-    height: number
-  }
+  image: ProjectMedia
   imageIndex: number
 }
 
@@ -38,6 +34,10 @@ const categoryProjects = computed(() =>
 
 function projectImages(project: Project) {
   return project.images?.length ? project.images : [project.image]
+}
+
+function isVideo(media: ProjectMedia): boolean {
+  return media.type === 'video'
 }
 
 function shuffle<T>(items: T[]): T[] {
@@ -120,9 +120,10 @@ function descriptionParts(text: string): DescriptionPart[] {
   return parts
 }
 
-const lightboxImage = ref<string | null>(null)
+const lightboxImage = ref<ProjectMedia | null>(null)
 
-function openLightbox(image: string): void {
+function openLightbox(image: ProjectMedia): void {
+  if (isVideo(image)) return
   lightboxImage.value = image
 }
 
@@ -209,18 +210,30 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
         </div>
 
         <div class="image-gallery">
-          <img
-            v-for="(image, imageIndex) in projectImages(project)"
-            :id="imageAnchor(project.id, imageIndex)"
-            :key="imageIndex"
-            :src="image.src"
-            :height="image.height"
-            :width="image.width"
-            :alt="`${project.title}, изображение ${imageIndex + 1}`"
-            class="project-image"
-            loading="lazy"
-            @click="openLightbox(image.src)"
-          />
+          <template v-for="(image, imageIndex) in projectImages(project)" :key="imageIndex">
+            <video
+              v-if="isVideo(image)"
+              :id="imageAnchor(project.id, imageIndex)"
+              :src="image.src"
+              :height="image.height"
+              :width="image.width"
+              class="project-image project-video"
+              controls
+              playsinline
+              preload="metadata"
+            />
+            <img
+              v-else
+              :id="imageAnchor(project.id, imageIndex)"
+              :src="image.src"
+              :height="image.height"
+              :width="image.width"
+              :alt="`${project.title}, изображение ${imageIndex + 1}`"
+              class="project-image"
+              loading="lazy"
+              @click="openLightbox(image)"
+            />
+          </template>
         </div>
       </section>
     </div>
@@ -246,7 +259,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
       <button class="lightbox-close" @click="closeLightbox">
         <span class="material-symbols-outlined">close</span>
       </button>
-      <img :src="lightboxImage" class="lightbox-image" alt="Полноразмерное изображение" />
+      <img :src="lightboxImage.src" class="lightbox-image" alt="Полноразмерное изображение" />
     </div>
   </Teleport>
 </template>

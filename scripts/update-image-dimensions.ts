@@ -43,8 +43,18 @@ function pascalCase(value: string): string {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
+function hash(value: string): string {
+  let result = 0
+
+  for (const char of value) {
+    result = (result * 31 + char.charCodeAt(0)) >>> 0
+  }
+
+  return result.toString(36)
+}
+
 function imageId(group: string, path: string): string {
-  return `_img_${group}_${path.replace(/[^a-zA-Z0-9]/g, '_')}`
+  return `_img_${group}_${path.replace(/[^a-zA-Z0-9]/g, '_')}_${hash(path)}`
 }
 
 function importLine(id: string, path: string): string {
@@ -61,10 +71,22 @@ function imageArray(name: string, entries: ImageEntry[], group: string): string 
   return `export const _${name}Urls: ProjectImage[] = [\n${lines.join('\n')}\n]\n`
 }
 
+function pascalPath(value: string): string {
+  return value.split('/').map(pascalCase).join('')
+}
+
 async function main(): Promise<void> {
   const freelanceImages = await getImages(join(ASSETS_DIR, 'freelance3d'))
   const wallpaperImages = await getImages(join(ASSETS_DIR, 'wallpaper'))
+  const otherProjectsImages = await getImages(join(ASSETS_DIR, 'otherProjects'))
   const subdirs = [...new Set(wallpaperImages.map((entry) => entry.path.split('/')[0]))].sort()
+  const otherProjectGroups = [
+    'art',
+    'studentWork/3dMax',
+    'studentWork/blender',
+    'studentWork/graphics',
+    'studentWork/painting',
+  ]
 
   const imports = [
     ...freelanceImages.map((entry) =>
@@ -72,6 +94,12 @@ async function main(): Promise<void> {
     ),
     ...wallpaperImages.map((entry) =>
       importLine(imageId('wallpaper', entry.path), `@/assets/wallpaper/${entry.path}`),
+    ),
+    ...otherProjectsImages.map((entry) =>
+      importLine(
+        imageId('otherProjects', entry.path),
+        `@/assets/otherProjects/${entry.path}`,
+      ),
     ),
   ]
 
@@ -82,6 +110,13 @@ async function main(): Promise<void> {
         pascalCase(subdir),
         wallpaperImages.filter((entry) => entry.path.startsWith(`${subdir}/`)),
         'wallpaper',
+      ),
+    ),
+    ...otherProjectGroups.map((groupPath) =>
+      imageArray(
+        `OtherProjects${pascalPath(groupPath)}`,
+        otherProjectsImages.filter((entry) => entry.path.startsWith(`${groupPath}/`)),
+        'otherProjects',
       ),
     ),
   ]

@@ -16,18 +16,28 @@ export interface ProjectImage {
   src: string
   width: number
   height: number
+  type?: 'image'
 }
+
+export interface ProjectVideo {
+  src: string
+  width: number
+  height: number
+  type: 'video'
+}
+
+export type ProjectMedia = ProjectImage | ProjectVideo
 
 export interface Project {
   id: string
   title: string
   description: string
-  image: ProjectImage
+  image: ProjectMedia
   categoryId: string
   subcategoryId?: string
   tags: string[]
   link?: string
-  images?: ProjectImage[]
+  images?: ProjectMedia[]
 }
 
 export interface Skill {
@@ -49,6 +59,28 @@ export interface PortfolioData {
 }
 
 import * as images from './generatedImages'
+
+const vfxVideos: ProjectVideo[] = [
+  {
+    src: new URL('../assets/otherProjects/vfx/movie-012.mp4', import.meta.url).href,
+    width: 1920,
+    height: 1080,
+    type: 'video',
+  },
+  {
+    src: new URL('../assets/otherProjects/vfx/movie_001.mp4', import.meta.url).href,
+    width: 960,
+    height: 720,
+    type: 'video',
+  },
+  {
+    src: new URL('../assets/otherProjects/vfx/source.mp4', import.meta.url).href,
+    width: 1920,
+    height: 1080,
+    type: 'video',
+  },
+]
+
 export const portfolio: PortfolioData = {
   name: 'Maria Filippova',
   title: 'Designer',
@@ -183,6 +215,66 @@ export const portfolio: PortfolioData = {
       categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Tropical', 'Nature'],
       images: images._TropicsUrls,
+    },
+    {
+      id: 'other-vfx',
+      title: 'Real Time VFX',
+      description: 'Видео с эффектами в реальном времени и визуальными экспериментами.',
+      image: vfxVideos[0] ?? { src: '', width: 0, height: 0, type: 'video' },
+      categoryId: 'other-projects',
+      subcategoryId: 'effects',
+      tags: ['VFX', 'Real Time', 'Effects'],
+      images: vfxVideos,
+    },
+    {
+      id: 'student-3dmax',
+      title: '3D Max',
+      description: 'Студенческие 3D-работы, сцены и интерьерные объекты.',
+      image: images._OtherProjectsStudentWork3dMaxUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'other-projects',
+      subcategoryId: 'student-khu',
+      tags: ['3D Max', 'КХУ', 'Student Work'],
+      images: images._OtherProjectsStudentWork3dMaxUrls,
+    },
+    {
+      id: 'student-blender',
+      title: 'Blender',
+      description: 'Студенческая работа с этапами 3D-моделирования в Blender.',
+      image: images._OtherProjectsStudentWorkBlenderUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'other-projects',
+      subcategoryId: 'student-khu',
+      tags: ['Blender', 'КХУ', 'Student Work'],
+      images: images._OtherProjectsStudentWorkBlenderUrls,
+    },
+    {
+      id: 'student-graphics',
+      title: 'Графика',
+      description: 'Учебные графические работы и композиции периода обучения.',
+      image: images._OtherProjectsStudentWorkGraphicsUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'other-projects',
+      subcategoryId: 'student-khu',
+      tags: ['Graphics', 'КХУ', 'Student Work'],
+      images: images._OtherProjectsStudentWorkGraphicsUrls,
+    },
+    {
+      id: 'student-painting',
+      title: 'Живопись',
+      description: 'Учебные живописные работы периода обучения.',
+      image: images._OtherProjectsStudentWorkPaintingUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'other-projects',
+      subcategoryId: 'student-khu',
+      tags: ['Painting', 'КХУ', 'Student Work'],
+      images: images._OtherProjectsStudentWorkPaintingUrls,
+    },
+    {
+      id: 'arts-concepts',
+      title: 'Арты и концепты',
+      description: 'Иллюстрации и концепты, выполненные в Photoshop и Procreate.',
+      image: images._OtherProjectsArtUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'other-projects',
+      subcategoryId: 'arts-concepts',
+      tags: ['Art', 'Concept', 'Photoshop', 'Procreate'],
+      images: images._OtherProjectsArtUrls,
     },
   ],
   skills: [

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { Project } from '@/data/portfolio'
+import type { Project, ProjectMedia } from '@/data/portfolio'
 
 const props = defineProps<{
   project: Project
-  image: {
-    src: string
-    width: number
-    height: number
-  }
+  image: ProjectMedia
   imageIndex: number
 }>()
+
+function isVideo(media: ProjectMedia): boolean {
+  return media.type === 'video'
+}
 
 const target = {
   name: 'category',
@@ -28,7 +28,19 @@ const target = {
     :style="{ '--image-ratio': `${image.width || 4} / ${image.height || 3}` }"
   >
     <div class="card-image">
+      <video
+        v-if="isVideo(image)"
+        :src="image.src"
+        :height="image.height"
+        :width="image.width"
+        class="card-img"
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      />
       <img
+        v-else
         :src="image.src"
         :height="image.height"
         :width="image.width"
