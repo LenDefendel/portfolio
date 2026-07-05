@@ -18,6 +18,7 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
   --accent-soft: rgba(37, 99, 235, 0.1);
+  --sidebar-width: 260px;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
@@ -96,7 +97,7 @@ html.theme-transition body {
 
 .main-content {
   flex: 1;
-  margin-left: 260px;
+  margin-left: var(--sidebar-width);
   min-height: 100vh;
 }
 

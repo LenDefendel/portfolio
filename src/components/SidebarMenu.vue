@@ -5,20 +5,107 @@ import { portfolio } from '@/data/portfolio'
 
 const route = useRoute()
 
+const SIDEBAR_STORAGE_KEY = 'portfolio-sidebar-width'
+const DEFAULT_SIDEBAR_WIDTH = 260
+const MIN_SIDEBAR_WIDTH = 220
+const MAX_SIDEBAR_WIDTH = 420
+
 const isOpen = ref(false)
 const isMobile = ref(false)
+const sidebarWidth = ref(DEFAULT_SIDEBAR_WIDTH)
+const isResizing = ref(false)
+
+function clampSidebarWidth(width: number): number {
+  return Math.min(Math.max(width, MIN_SIDEBAR_WIDTH), MAX_SIDEBAR_WIDTH)
+}
+
+function setSidebarWidth(width: number, shouldSave = true): void {
+  const nextWidth = clampSidebarWidth(Math.round(width))
+
+  sidebarWidth.value = nextWidth
+  document.documentElement.style.setProperty('--sidebar-width', `${nextWidth}px`)
+
+  if (shouldSave) {
+    localStorage.setItem(SIDEBAR_STORAGE_KEY, String(nextWidth))
+  }
+}
 
 const checkMobile = () => {
   isMobile.value = window.innerWidth < 768
 }
 
+function onResizeMove(e: PointerEvent): void {
+  setSidebarWidth(e.clientX)
+}
+
+function stopResize(): void {
+  if (!isResizing.value) return
+
+  isResizing.value = false
+  document.body.classList.remove('sidebar-resizing')
+  window.removeEventListener('pointermove', onResizeMove)
+  window.removeEventListener('pointerup', stopResize)
+  window.removeEventListener('pointercancel', stopResize)
+}
+
+function startResize(e: PointerEvent): void {
+  if (isMobile.value) return
+
+  e.preventDefault()
+  isResizing.value = true
+  document.body.classList.add('sidebar-resizing')
+  setSidebarWidth(e.clientX)
+  window.addEventListener('pointermove', onResizeMove)
+  window.addEventListener('pointerup', stopResize)
+  window.addEventListener('pointercancel', stopResize)
+}
+
+function onResizeKeyDown(e: KeyboardEvent): void {
+  const step = e.shiftKey ? 32 : 12
+
+  if (e.key === 'ArrowLeft') {
+    e.preventDefault()
+    setSidebarWidth(sidebarWidth.value - step)
+  }
+
+  if (e.key === 'ArrowRight') {
+    e.preventDefault()
+    setSidebarWidth(sidebarWidth.value + step)
+  }
+
+  if (e.key === 'Home') {
+    e.preventDefault()
+    setSidebarWidth(MIN_SIDEBAR_WIDTH)
+  }
+
+  if (e.key === 'End') {
+    e.preventDefault()
+    setSidebarWidth(MAX_SIDEBAR_WIDTH)
+  }
+
+  if (e.key === 'Enter') {
+    e.preventDefault()
+    setSidebarWidth(DEFAULT_SIDEBAR_WIDTH)
+  }
+}
+
 onMounted(() => {
+  const savedSidebarWidth = localStorage.getItem(SIDEBAR_STORAGE_KEY)
+  const savedWidth = savedSidebarWidth === null ? Number.NaN : Number(savedSidebarWidth)
+
+  if (Number.isFinite(savedWidth)) {
+    setSidebarWidth(savedWidth, false)
+  } else {
+    setSidebarWidth(DEFAULT_SIDEBAR_WIDTH, false)
+  }
+
   checkMobile()
   window.addEventListener('resize', checkMobile)
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', checkMobile)
+  stopResize()
 })
 
 const toggle = () => {
@@ -55,7 +142,7 @@ const isCategoryActive = (id: string) => route.path === `/category/${id}`
     <div v-if="isMobile && isOpen" class="overlay" @click="close" />
   </Teleport>
 
-  <aside class="sidebar" :class="{ 'sidebar--open': isOpen }">
+  <aside class="sidebar" :class="{ 'sidebar--open': isOpen, 'sidebar--resizing': isResizing }">
     <div class="sidebar-top">
       <router-link to="/" class="profile" @click="close">
         <div class="avatar">
@@ -126,6 +213,20 @@ const isCategoryActive = (id: string) => route.path === `/category/${id}`
         </router-link>
       </nav>
     </div>
+
+    <button
+      v-if="!isMobile"
+      class="resize-handle"
+      type="button"
+      aria-label="Изменить ширину меню"
+      role="separator"
+      aria-orientation="vertical"
+      :aria-valuemin="MIN_SIDEBAR_WIDTH"
+      :aria-valuemax="MAX_SIDEBAR_WIDTH"
+      :aria-valuenow="sidebarWidth"
+      @pointerdown="startResize"
+      @keydown="onResizeKeyDown"
+    />
   </aside>
 </template>
 
@@ -190,7 +291,7 @@ const isCategoryActive = (id: string) => route.path === `/category/${id}`
   top: 0;
   left: 0;
   bottom: 0;
-  width: 260px;
+  width: var(--sidebar-width);
   background: var(--bg);
   border-right: 1px solid var(--border);
   display: flex;
@@ -199,6 +300,46 @@ const isCategoryActive = (id: string) => route.path === `/category/${id}`
   padding: 1.25rem 0;
   overflow-y: auto;
   z-index: 100;
+}
+
+.sidebar--resizing {
+  border-right-color: var(--border-hover);
+}
+
+.resize-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: col-resize;
+  touch-action: none;
+  z-index: 2;
+}
+
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2px;
+  background: transparent;
+  transition: background 0.2s;
+}
+
+.resize-handle:hover::after,
+.resize-handle:focus-visible::after,
+.sidebar--resizing .resize-handle::after {
+  background: var(--border-hover);
+}
+
+:global(body.sidebar-resizing) {
+  cursor: col-resize;
+  user-select: none;
 }
 
 .sidebar-top {
