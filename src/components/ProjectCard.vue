@@ -13,7 +13,10 @@ const props = defineProps<{
 
 const target = {
   name: 'category',
-  params: { id: props.project.categoryId },
+  params: {
+    id: props.project.categoryId,
+    ...(props.project.subcategoryId ? { subcategoryId: props.project.subcategoryId } : {}),
+  },
   hash: `#${props.project.id}-image-${props.imageIndex}`,
 }
 </script>

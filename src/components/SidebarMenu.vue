@@ -14,6 +14,7 @@ const isOpen = ref(false)
 const isMobile = ref(false)
 const sidebarWidth = ref(DEFAULT_SIDEBAR_WIDTH)
 const isResizing = ref(false)
+const openDropdownIds = ref<string[]>([])
 
 function clampSidebarWidth(width: number): number {
   return Math.min(Math.max(width, MIN_SIDEBAR_WIDTH), MAX_SIDEBAR_WIDTH)
@@ -116,13 +117,43 @@ const close = () => {
   isOpen.value = false
 }
 
-watch(route, () => {
-  if (isMobile.value) isOpen.value = false
-})
+function isDropdownOpen(id: string): boolean {
+  return openDropdownIds.value.includes(id)
+}
+
+function openDropdown(id: string): void {
+  if (isDropdownOpen(id)) return
+  openDropdownIds.value = [...openDropdownIds.value, id]
+}
+
+function toggleDropdown(id: string): void {
+  openDropdownIds.value = isDropdownOpen(id)
+    ? openDropdownIds.value.filter((item) => item !== id)
+    : [...openDropdownIds.value, id]
+}
+
+function openActiveDropdown(): void {
+  const activeCategory = portfolio.categories.find(
+    (category) => category.subcategories?.length && isCategoryActive(category.id),
+  )
+
+  if (activeCategory) {
+    openDropdown(activeCategory.id)
+  }
+}
 
 const isActive = (path: string) => route.path === path
 
-const isCategoryActive = (id: string) => route.path === `/category/${id}`
+const isCategoryActive = (id: string) =>
+  route.path === `/category/${id}` || route.path.startsWith(`/category/${id}/`)
+
+const isSubcategoryActive = (categoryId: string, subcategoryId: string) =>
+  route.path === `/category/${categoryId}/${subcategoryId}`
+
+watch(route, () => {
+  openActiveDropdown()
+  if (isMobile.value) isOpen.value = false
+}, { immediate: true })
 </script>
 
 <template>
@@ -160,25 +191,58 @@ const isCategoryActive = (id: string) => route.path === `/category/${id}`
           @click="close"
         >
           <span class="material-symbols-outlined">grid_view</span>
-          <span>Все работы</span>
+          <span>Главная</span>
         </router-link>
 
         <div class="nav-divider" />
 
-        <router-link
-          v-for="category in portfolio.categories"
-          :key="category.id"
-          :to="`/category/${category.id}`"
-          class="nav-item"
-          :class="{ active: isCategoryActive(category.id) }"
-          @click="close"
-        >
-          <span class="material-symbols-outlined nav-icon">{{ category.icon }}</span>
-          <div class="nav-text">
-            <span class="nav-name">{{ category.name }}</span>
-            <span class="nav-summary">{{ category.summary }}</span>
+        <template v-for="category in portfolio.categories" :key="category.id">
+          <router-link
+            v-if="!category.subcategories?.length"
+            :to="`/category/${category.id}`"
+            class="nav-item"
+            :class="{ active: isCategoryActive(category.id) }"
+            @click="close"
+          >
+            <span class="material-symbols-outlined nav-icon">{{ category.icon }}</span>
+            <div class="nav-text">
+              <span class="nav-name">{{ category.name }}</span>
+              <span class="nav-summary">{{ category.summary }}</span>
+            </div>
+          </router-link>
+
+          <button
+            v-else
+            class="nav-item nav-dropdown-toggle"
+            :class="{ active: isCategoryActive(category.id), open: isDropdownOpen(category.id) }"
+            type="button"
+            :aria-expanded="isDropdownOpen(category.id)"
+            @click="toggleDropdown(category.id)"
+          >
+            <span class="material-symbols-outlined nav-icon">{{ category.icon }}</span>
+            <div class="nav-text">
+              <span class="nav-name">{{ category.name }}</span>
+              <span class="nav-summary">{{ category.summary }}</span>
+            </div>
+            <span class="material-symbols-outlined nav-chevron">expand_more</span>
+          </button>
+
+          <div
+            v-if="category.subcategories?.length && isDropdownOpen(category.id)"
+            class="nav-subitems"
+          >
+            <router-link
+              v-for="subcategory in category.subcategories"
+              :key="subcategory.id"
+              :to="`/category/${category.id}/${subcategory.id}`"
+              class="nav-subitem"
+              :class="{ active: isSubcategoryActive(category.id, subcategory.id) }"
+              @click="close"
+            >
+              {{ subcategory.name }}
+            </router-link>
           </div>
-        </router-link>
+        </template>
 
         <div class="nav-divider" />
 
@@ -407,10 +471,18 @@ const isCategoryActive = (id: string) => route.path === `/category/${id}`
   color: var(--text-secondary);
   font-size: 0.9rem;
   font-weight: 500;
+  font-family: inherit;
+  text-align: left;
   transition:
     background 0.2s,
     border-color 0.2s,
     color 0.2s;
+}
+
+button.nav-item {
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
 }
 
 .nav-item:hover {
@@ -443,6 +515,7 @@ const isCategoryActive = (id: string) => route.path === `/category/${id}`
 
 .nav-text {
   display: flex;
+  flex: 1;
   flex-direction: column;
   overflow: hidden;
 }
@@ -460,6 +533,54 @@ const isCategoryActive = (id: string) => route.path === `/category/${id}`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.nav-chevron {
+  flex-shrink: 0;
+  color: var(--text-tertiary);
+  transition:
+    color 0.2s,
+    transform 0.2s;
+}
+
+.nav-dropdown-toggle.open .nav-chevron {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-toggle.active .nav-chevron {
+  color: var(--accent);
+}
+
+.nav-subitems {
+  display: grid;
+  gap: 0.1rem;
+  margin: -0.05rem 0 0.25rem 2.55rem;
+}
+
+.nav-subitem {
+  padding: 0.42rem 0.55rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  font-size: 0.78rem;
+  line-height: 1.25;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.nav-subitem:hover,
+.nav-subitem.active {
+  background: var(--bg-elevated);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.nav-subitem.active {
+  border-color: var(--border-hover);
+  color: var(--accent);
 }
 
 .nav-divider {
@@ -515,6 +636,15 @@ const isCategoryActive = (id: string) => route.path === `/category/${id}`
 
   .nav-summary {
     font-size: 0.9rem;
+  }
+
+  .nav-subitems {
+    margin-left: 3rem;
+  }
+
+  .nav-subitem {
+    padding: 0.58rem 0.7rem;
+    font-size: 0.95rem;
   }
 }
 </style>

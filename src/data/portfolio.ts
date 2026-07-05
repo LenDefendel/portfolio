@@ -1,8 +1,15 @@
+export interface Subcategory {
+  id: string
+  name: string
+  summary: string
+}
+
 export interface Category {
   id: string
   name: string
   summary: string
   icon: string
+  subcategories?: Subcategory[]
 }
 
 export interface ProjectImage {
@@ -17,6 +24,7 @@ export interface Project {
   description: string
   image: ProjectImage
   categoryId: string
+  subcategoryId?: string
   tags: string[]
   link?: string
   images?: ProjectImage[]
@@ -78,6 +86,28 @@ export const portfolio: PortfolioData = {
       name: 'Другие проекты',
       summary: 'Разные визуальные задачи, эксперименты и работы вне основных направлений.',
       icon: 'category',
+      subcategories: [
+        {
+          id: 'effects',
+          name: 'Эффекты',
+          summary: 'Real Time VFX и визуальные эффекты для интерактивных сцен.',
+        },
+        {
+          id: 'student-khu',
+          name: 'Студенческие работы',
+          summary: 'Работы периода обучения в КХУ.',
+        },
+        {
+          id: 'misc',
+          name: 'Разное',
+          summary: 'Небольшие визуальные задачи и эксперименты вне основных серий.',
+        },
+        {
+          id: 'arts-concepts',
+          name: 'Арты, концепты',
+          summary: 'Иллюстрации и концепты, выполненные в Photoshop и Procreate.',
+        },
+      ],
     },
   ],
   projects: [

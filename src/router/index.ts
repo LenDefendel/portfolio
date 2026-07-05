@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
     redirect: `/category/${portfolio.categories[0]!.id}`,
   },
   {
-    path: '/category/:id',
+    path: '/category/:id/:subcategoryId?',
     name: 'category',
     component: ProjectsGrid,
   },
@@ -51,7 +51,10 @@ const routes: RouteRecordRaw[] = [
       return project
         ? {
             name: 'category',
-            params: { id: project.categoryId },
+            params: {
+              id: project.categoryId,
+              ...(project.subcategoryId ? { subcategoryId: project.subcategoryId } : {}),
+            },
             hash: `#${project.id}-image-0`,
           }
         : '/category/all'
