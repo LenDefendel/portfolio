@@ -89,7 +89,7 @@ export const portfolio: PortfolioData = {
       subcategories: [
         {
           id: 'effects',
-          name: 'Эффекты',
+          name: 'Real Time VFX',
           summary: 'Real Time VFX и визуальные эффекты для интерактивных сцен.',
         },
         {
@@ -186,12 +186,10 @@ export const portfolio: PortfolioData = {
     },
   ],
   skills: [
-    { name: 'Figma', category: 'Design' },
-    { name: 'Sketch', category: 'Design' },
-    { name: 'Adobe XD', category: 'Design' },
     { name: 'Photoshop', category: 'Design' },
+    { name: 'Procreate', category: 'Design' },
     { name: 'Illustrator', category: 'Design' },
-    { name: 'After Effects', category: 'Motion' },
+    { name: 'Figma', category: 'Design' },
     { name: 'User Research', category: 'UX' },
     { name: 'Prototyping', category: 'UX' },
     { name: 'Wireframing', category: 'UX' },
