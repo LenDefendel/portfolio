@@ -151,7 +151,6 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 
   <article v-else-if="category" class="category-page">
     <header class="category-header">
-      <span class="material-symbols-outlined category-icon">{{ category.icon }}</span>
       <div>
         <h1>{{ selectedSubcategory?.name ?? category.name }}</h1>
         <p>{{ selectedSubcategory?.summary ?? category.summary }}</p>
@@ -269,30 +268,17 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 }
 
 .category-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 4.5rem;
-}
-
-.category-icon {
-  display: grid;
-  width: 3.5rem;
-  aspect-ratio: 1;
-  place-items: center;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-  font-size: 1.55rem;
-  font-weight: 700;
+  max-width: 760px;
+  margin-bottom: 6rem;
+  padding-top: 1.75rem;
 }
 
 .category-header h1 {
   font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-size: clamp(2rem, 5vw, 4.25rem);
-  font-weight: 800;
-  line-height: 0.98;
+  font-size: clamp(1.65rem, 3.4vw, 3rem);
+  font-weight: 760;
+  line-height: 1.06;
+  margin-bottom: 1rem;
 }
 
 .category-header p,
@@ -429,7 +415,8 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   }
 
   .category-header {
-    margin-bottom: 3rem;
+    margin-bottom: 4.25rem;
+    padding-top: 0.5rem;
   }
 
   .project-list {
