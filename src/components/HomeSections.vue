@@ -74,7 +74,6 @@ const homeSections = sections.flatMap((section) => {
   color: #fff;
   isolation: isolate;
   text-decoration: none;
-  background: #1a1a1a;
 }
 
 .home-section-image,
@@ -92,7 +91,8 @@ const homeSections = sections.flatMap((section) => {
 
 .home-section-overlay {
   z-index: 1;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.08) 72%);
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.08) 72%), rgba(255, 255, 255, 0.2);
   transition: background 0.3s ease;
 }
 
@@ -140,7 +140,8 @@ const homeSections = sections.flatMap((section) => {
 
 .home-section:hover .home-section-overlay,
 .home-section:focus-visible .home-section-overlay {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.18) 72%);
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.18) 72%), rgba(255, 255, 255, 0.2);
 }
 
 .home-section:hover .home-section-arrow,
