@@ -6,11 +6,14 @@ interface ImageEntry {
   path: string
   width: number
   height: number
+  fullPath: string
+  fullWidth: number
+  fullHeight: number
 }
 
-const ASSETS_DIR = join(import.meta.dirname, '..', 'src', 'assets')
+const ASSETS_DIR = join(import.meta.dirname, '..', 'src', 'assets-web')
 const OUTPUT = join(import.meta.dirname, '..', 'src', 'data', 'generatedImages.ts')
-const EXT = /\.(jpg|jpeg|png|gif|webp|svg)$/i
+const PREVIEW_EXT = /-preview\.webp$/i
 
 async function getImages(dir: string, prefix = ''): Promise<ImageEntry[]> {
   const result: ImageEntry[] = []
@@ -22,12 +25,20 @@ async function getImages(dir: string, prefix = ''): Promise<ImageEntry[]> {
 
     if (entry.isDirectory()) {
       result.push(...(await getImages(full, `${prefix}${entry.name}/`)))
-    } else if (EXT.test(entry.name)) {
-      const meta = await sharp(full).metadata()
+    } else if (PREVIEW_EXT.test(entry.name)) {
+      const fullName = entry.name.replace(PREVIEW_EXT, '-full.webp')
+      const fullPath = join(dir, fullName)
+      const [meta, fullMeta] = await Promise.all([
+        sharp(full).metadata(),
+        sharp(fullPath).metadata(),
+      ])
       result.push({
         path: `${prefix}${entry.name}`,
         width: meta.width ?? 0,
         height: meta.height ?? 0,
+        fullPath: `${prefix}${fullName}`,
+        fullWidth: fullMeta.width ?? 0,
+        fullHeight: fullMeta.height ?? 0,
       })
     }
   }
@@ -61,12 +72,14 @@ function importLine(id: string, path: string): string {
   return `import ${id} from '${esc(path)}?url'`
 }
 
-function imageLine(id: string, entry: ImageEntry): string {
-  return `  image(${id}, ${entry.width}, ${entry.height}),`
+function imageLine(id: string, entry: ImageEntry, group: string): string {
+  const fullId = imageId(`${group}_full`, entry.fullPath)
+
+  return `  image(${id}, ${entry.width}, ${entry.height}, ${fullId}, ${entry.fullWidth}, ${entry.fullHeight}),`
 }
 
 function imageArray(name: string, entries: ImageEntry[], group: string): string {
-  const lines = entries.map((entry) => imageLine(imageId(group, entry.path), entry))
+  const lines = entries.map((entry) => imageLine(imageId(group, entry.path), entry, group))
 
   return `export const _${name}Urls: ProjectImage[] = [\n${lines.join('\n')}\n]\n`
 }
@@ -94,22 +107,43 @@ async function main(): Promise<void> {
 
   const imports = [
     ...freelanceImages.map((entry) =>
-      importLine(imageId('freelance3d', entry.path), `@/assets/freelance3d/${entry.path}`),
+      importLine(imageId('freelance3d', entry.path), `@/assets-web/freelance3d/${entry.path}`),
     ),
     ...wallpaperImages.map((entry) =>
-      importLine(imageId('wallpaper', entry.path), `@/assets/wallpaper/${entry.path}`),
+      importLine(imageId('wallpaper', entry.path), `@/assets-web/wallpaper/${entry.path}`),
+    ),
+    ...otherProjectsImages.map((entry) =>
+      importLine(imageId('otherProjects', entry.path), `@/assets-web/otherProjects/${entry.path}`),
+    ),
+    ...signsImages.map((entry) =>
+      importLine(imageId('signs', entry.path), `@/assets-web/signs/${entry.path}`),
+    ),
+    ...cardImages.map((entry) =>
+      importLine(imageId('card', entry.path), `@/assets-web/card/${entry.path}`),
+    ),
+    ...freelanceImages.map((entry) =>
+      importLine(
+        imageId('freelance3d_full', entry.fullPath),
+        `@/assets-web/freelance3d/${entry.fullPath}`,
+      ),
+    ),
+    ...wallpaperImages.map((entry) =>
+      importLine(
+        imageId('wallpaper_full', entry.fullPath),
+        `@/assets-web/wallpaper/${entry.fullPath}`,
+      ),
     ),
     ...otherProjectsImages.map((entry) =>
       importLine(
-        imageId('otherProjects', entry.path),
-        `@/assets/otherProjects/${entry.path}`,
+        imageId('otherProjects_full', entry.fullPath),
+        `@/assets-web/otherProjects/${entry.fullPath}`,
       ),
     ),
     ...signsImages.map((entry) =>
-      importLine(imageId('signs', entry.path), `@/assets/signs/${entry.path}`),
+      importLine(imageId('signs_full', entry.fullPath), `@/assets-web/signs/${entry.fullPath}`),
     ),
     ...cardImages.map((entry) =>
-      importLine(imageId('card', entry.path), `@/assets/card/${entry.path}`),
+      importLine(imageId('card_full', entry.fullPath), `@/assets-web/card/${entry.fullPath}`),
     ),
   ]
 
@@ -150,8 +184,15 @@ async function main(): Promise<void> {
 import type { ProjectImage } from './portfolio'
 ${imports.join('\n')}
 
-function image(src: string, width: number, height: number): ProjectImage {
-  return { src, width, height }
+function image(
+  src: string,
+  width: number,
+  height: number,
+  fullSrc: string,
+  fullWidth: number,
+  fullHeight: number,
+): ProjectImage {
+  return { src, width, height, fullSrc, fullWidth, fullHeight }
 }
 
 ${arrays.join('\n')}

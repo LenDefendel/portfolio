@@ -16,6 +16,9 @@ export interface ProjectImage {
   src: string
   width: number
   height: number
+  fullSrc?: string
+  fullWidth?: number
+  fullHeight?: number
   type?: 'image'
 }
 
@@ -188,7 +191,8 @@ export const portfolio: PortfolioData = {
     {
       id: 'cards-glasses',
       title: 'Glasses',
-      description: 'Карточки товара для маркетплейсов со стаканами и визуальной подачей характеристик.',
+      description:
+        'Карточки товара для маркетплейсов со стаканами и визуальной подачей характеристик.',
       image: images._CardGlassesUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'marketplace-cards',
       tags: ['Marketplace', 'Cards', 'Product Design'],

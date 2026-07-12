@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { portfolio, type Project, type ProjectMedia } from '@/data/portfolio'
+import { portfolio, type Project, type ProjectImage, type ProjectMedia } from '@/data/portfolio'
 import ProjectCard from '@/components/ProjectCard.vue'
 
 interface GalleryItem {
@@ -119,11 +119,11 @@ function descriptionParts(text: string): DescriptionPart[] {
   return parts
 }
 
-const lightboxImage = ref<ProjectMedia | null>(null)
+const lightboxImage = ref<ProjectImage | null>(null)
 
 function openLightbox(image: ProjectMedia): void {
   if (isVideo(image)) return
-  lightboxImage.value = image
+  lightboxImage.value = image as ProjectImage
 }
 
 function closeLightbox(): void {
@@ -250,7 +250,13 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
       <button class="lightbox-close" @click="closeLightbox">
         <span class="material-symbols-outlined">close</span>
       </button>
-      <img :src="lightboxImage.src" class="lightbox-image" alt="Полноразмерное изображение" />
+      <img
+        :src="lightboxImage.fullSrc ?? lightboxImage.src"
+        :width="lightboxImage.fullWidth ?? lightboxImage.width"
+        :height="lightboxImage.fullHeight ?? lightboxImage.height"
+        class="lightbox-image"
+        alt="Полноразмерное изображение"
+      />
     </div>
   </Teleport>
 </template>
@@ -434,7 +440,6 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   .project-list {
     gap: 4rem;
   }
-
 }
 
 @media (min-width: 721px) {
