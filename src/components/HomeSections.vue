@@ -156,7 +156,8 @@ const homeSections = sections.flatMap((section) => {
 
 @media (max-width: 768px) {
   .home-section {
-    height: 400px;
+    height: 180px;
+    border-radius: 16px;
   }
 
   .home-section-content {
