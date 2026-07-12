@@ -99,10 +99,6 @@ html.theme-transition body {
 
 .main-content {
   flex: 1;
-  min-width: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
 }
 
 a,
