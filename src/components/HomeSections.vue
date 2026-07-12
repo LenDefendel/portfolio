@@ -60,6 +60,9 @@ const homeSections = sections.flatMap((section) => {
 <style scoped>
 .home-sections {
   width: 100%;
+  display: grid;
+  gap: 16px;
+  padding: 32px;
 }
 
 .home-section {
@@ -67,6 +70,7 @@ const homeSections = sections.flatMap((section) => {
   display: block;
   height: 400px;
   overflow: hidden;
+  border-radius: 32px;
   color: #fff;
   isolation: isolate;
   text-decoration: none;
