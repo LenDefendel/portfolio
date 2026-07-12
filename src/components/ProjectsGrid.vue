@@ -40,6 +40,15 @@ function isVideo(media: ProjectMedia): boolean {
   return media.type === 'video'
 }
 
+function mediaPreviewStyle(media: ProjectMedia): Record<string, string> {
+  const ratio = media.height ? media.width / media.height : 1
+  const maxWidth = media.width > media.height ? Math.round(350 * ratio) : 350
+
+  return {
+    width: `min(100%, ${maxWidth}px)`,
+  }
+}
+
 function shuffle<T>(items: T[]): T[] {
   const result = [...items]
 
@@ -194,6 +203,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
               :height="image.height"
               :width="image.width"
               class="project-image project-video"
+              :style="mediaPreviewStyle(image)"
               autoplay
               disablepictureinpicture
               muted
@@ -210,6 +220,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
               :width="image.width"
               :alt="`${project.title}, изображение ${imageIndex + 1}`"
               class="project-image"
+              :style="mediaPreviewStyle(image)"
               loading="lazy"
               @click="openLightbox(image)"
             />
@@ -316,15 +327,16 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 }
 
 .image-gallery {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 0.9rem;
 }
 
 .project-image {
-  width: 100%;
+  flex: 0 0 auto;
+  width: auto;
   height: auto;
-  min-height: 240px;
   scroll-margin-top: 2rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -423,18 +435,11 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
     gap: 4rem;
   }
 
-  .image-gallery {
-    grid-template-columns: 1fr;
-  }
-
-  .project-image {
-    min-height: 0;
-  }
 }
 
 @media (min-width: 721px) {
   .projects-page {
-    padding: clamp(4rem, 7vw, 7rem) clamp(3rem, 8vw, 9rem) 9rem;
+    padding: clamp(4rem, 7vw, 7rem) clamp(5rem, 12vw, 13rem) 9rem;
   }
 }
 
