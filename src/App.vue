@@ -92,13 +92,17 @@ html.theme-transition body {
 
 .app-layout {
   display: flex;
+  width: min(100%, 1920px);
+  margin: 0 auto;
   min-height: 100vh;
 }
 
 .main-content {
   flex: 1;
-  margin-left: var(--sidebar-width);
+  min-width: 0;
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
 a,
@@ -113,6 +117,10 @@ button:focus-visible {
 }
 
 @media (max-width: 768px) {
+  .app-layout {
+    width: 100%;
+  }
+
   .main-content {
     margin-left: 0;
   }

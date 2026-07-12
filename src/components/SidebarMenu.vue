@@ -151,10 +151,14 @@ const isCategoryActive = (id: string) =>
 const isSubcategoryActive = (categoryId: string, subcategoryId: string) =>
   route.path === `/category/${categoryId}/${subcategoryId}`
 
-watch(route, () => {
-  openActiveDropdown()
-  if (isMobile.value) isOpen.value = false
-}, { immediate: true })
+watch(
+  route,
+  () => {
+    openActiveDropdown()
+    if (isMobile.value) isOpen.value = false
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -369,6 +373,12 @@ watch(route, () => {
 
 @media (min-width: 769px) {
   .sidebar {
+    position: sticky;
+    top: 0;
+    left: auto;
+    bottom: auto;
+    flex: 0 0 var(--sidebar-width);
+    height: 100vh;
     transform: none;
     visibility: visible;
     pointer-events: auto;
@@ -597,6 +607,69 @@ button.nav-item {
   height: 1px;
   background: var(--border);
   margin: 0.45rem 0.75rem;
+}
+
+@media (min-width: 769px) and (max-height: 760px) {
+  .sidebar {
+    padding: 0.5rem 0;
+  }
+
+  .profile {
+    padding-bottom: 0.35rem;
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0.3rem;
+    font-size: 1.4rem;
+  }
+
+  .name {
+    font-size: 0.95rem;
+  }
+
+  .title {
+    font-size: 0.68rem;
+  }
+
+  .nav {
+    gap: 0.1rem;
+  }
+
+  .nav-item {
+    gap: 0.55rem;
+    padding: 0.38rem 0.55rem;
+    font-size: 0.78rem;
+  }
+
+  .nav-item .material-symbols-outlined {
+    width: 1.25rem;
+    font-size: 1.1rem;
+  }
+
+  .nav-name {
+    font-size: 0.78rem;
+  }
+
+  .nav-summary {
+    font-size: 0.62rem;
+  }
+
+  .nav-divider {
+    margin: 0.3rem 0.65rem;
+  }
+
+  .nav-subitems {
+    gap: 0.05rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .nav-subitem {
+    padding-top: 0.22rem;
+    padding-bottom: 0.22rem;
+    font-size: 0.68rem;
+  }
 }
 
 @media (max-width: 768px) {

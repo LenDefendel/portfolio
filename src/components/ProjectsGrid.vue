@@ -263,10 +263,16 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 
 <style scoped>
 .category-page {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
   padding: 2.5rem clamp(1.5rem, 6vw, 7rem) 8rem;
 }
 
 .projects-page {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
   padding: 2.5rem clamp(1.5rem, 6vw, 7rem) 8rem;
 }
 
@@ -278,10 +284,6 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 .all-projects-card {
   break-inside: avoid;
   margin-bottom: 1.15rem;
-}
-
-.category-page {
-  max-width: 1360px;
 }
 
 .category-header {
@@ -416,6 +418,45 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   cursor: default;
 }
 
+@media (min-width: 769px) and (max-height: 760px) {
+  .category-page,
+  .projects-page {
+    padding-top: 2rem;
+    padding-bottom: 5rem;
+  }
+
+  .category-header {
+    margin-bottom: 3rem;
+    padding-top: 0.5rem;
+  }
+
+  .category-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .project-list {
+    gap: 3.5rem;
+  }
+
+  .project-heading {
+    margin-bottom: 1rem;
+  }
+
+  .project-heading h2 {
+    margin-bottom: 0.55rem;
+    font-size: 1.45rem;
+  }
+
+  .description {
+    line-height: 1.5;
+  }
+
+  .project-image {
+    max-width: 300px;
+  }
+}
+
 @media (max-width: 768px) {
   .projects-page,
   .category-page {
@@ -457,6 +498,13 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 @media (max-width: 900px) and (min-width: 721px) {
   .projects-grid {
     column-count: 2;
+  }
+}
+
+@media (min-width: 769px) and (max-height: 760px) {
+  .projects-page {
+    padding-top: 2rem;
+    padding-bottom: 5rem;
   }
 }
 </style>
