@@ -123,9 +123,11 @@ const homeSections = sections.flatMap((section) => {
   height: 3.5rem;
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 50%;
+  opacity: 0;
   transition:
     background 0.3s ease,
     color 0.3s ease,
+    opacity 0.3s ease,
     transform 0.3s ease;
 }
 
@@ -148,6 +150,7 @@ const homeSections = sections.flatMap((section) => {
 .home-section:focus-visible .home-section-arrow {
   color: #101014;
   background: #fff;
+  opacity: 1;
   transform: translateX(0.25rem);
 }
 
