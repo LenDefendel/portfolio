@@ -13,7 +13,8 @@
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
     "format": "prettier --write --experimental-cli src/",
-    "update-image-dimensions": "node --import jiti/register scripts/update-image-dimensions.ts"
+    "update-image-dimensions": "node --import jiti/register scripts/update-image-dimensions.ts",
+    "generate-web-images": "node --import jiti/register scripts/generate-web-images.ts"
   },
   "dependencies": {
     "material-symbols": "^0.45.4",
