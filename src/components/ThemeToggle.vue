@@ -22,7 +22,7 @@ const { isDark, toggle } = useTheme()
   z-index: 200;
   width: 40px;
   height: 40px;
-  border-radius: 8px;
+  border-radius: 50%;
   border: 1px solid var(--border);
   background: color-mix(in srgb, var(--bg-card) 92%, transparent);
   backdrop-filter: blur(14px);
