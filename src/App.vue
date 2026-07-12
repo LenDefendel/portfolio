@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import SidebarMenu from '@/components/SidebarMenu.vue'
-import ThemeToggle from '@/components/ThemeToggle.vue'
 </script>
 
 <template>
   <div class="app-layout">
-    <ThemeToggle />
     <SidebarMenu />
     <main class="main-content">
       <RouterView />

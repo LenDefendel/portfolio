@@ -16,13 +16,13 @@ const { isDark, toggle } = useTheme()
 
 <style scoped>
 .theme-toggle {
-  position: fixed;
-  top: 1.25rem;
-  right: 1.25rem;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
   z-index: 200;
   width: 40px;
   height: 40px;
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: color-mix(in srgb, var(--bg-card) 92%, transparent);
   backdrop-filter: blur(14px);

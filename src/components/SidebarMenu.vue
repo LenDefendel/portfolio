@@ -2,6 +2,7 @@
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { portfolio } from '@/data/portfolio'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const route = useRoute()
 
@@ -179,6 +180,7 @@ watch(
   </Teleport>
 
   <aside class="sidebar" :class="{ 'sidebar--open': isOpen, 'sidebar--resizing': isResizing }">
+    <ThemeToggle />
     <div class="sidebar-top">
       <router-link to="/" class="profile" @click="close">
         <div class="avatar">
