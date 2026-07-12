@@ -96,6 +96,12 @@ export const portfolio: PortfolioData = {
   linkedin: 'https://linkedin.com/in/yourusername',
   categories: [
     {
+      id: 'signs',
+      name: 'Макеты вывесок',
+      summary: 'Наружная навигация, режимы работы и QR-таблички для печати и монтажа.',
+      icon: 'signpost',
+    },
+    {
       id: 'wallpaper',
       name: 'Сюжеты для фресок',
       summary: 'Иллюстрации и паттерны для фресок, фотообоев и интерьерной печати.',
@@ -144,6 +150,51 @@ export const portfolio: PortfolioData = {
   ],
   projects: [
     {
+      id: 'signs-operating-mode',
+      title: 'Режим работы',
+      description: 'Макеты и готовые таблички с режимом работы для входных групп.',
+      image: images._SignsOperatingModeUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'signs',
+      tags: ['Signs', 'Print', 'Outdoor'],
+      images: images._SignsOperatingModeUrls,
+    },
+    {
+      id: 'signs-qr',
+      title: 'QR-таблички',
+      description: 'Дизайн табличек с QR-кодами для точек контакта с клиентами.',
+      image: images._SignsQrUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'signs',
+      tags: ['QR', 'Signs', 'Print'],
+      images: images._SignsQrUrls,
+    },
+    {
+      id: 'signs-outdoor',
+      title: 'Вывески',
+      description: 'Макеты, визуализации и фотографии реализованных вывесок.',
+      image: images._SignsSignsUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'signs',
+      tags: ['Signs', 'Outdoor', 'Branding'],
+      images: images._SignsSignsUrls,
+    },
+    {
+      id: 'cards-bowl',
+      title: 'Bowl',
+      description: 'Карточки товара для маркетплейсов с инфографикой и акцентом на преимущества.',
+      image: images._CardBowlUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'marketplace-cards',
+      tags: ['Marketplace', 'Cards', 'Infographics'],
+      images: images._CardBowlUrls,
+    },
+    {
+      id: 'cards-glasses',
+      title: 'Glasses',
+      description: 'Карточки товара для маркетплейсов со стаканами и визуальной подачей характеристик.',
+      image: images._CardGlassesUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'marketplace-cards',
+      tags: ['Marketplace', 'Cards', 'Product Design'],
+      images: images._CardGlassesUrls,
+    },
+    {
       id: 'proj-freelance3d',
       title: '3D Art',
       description:
@@ -155,7 +206,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-birds',
-      title: 'Птицы',
+      title: 'Birds',
       description: 'Коллекция обоев с птицами.',
       image: images._BirdsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
@@ -164,7 +215,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-chinoiserie',
-      title: 'Шинуази',
+      title: 'Chinoiserie',
       description: 'Коллекция обоев в стиле шинуази.',
       image: images._ChinoiserieUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
@@ -173,7 +224,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-forest',
-      title: 'Лес',
+      title: 'Forest',
       description: 'Коллекция обоев с лесными мотивами.',
       image: images._ForestUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
@@ -182,7 +233,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-llamaUnicorns',
-      title: 'Ламы и Единороги',
+      title: 'Llamas and Unicorns',
       description: 'Коллекция обоев с ламами и единорогами.',
       image: images._LlamaUnicornsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
@@ -191,7 +242,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-robo',
-      title: 'Роботы',
+      title: 'Robots',
       description: 'Коллекция обоев с роботами.',
       image: images._RoboUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
@@ -200,7 +251,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-tropicalBirds',
-      title: 'Тропические птицы',
+      title: 'Tropical Birds',
       description: 'Коллекция обоев с тропическими птицами.',
       image: images._TropicalBirdsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
@@ -209,7 +260,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-tropics',
-      title: 'Тропики',
+      title: 'Tropics',
       description: 'Коллекция обоев с тропическими мотивами.',
       image: images._TropicsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',

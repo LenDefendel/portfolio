@@ -79,7 +79,11 @@ async function main(): Promise<void> {
   const freelanceImages = await getImages(join(ASSETS_DIR, 'freelance3d'))
   const wallpaperImages = await getImages(join(ASSETS_DIR, 'wallpaper'))
   const otherProjectsImages = await getImages(join(ASSETS_DIR, 'otherProjects'))
+  const signsImages = await getImages(join(ASSETS_DIR, 'signs'))
+  const cardImages = await getImages(join(ASSETS_DIR, 'card'))
   const subdirs = [...new Set(wallpaperImages.map((entry) => entry.path.split('/')[0]))].sort()
+  const signGroups = [...new Set(signsImages.map((entry) => entry.path.split('/')[0]))].sort()
+  const cardGroups = [...new Set(cardImages.map((entry) => entry.path.split('/')[0]))].sort()
   const otherProjectGroups = [
     'art',
     'studentWork/3dMax',
@@ -101,6 +105,12 @@ async function main(): Promise<void> {
         `@/assets/otherProjects/${entry.path}`,
       ),
     ),
+    ...signsImages.map((entry) =>
+      importLine(imageId('signs', entry.path), `@/assets/signs/${entry.path}`),
+    ),
+    ...cardImages.map((entry) =>
+      importLine(imageId('card', entry.path), `@/assets/card/${entry.path}`),
+    ),
   ]
 
   const arrays = [
@@ -117,6 +127,20 @@ async function main(): Promise<void> {
         `OtherProjects${pascalPath(groupPath)}`,
         otherProjectsImages.filter((entry) => entry.path.startsWith(`${groupPath}/`)),
         'otherProjects',
+      ),
+    ),
+    ...signGroups.map((groupPath) =>
+      imageArray(
+        `Signs${pascalPath(groupPath)}`,
+        signsImages.filter((entry) => entry.path.startsWith(`${groupPath}/`)),
+        'signs',
+      ),
+    ),
+    ...cardGroups.map((groupPath) =>
+      imageArray(
+        `Card${pascalPath(groupPath)}`,
+        cardImages.filter((entry) => entry.path.startsWith(`${groupPath}/`)),
+        'card',
       ),
     ),
   ]

@@ -78,6 +78,37 @@ import _img_otherProjects_studentWork_painting_6_jpg_g63gdd from '@/assets/other
 import _img_otherProjects_studentWork_painting_7_jpg_g6n8yq from '@/assets/otherProjects/studentWork/painting/7.jpg?url'
 import _img_otherProjects_studentWork_painting_8_jpg_g771k3 from '@/assets/otherProjects/studentWork/painting/8.jpg?url'
 import _img_otherProjects_studentWork_painting_9_jpg_g7qu5g from '@/assets/otherProjects/studentWork/painting/9.jpg?url'
+import _img_signs_operatingMode_1_1_jpg_uqa2ak from '@/assets/signs/operatingMode/1.1.jpg?url'
+import _img_signs_operatingMode_1_2_jpg_uqtuvx from '@/assets/signs/operatingMode/1.2.jpg?url'
+import _img_signs_operatingMode_3_3_jpg_1o467xc from '@/assets/signs/operatingMode/3.3.jpg?url'
+import _img_signs_operatingMode_3_jpg_tpatej from '@/assets/signs/operatingMode/3.jpg?url'
+import _img_signs_operatingMode_4_1_jpg_3qcuzj from '@/assets/signs/operatingMode/4.1.jpg?url'
+import _img_signs_operatingMode_4_2_jpg_3qwnkw from '@/assets/signs/operatingMode/4.2.jpg?url'
+import _img_signs_operatingMode_image_2026_06_04_00_09_45_png_11z3h1f from '@/assets/signs/operatingMode/image_2026-06-04_00-09-45.png?url'
+import _img_signs_operatingMode_photo_2026_07_08_18_19_46__5__jpg_su6olw from '@/assets/signs/operatingMode/photo_2026-07-08_18-19-46 (5).jpg?url'
+import _img_signs_operatingMode_photo_2026_07_08_18_19_47__3__jpg_1x13h07 from '@/assets/signs/operatingMode/photo_2026-07-08_18-19-47 (3).jpg?url'
+import _img_signs_operatingMode_photo_2026_07_08_18_19_47_jpg_wnczuh from '@/assets/signs/operatingMode/photo_2026-07-08_18-19-47.jpg?url'
+import _img_signs_qr_image_2026_06_03_12_33_50_png_17oid51 from '@/assets/signs/qr/image_2026-06-03_12-33-50.png?url'
+import _img_signs_qr_photo_2026_07_08_18_19_47__2__jpg_eqjr11 from '@/assets/signs/qr/photo_2026-07-08_18-19-47 (2).jpg?url'
+import _img_signs_qr_photo_2026_07_08_18_19_47__4__jpg_fomztf from '@/assets/signs/qr/photo_2026-07-08_18-19-47 (4).jpg?url'
+import _img_signs_signs_2_1_jpg_zet167 from '@/assets/signs/signs/2.1.jpg?url'
+import _img_signs_signs_2_2_jpg_zfctrk from '@/assets/signs/signs/2.2.jpg?url'
+import _img_signs_signs_2_3_jpg_zfwmcx from '@/assets/signs/signs/2.3.jpg?url'
+import _img_signs_signs_image_2026_05_29_13_13_09_png_5f68yq from '@/assets/signs/signs/image_2026-05-29_13-13-09.png?url'
+import _img_signs_signs_image_2026_06_03_16_41_18_png_56frd9 from '@/assets/signs/signs/image_2026-06-03_16-41-18.png?url'
+import _img_signs_signs_image_2026_06_04_00_09_57_png_rt0t12 from '@/assets/signs/signs/image_2026-06-04_00-09-57.png?url'
+import _img_card_bowl_Bowl1_jpg_1eebks5 from '@/assets/card/bowl/Bowl1.jpg?url'
+import _img_card_bowl_Bowl2_jpg_1eevddi from '@/assets/card/bowl/Bowl2.jpg?url'
+import _img_card_bowl_Bowl3_jpg_1eff5yv from '@/assets/card/bowl/Bowl3.jpg?url'
+import _img_card_bowl_Bowl4_jpg_1efyyk8 from '@/assets/card/bowl/Bowl4.jpg?url'
+import _img_card_bowl_Bowl5_jpg_1egir5l from '@/assets/card/bowl/Bowl5.jpg?url'
+import _img_card_bowl_Bowl6_jpg_1eh2jqy from '@/assets/card/bowl/Bowl6.jpg?url'
+import _img_card_glasses_Glasses1_jpg_9wh6e7 from '@/assets/card/glasses/Glasses1.jpg?url'
+import _img_card_glasses_Glasses2_jpg_9x0yzk from '@/assets/card/glasses/Glasses2.jpg?url'
+import _img_card_glasses_Glasses3_jpg_9xkrkx from '@/assets/card/glasses/Glasses3.jpg?url'
+import _img_card_glasses_Glasses4_jpg_9y4k6a from '@/assets/card/glasses/Glasses4.jpg?url'
+import _img_card_glasses_Glasses5_jpg_9yocrn from '@/assets/card/glasses/Glasses5.jpg?url'
+import _img_card_glasses_Glasses6_jpg_9z85d0 from '@/assets/card/glasses/Glasses6.jpg?url'
 
 function image(src: string, width: number, height: number): ProjectImage {
   return { src, width, height }
@@ -197,5 +228,51 @@ export const _OtherProjectsStudentWorkPaintingUrls: ProjectImage[] = [
   image(_img_otherProjects_studentWork_painting_7_jpg_g6n8yq, 3120, 4160),
   image(_img_otherProjects_studentWork_painting_8_jpg_g771k3, 2458, 2035),
   image(_img_otherProjects_studentWork_painting_9_jpg_g7qu5g, 2458, 2035),
+]
+
+export const _SignsOperatingModeUrls: ProjectImage[] = [
+  image(_img_signs_operatingMode_1_1_jpg_uqa2ak, 960, 1280),
+  image(_img_signs_operatingMode_1_2_jpg_uqtuvx, 6832, 5291),
+  image(_img_signs_operatingMode_3_3_jpg_1o467xc, 13414, 10374),
+  image(_img_signs_operatingMode_3_jpg_tpatej, 960, 1280),
+  image(_img_signs_operatingMode_4_1_jpg_3qcuzj, 960, 1280),
+  image(_img_signs_operatingMode_4_2_jpg_3qwnkw, 5782, 5078),
+  image(_img_signs_operatingMode_image_2026_06_04_00_09_45_png_11z3h1f, 1224, 1202),
+  image(_img_signs_operatingMode_photo_2026_07_08_18_19_46__5__jpg_su6olw, 960, 1280),
+  image(_img_signs_operatingMode_photo_2026_07_08_18_19_47__3__jpg_1x13h07, 960, 1280),
+  image(_img_signs_operatingMode_photo_2026_07_08_18_19_47_jpg_wnczuh, 960, 1280),
+]
+
+export const _SignsQrUrls: ProjectImage[] = [
+  image(_img_signs_qr_image_2026_06_03_12_33_50_png_17oid51, 1728, 1534),
+  image(_img_signs_qr_photo_2026_07_08_18_19_47__2__jpg_eqjr11, 960, 1280),
+  image(_img_signs_qr_photo_2026_07_08_18_19_47__4__jpg_fomztf, 960, 1280),
+]
+
+export const _SignsSignsUrls: ProjectImage[] = [
+  image(_img_signs_signs_2_1_jpg_zet167, 960, 1280),
+  image(_img_signs_signs_2_2_jpg_zfctrk, 960, 1280),
+  image(_img_signs_signs_2_3_jpg_zfwmcx, 955, 576),
+  image(_img_signs_signs_image_2026_05_29_13_13_09_png_5f68yq, 1176, 1450),
+  image(_img_signs_signs_image_2026_06_03_16_41_18_png_56frd9, 1368, 1352),
+  image(_img_signs_signs_image_2026_06_04_00_09_57_png_rt0t12, 1080, 1188),
+]
+
+export const _CardBowlUrls: ProjectImage[] = [
+  image(_img_card_bowl_Bowl1_jpg_1eebks5, 1800, 2400),
+  image(_img_card_bowl_Bowl2_jpg_1eevddi, 1800, 2400),
+  image(_img_card_bowl_Bowl3_jpg_1eff5yv, 1800, 2400),
+  image(_img_card_bowl_Bowl4_jpg_1efyyk8, 1800, 2400),
+  image(_img_card_bowl_Bowl5_jpg_1egir5l, 1800, 2400),
+  image(_img_card_bowl_Bowl6_jpg_1eh2jqy, 1800, 2400),
+]
+
+export const _CardGlassesUrls: ProjectImage[] = [
+  image(_img_card_glasses_Glasses1_jpg_9wh6e7, 1800, 2400),
+  image(_img_card_glasses_Glasses2_jpg_9x0yzk, 1800, 2400),
+  image(_img_card_glasses_Glasses3_jpg_9xkrkx, 1800, 2400),
+  image(_img_card_glasses_Glasses4_jpg_9y4k6a, 1800, 2400),
+  image(_img_card_glasses_Glasses5_jpg_9yocrn, 1800, 2400),
+  image(_img_card_glasses_Glasses6_jpg_9z85d0, 1800, 2400),
 ]
 
