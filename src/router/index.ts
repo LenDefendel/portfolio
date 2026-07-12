@@ -5,11 +5,17 @@ import ProjectsGrid from '@/components/ProjectsGrid.vue'
 import AboutSection from '@/components/AboutSection.vue'
 import SkillsSection from '@/components/SkillsSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
+import HomeSections from '@/components/HomeSections.vue'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: `/category/${portfolio.categories[0]!.id}`,
+    redirect: '/category/all',
+  },
+  {
+    path: '/category/all',
+    name: 'home',
+    component: HomeSections,
   },
   {
     path: '/category/:id/:subcategoryId?',
