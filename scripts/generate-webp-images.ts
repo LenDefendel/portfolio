@@ -1,4 +1,4 @@
-import { mkdir, readdir, stat } from 'node:fs/promises'
+import { mkdir, readdir, stat, unlink } from 'node:fs/promises'
 import { basename, dirname, extname, join, relative } from 'node:path'
 import sharp from 'sharp'
 
@@ -52,7 +52,7 @@ async function getImages(dir: string, baseDir = dir): Promise<ImageSource[]> {
       continue
     }
 
-    if (!IMAGE_EXT.test(entry.name)) continue
+    if (!IMAGE_EXT.test(entry.name) || entry.name.toLowerCase().endsWith('.webp')) continue
 
     result.push({
       sourcePath: fullPath,
@@ -73,32 +73,56 @@ async function isFresh(sourcePath: string, outputPath: string): Promise<boolean>
   }
 }
 
-async function generateVariant(
+async function generateImage(
   image: ImageSource,
-  variant: Variant,
   outputDir: string,
   force: boolean,
-): Promise<'generated' | 'skipped'> {
-  const outputPath = outputPathFor(image, variant, outputDir)
+): Promise<{ generated: number; skipped: number }> {
+  const fullVariant = VARIANTS.find((variant) => variant.suffix === 'full')!
+  const previewVariant = VARIANTS.find((variant) => variant.suffix === 'preview')!
+  const fullPath = outputPathFor(image, fullVariant, outputDir)
+  const previewPath = outputPathFor(image, previewVariant, outputDir)
+  let generated = 0
+  let skipped = 0
 
-  if (!force && (await isFresh(image.sourcePath, outputPath))) {
-    return 'skipped'
+  await mkdir(dirname(fullPath), { recursive: true })
+
+  if (force || !(await isFresh(image.sourcePath, fullPath))) {
+    await sharp(image.sourcePath)
+      .rotate()
+      .resize({
+        width: fullVariant.width,
+        withoutEnlargement: true,
+      })
+      .webp({
+        quality: fullVariant.quality,
+        effort: 5,
+      })
+      .toFile(fullPath)
+    generated += 1
+  } else {
+    skipped += 1
   }
 
-  await mkdir(dirname(outputPath), { recursive: true })
-  await sharp(image.sourcePath)
-    .rotate()
-    .resize({
-      width: variant.width,
-      withoutEnlargement: true,
-    })
-    .webp({
-      quality: variant.quality,
-      effort: 5,
-    })
-    .toFile(outputPath)
+  if (force || !(await isFresh(fullPath, previewPath))) {
+    await sharp(fullPath)
+      .resize({
+        width: previewVariant.width,
+        withoutEnlargement: true,
+      })
+      .webp({
+        quality: previewVariant.quality,
+        effort: 5,
+      })
+      .toFile(previewPath)
+    generated += 1
+  } else {
+    skipped += 1
+  }
 
-  return 'generated'
+  await unlink(image.sourcePath)
+
+  return { generated, skipped }
 }
 
 async function main(): Promise<void> {
@@ -110,15 +134,9 @@ async function main(): Promise<void> {
   let skipped = 0
 
   for (const image of images) {
-    for (const variant of VARIANTS) {
-      const result = await generateVariant(image, variant, outputDir, force)
-
-      if (result === 'generated') {
-        generated += 1
-      } else {
-        skipped += 1
-      }
-    }
+    const result = await generateImage(image, outputDir, force)
+    generated += result.generated
+    skipped += result.skipped
   }
 
   console.log(`Processed ${images.length} images`)
