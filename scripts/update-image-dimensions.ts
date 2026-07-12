@@ -11,7 +11,7 @@ interface ImageEntry {
   fullHeight: number
 }
 
-const ASSETS_DIR = join(import.meta.dirname, '..', 'src', 'assets-web')
+const ASSETS_DIR = join(import.meta.dirname, '..', 'src', 'assets')
 const OUTPUT = join(import.meta.dirname, '..', 'src', 'data', 'generatedImages.ts')
 const PREVIEW_EXT = /-preview\.webp$/i
 
@@ -107,43 +107,40 @@ async function main(): Promise<void> {
 
   const imports = [
     ...freelanceImages.map((entry) =>
-      importLine(imageId('freelance3d', entry.path), `@/assets-web/freelance3d/${entry.path}`),
+      importLine(imageId('freelance3d', entry.path), `@/assets/freelance3d/${entry.path}`),
     ),
     ...wallpaperImages.map((entry) =>
-      importLine(imageId('wallpaper', entry.path), `@/assets-web/wallpaper/${entry.path}`),
+      importLine(imageId('wallpaper', entry.path), `@/assets/wallpaper/${entry.path}`),
     ),
     ...otherProjectsImages.map((entry) =>
-      importLine(imageId('otherProjects', entry.path), `@/assets-web/otherProjects/${entry.path}`),
+      importLine(imageId('otherProjects', entry.path), `@/assets/otherProjects/${entry.path}`),
     ),
     ...signsImages.map((entry) =>
-      importLine(imageId('signs', entry.path), `@/assets-web/signs/${entry.path}`),
+      importLine(imageId('signs', entry.path), `@/assets/signs/${entry.path}`),
     ),
     ...cardImages.map((entry) =>
-      importLine(imageId('card', entry.path), `@/assets-web/card/${entry.path}`),
+      importLine(imageId('card', entry.path), `@/assets/card/${entry.path}`),
     ),
     ...freelanceImages.map((entry) =>
       importLine(
         imageId('freelance3d_full', entry.fullPath),
-        `@/assets-web/freelance3d/${entry.fullPath}`,
+        `@/assets/freelance3d/${entry.fullPath}`,
       ),
     ),
     ...wallpaperImages.map((entry) =>
-      importLine(
-        imageId('wallpaper_full', entry.fullPath),
-        `@/assets-web/wallpaper/${entry.fullPath}`,
-      ),
+      importLine(imageId('wallpaper_full', entry.fullPath), `@/assets/wallpaper/${entry.fullPath}`),
     ),
     ...otherProjectsImages.map((entry) =>
       importLine(
         imageId('otherProjects_full', entry.fullPath),
-        `@/assets-web/otherProjects/${entry.fullPath}`,
+        `@/assets/otherProjects/${entry.fullPath}`,
       ),
     ),
     ...signsImages.map((entry) =>
-      importLine(imageId('signs_full', entry.fullPath), `@/assets-web/signs/${entry.fullPath}`),
+      importLine(imageId('signs_full', entry.fullPath), `@/assets/signs/${entry.fullPath}`),
     ),
     ...cardImages.map((entry) =>
-      importLine(imageId('card_full', entry.fullPath), `@/assets-web/card/${entry.fullPath}`),
+      importLine(imageId('card_full', entry.fullPath), `@/assets/card/${entry.fullPath}`),
     ),
   ]
 

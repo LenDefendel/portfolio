@@ -15,7 +15,7 @@ interface Variant {
 
 const ROOT_DIR = join(import.meta.dirname, '..')
 const DEFAULT_INPUT_DIR = join(ROOT_DIR, 'src', 'assets')
-const DEFAULT_OUTPUT_DIR = join(ROOT_DIR, 'src', 'assets-web')
+const DEFAULT_OUTPUT_DIR = join(ROOT_DIR, 'src', 'assets')
 const IMAGE_EXT = /\.(jpe?g|png|webp)$/i
 const VARIANTS: Variant[] = [
   { suffix: 'preview', width: 1200, quality: 78 },
