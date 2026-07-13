@@ -4,21 +4,13 @@ import { portfolio } from '@/data/portfolio'
 
 <template>
   <section id="about" class="about-section">
-    <div class="section-kicker">Profile</div>
     <div class="about-layout">
       <div class="about-heading">
         <h2>Обо мне</h2>
-        <p class="lead">{{ portfolio.title }}</p>
       </div>
 
       <div class="about-body">
         <p class="about-text">{{ portfolio.about }}</p>
-        <div class="stats" aria-label="Ключевые показатели опыта">
-          <div v-for="stat in portfolio.stats" :key="stat.label" class="stat">
-            <span class="stat-value">{{ stat.value }}</span>
-            <span class="stat-label">{{ stat.label }}</span>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -26,25 +18,17 @@ import { portfolio } from '@/data/portfolio'
 
 <style scoped>
 .about-section {
-  width: min(1120px, calc(100vw - 3rem));
+  width: min(1120px, calc(100% - 3rem));
   margin: 0 auto;
   min-height: 100vh;
   padding: clamp(5rem, 9vw, 8rem) 0;
-}
-
-.section-kicker {
-  margin-bottom: 1rem;
-  color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  box-sizing: border-box;
 }
 
 .about-layout {
   display: grid;
-  grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.25fr);
-  gap: clamp(2rem, 6vw, 5rem);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 2.5rem);
   align-items: start;
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border: 1px solid var(--border);
@@ -58,17 +42,13 @@ h2 {
   text-align: left;
 }
 
-.lead {
-  color: var(--text-tertiary);
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-
 .about-text {
   max-width: 720px;
   color: var(--text-secondary);
   font-size: clamp(1.05rem, 1.2vw, 1.2rem);
   line-height: 1.85;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
 }
 
 .stats {
@@ -103,17 +83,36 @@ h2 {
 
 @media (max-width: 860px) {
   .about-section {
-    width: min(100%, calc(100vw - 2rem));
+    width: min(100%, calc(100% - 2rem));
     padding: 5rem 0 4rem;
   }
 
   .about-layout {
-    grid-template-columns: 1fr;
     gap: 1.5rem;
+    padding: 1.5rem;
   }
+
 }
 
 @media (max-width: 560px) {
+  .about-section {
+    padding-top: 4rem;
+  }
+
+  .about-layout {
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 9vw, 2.75rem);
+  }
+
+  .about-text {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
   .stats {
     grid-template-columns: 1fr;
   }

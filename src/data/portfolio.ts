@@ -52,7 +52,6 @@ export interface PortfolioData {
   name: string
   title: string
   about: string
-  stats: { value: string; label: string }[]
   email: string
   github: string
   linkedin: string
@@ -88,12 +87,7 @@ export const portfolio: PortfolioData = {
   name: 'Maria Filippova',
   title: 'Designer',
   about:
-    "I'm a UI/UX designer with experience creating digital products. I enjoy turning complex problems into simple, beautiful solutions. Passionate about clean design, usability, and user experience.",
-  stats: [
-    { value: '5+', label: 'Years Experience' },
-    { value: '30+', label: 'Projects' },
-    { value: '15+', label: 'Clients' },
-  ],
+    'Привет! я дизайнер с опытом 4+ лет в различных сферах. В моих кейсах есть коммерческий опыт: создания иллюстраций, полномасштабных интерьерных сюжетов, ретуши, макетов для наружной рекламы, 3D моделей и визуализаций. Также есть навык работы с ИИ в дизайне и кодинге. Есть опыт менторства.\nЯ открыта для новых проектов и технологий, быстро включаюсь в работу, разбираюсь в новом проекте, задаю уточняющие вопросы и довожу задачи до результата.',
   email: 'your.email@example.com',
   github: 'https://github.com/yourusername',
   linkedin: 'https://linkedin.com/in/yourusername',
