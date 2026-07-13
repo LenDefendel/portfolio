@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { portfolio, type Project, type ProjectMedia } from '@/data/portfolio'
 import ImageLightbox from '@/components/ImageLightbox.vue'
 import ProjectCard from '@/components/ProjectCard.vue'
+import WallpaperGallery from '@/components/WallpaperGallery.vue'
 
 interface GalleryItem {
   project: Project
@@ -137,7 +138,9 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
 </script>
 
 <template>
-  <div v-if="categoryId === 'all'" class="projects-page">
+  <WallpaperGallery v-if="categoryId === 'wallpaper'" />
+
+  <div v-else-if="categoryId === 'all'" class="projects-page">
     <div v-if="allImages.length" class="projects-grid">
       <ProjectCard
         v-for="item in allImages"
