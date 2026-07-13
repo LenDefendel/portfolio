@@ -6,6 +6,8 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
 
 const route = useRoute()
 
+const avatarSrc = new URL('/src/assets/photo/0061 копия 2-preview.webp', import.meta.url).href
+
 const SIDEBAR_STORAGE_KEY = 'portfolio-sidebar-width'
 const DEFAULT_SIDEBAR_WIDTH = 260
 const MIN_SIDEBAR_WIDTH = 220
@@ -163,12 +165,7 @@ watch(
 </script>
 
 <template>
-  <button
-    v-if="isMobile && !isOpen"
-    class="hamburger"
-    @click="toggle"
-    aria-label="Открыть меню"
-  >
+  <button v-if="isMobile && !isOpen" class="hamburger" @click="toggle" aria-label="Открыть меню">
     <span class="hamburger-line" />
     <span class="hamburger-line" />
     <span class="hamburger-line" />
@@ -196,104 +193,99 @@ watch(
       <div class="sidebar-top">
         <router-link to="/" class="profile" @click="close">
           <div class="avatar">
-            <span>{{ portfolio.name.charAt(0) }}</span>
+            <img class="avatar-img" :src="avatarSrc" alt="Avatar" />
           </div>
           <h1 class="name">{{ portfolio.name }}</h1>
           <p class="title">{{ portfolio.title }}</p>
         </router-link>
 
         <nav class="nav">
-        <router-link
-          to="/"
-          class="nav-item"
-          :class="{ active: isActive('/') }"
-          @click="close"
-        >
-          <span class="material-symbols-outlined">grid_view</span>
-          <span>Главная</span>
-        </router-link>
-
-        <div class="nav-divider" />
-
-        <template v-for="category in portfolio.categories" :key="category.id">
-          <router-link
-            v-if="!category.subcategories?.length"
-            :to="`/category/${category.id}`"
-            class="nav-item"
-            :class="{ active: isCategoryActive(category.id) }"
-            @click="close"
-          >
-            <span class="material-symbols-outlined nav-icon">{{ category.icon }}</span>
-            <div class="nav-text">
-              <span class="nav-name">{{ category.name }}</span>
-              <span class="nav-summary">{{ category.summary }}</span>
-            </div>
+          <router-link to="/" class="nav-item" :class="{ active: isActive('/') }" @click="close">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span>Главная</span>
           </router-link>
 
-          <button
-            v-else
-            class="nav-item nav-dropdown-toggle"
-            :class="{ active: isCategoryActive(category.id), open: isDropdownOpen(category.id) }"
-            type="button"
-            :aria-expanded="isDropdownOpen(category.id)"
-            @click="toggleDropdown(category.id)"
-          >
-            <span class="material-symbols-outlined nav-icon">{{ category.icon }}</span>
-            <div class="nav-text">
-              <span class="nav-name">{{ category.name }}</span>
-              <span class="nav-summary">{{ category.summary }}</span>
-            </div>
-            <span class="material-symbols-outlined nav-chevron">expand_more</span>
-          </button>
+          <div class="nav-divider" />
 
-          <div
-            v-if="category.subcategories?.length && isDropdownOpen(category.id)"
-            class="nav-subitems"
-          >
+          <template v-for="category in portfolio.categories" :key="category.id">
             <router-link
-              v-for="subcategory in category.subcategories"
-              :key="subcategory.id"
-              :to="`/category/${category.id}/${subcategory.id}`"
-              class="nav-subitem"
-              :class="{ active: isSubcategoryActive(category.id, subcategory.id) }"
+              v-if="!category.subcategories?.length"
+              :to="`/category/${category.id}`"
+              class="nav-item"
+              :class="{ active: isCategoryActive(category.id) }"
               @click="close"
             >
-              {{ subcategory.name }}
+              <span class="material-symbols-outlined nav-icon">{{ category.icon }}</span>
+              <div class="nav-text">
+                <span class="nav-name">{{ category.name }}</span>
+                <span class="nav-summary">{{ category.summary }}</span>
+              </div>
             </router-link>
-          </div>
-        </template>
 
-        <div class="nav-divider" />
+            <button
+              v-else
+              class="nav-item nav-dropdown-toggle"
+              :class="{ active: isCategoryActive(category.id), open: isDropdownOpen(category.id) }"
+              type="button"
+              :aria-expanded="isDropdownOpen(category.id)"
+              @click="toggleDropdown(category.id)"
+            >
+              <span class="material-symbols-outlined nav-icon">{{ category.icon }}</span>
+              <div class="nav-text">
+                <span class="nav-name">{{ category.name }}</span>
+                <span class="nav-summary">{{ category.summary }}</span>
+              </div>
+              <span class="material-symbols-outlined nav-chevron">expand_more</span>
+            </button>
 
-        <router-link
-          to="/about"
-          class="nav-item"
-          :class="{ active: isActive('/about') }"
-          @click="close"
-        >
-          <span class="material-symbols-outlined">person</span>
-          <span>Обо мне</span>
-        </router-link>
+            <div
+              v-if="category.subcategories?.length && isDropdownOpen(category.id)"
+              class="nav-subitems"
+            >
+              <router-link
+                v-for="subcategory in category.subcategories"
+                :key="subcategory.id"
+                :to="`/category/${category.id}/${subcategory.id}`"
+                class="nav-subitem"
+                :class="{ active: isSubcategoryActive(category.id, subcategory.id) }"
+                @click="close"
+              >
+                {{ subcategory.name }}
+              </router-link>
+            </div>
+          </template>
 
-        <router-link
-          to="/skills"
-          class="nav-item"
-          :class="{ active: isActive('/skills') }"
-          @click="close"
-        >
-          <span class="material-symbols-outlined">wand_stars</span>
-          <span>Навыки</span>
-        </router-link>
+          <div class="nav-divider" />
 
-        <router-link
-          to="/contact"
-          class="nav-item"
-          :class="{ active: isActive('/contact') }"
-          @click="close"
-        >
-          <span class="material-symbols-outlined">mail</span>
-          <span>Контакты</span>
-        </router-link>
+          <router-link
+            to="/about"
+            class="nav-item"
+            :class="{ active: isActive('/about') }"
+            @click="close"
+          >
+            <span class="material-symbols-outlined">person</span>
+            <span>Обо мне</span>
+          </router-link>
+
+          <router-link
+            to="/skills"
+            class="nav-item"
+            :class="{ active: isActive('/skills') }"
+            @click="close"
+          >
+            <span class="material-symbols-outlined">wand_stars</span>
+            <span>Навыки</span>
+          </router-link>
+
+          <router-link
+            to="/contact"
+            class="nav-item"
+            :class="{ active: isActive('/contact') }"
+            @click="close"
+          >
+            <span class="material-symbols-outlined">mail</span>
+            <span>Контакты</span>
+          </router-link>
         </nav>
       </div>
     </div>
@@ -461,19 +453,25 @@ watch(
 }
 
 .avatar {
-  width: 64px;
-  height: 64px;
+  width: 100px;
+  height: 100px;
   border: 1px solid var(--border);
   border-radius: 50%;
   background: var(--bg-elevated);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--text-primary);
   box-shadow: 0 12px 28px var(--shadow-sm);
   margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  border-radius: 50%;
 }
 
 .name {
