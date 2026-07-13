@@ -53,8 +53,7 @@ export interface PortfolioData {
   title: string
   about: string
   email: string
-  github: string
-  linkedin: string
+  telegram: string
   categories: Category[]
   projects: Project[]
   skills: Skill[]
@@ -88,9 +87,8 @@ export const portfolio: PortfolioData = {
   title: 'Designer',
   about:
     'Привет! я дизайнер с опытом 4+ лет в различных сферах. В моих кейсах есть коммерческий опыт: создания иллюстраций, полномасштабных интерьерных сюжетов, ретуши, макетов для наружной рекламы, 3D моделей и визуализаций. Также есть навык работы с ИИ в дизайне и кодинге. Есть опыт менторства.\nЯ открыта для новых проектов и технологий, быстро включаюсь в работу, разбираюсь в новом проекте, задаю уточняющие вопросы и довожу задачи до результата.',
-  email: 'your.email@example.com',
-  github: 'https://github.com/yourusername',
-  linkedin: 'https://linkedin.com/in/yourusername',
+  email: 'maryfi1ippowa@ya.ru',
+  telegram: 'https://t.me/lenDefendel',
   categories: [
     {
       id: 'signs',

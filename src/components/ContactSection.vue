@@ -6,7 +6,6 @@ import { portfolio } from '@/data/portfolio'
   <section id="contact" class="contact-section">
     <div class="contact-panel">
       <div class="contact-copy">
-        <span class="section-kicker">Contact</span>
         <h2>Контакты</h2>
         <p class="contact-text">Открыта к новым проектам и сотрудничеству.</p>
       </div>
@@ -20,19 +19,16 @@ import { portfolio } from '@/data/portfolio'
           </span>
           <span class="material-symbols-outlined arrow">arrow_outward</span>
         </a>
-        <a :href="portfolio.github" target="_blank" rel="noopener" class="contact-card">
-          <span class="material-symbols-outlined icon">code</span>
+        <a :href="portfolio.telegram" target="_blank" rel="noopener" class="contact-card">
+          <svg class="icon icon-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M23.91 3.79 20.3 20.83c-.27 1.2-.98 1.5-1.98.94l-5.45-4.02-2.63 2.53c-.29.29-.53.53-1.08.53l.39-5.56 10.12-9.14c.44-.39-.1-.61-.68-.22L6.47 13.92l-5.4-1.69c-1.17-.36-1.19-1.17.24-1.73L22.4 2.4c.98-.36 1.84.22 1.51 1.39Z"
+            />
+          </svg>
           <span class="link-content">
-            <span class="link-label">GitHub</span>
-            <span class="link-value">Профиль и код</span>
-          </span>
-          <span class="material-symbols-outlined arrow">arrow_outward</span>
-        </a>
-        <a :href="portfolio.linkedin" target="_blank" rel="noopener" class="contact-card">
-          <span class="material-symbols-outlined icon">link</span>
-          <span class="link-content">
-            <span class="link-label">LinkedIn</span>
-            <span class="link-value">Профессиональный профиль</span>
+            <span class="link-label">Telegram</span>
+            <span class="link-value">{{ portfolio.telegram }}</span>
           </span>
           <span class="material-symbols-outlined arrow">arrow_outward</span>
         </a>
@@ -43,32 +39,22 @@ import { portfolio } from '@/data/portfolio'
 
 <style scoped>
 .contact-section {
-  width: min(1120px, calc(100vw - 3rem));
+  width: min(1120px, calc(100% - 3rem));
   margin: 0 auto;
   min-height: 100vh;
   padding: clamp(5rem, 9vw, 8rem) 0;
+  box-sizing: border-box;
 }
 
 .contact-panel {
-  display: grid;
-  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
-  gap: clamp(1.5rem, 5vw, 4rem);
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 5vw, 3.5rem);
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--bg-elevated);
   box-shadow: 0 18px 48px var(--shadow-sm);
-}
-
-.section-kicker {
-  display: block;
-  margin-bottom: 0.75rem;
-  color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 h2 {
@@ -85,6 +71,7 @@ h2 {
 
 .contact-links {
   display: flex;
+  width: min(100%, 640px);
   flex-direction: column;
   gap: 0.75rem;
 }
@@ -108,6 +95,10 @@ h2 {
   border-color: var(--border-hover);
 }
 
+.contact-card.primary .icon {
+  font-size: 1.35rem;
+}
+
 .contact-card:hover {
   border-color: var(--border-hover);
   transform: translateY(-2px);
@@ -124,6 +115,11 @@ h2 {
   background: var(--tag-bg);
   color: var(--text-primary);
   font-size: 1.2rem;
+}
+
+.icon-svg {
+  box-sizing: border-box;
+  padding: 0.5rem;
 }
 
 .link-content {
@@ -157,12 +153,24 @@ h2 {
 
 @media (max-width: 860px) {
   .contact-section {
-    width: min(100%, calc(100vw - 2rem));
+    width: min(100%, calc(100% - 2rem));
     padding: 5rem 0 4rem;
   }
 
   .contact-panel {
-    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .contact-section {
+    padding-top: 4rem;
+  }
+
+  .contact-panel {
+    gap: 1.5rem;
+    padding: 1.25rem;
   }
 }
 </style>
