@@ -63,13 +63,13 @@ const homeSections = sections.flatMap((section) => {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
-  padding: 32px;
+  padding: 32px clamp(32px, 5vw, 96px);
 }
 
 .home-section {
   position: relative;
   display: block;
-  height: 400px;
+  height: 280px;
   overflow: hidden;
   border-radius: 32px;
   color: #fff;
@@ -116,7 +116,7 @@ const homeSections = sections.flatMap((section) => {
 .home-section-title {
   max-width: 70%;
   font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-size: clamp(1.6rem, 3.5vw, 3rem);
+  font-size: clamp(1.2rem, 2.2vw, 1.9rem);
   font-weight: 700;
   line-height: 0.98;
 }
@@ -182,6 +182,7 @@ const homeSections = sections.flatMap((section) => {
 
   .home-section-title {
     max-width: 76%;
+    font-size: clamp(1.2rem, 5vw, 1.75rem);
   }
 }
 </style>
