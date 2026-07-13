@@ -188,6 +188,7 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
               <span v-else>{{ part.text }}</span>
             </template>
           </p>
+          <p v-if="project.summary" class="summary">{{ project.summary }}</p>
         </div>
 
         <div class="image-gallery">
@@ -281,6 +282,12 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
 .category-header p,
 .description {
   color: var(--text-secondary);
+}
+
+.summary {
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+  line-height: 1.75;
 }
 
 .project-list {

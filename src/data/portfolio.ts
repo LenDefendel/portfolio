@@ -35,6 +35,7 @@ export interface Project {
   id: string
   title: string
   description: string
+  summary?: string
   image: ProjectMedia
   categoryId: string
   subcategoryId?: string
@@ -99,7 +100,8 @@ export const portfolio: PortfolioData = {
     {
       id: 'wallpaper',
       name: 'Сюжеты для фресок',
-      summary: 'Иллюстрации и паттерны для фресок, фотообоев и интерьерной печати.',
+      summary:
+        'Иллюстрации и паттерны для фресок, фотообоев и интерьерной печати, сделанные в компании Pinegin. Все превью изображений, представленные здесь, в оригинальном своём варианте имеют натуральный размер исчисляемый в метрах, а также масштабную детальную проработку',
       icon: 'wall_art',
     },
     {
@@ -198,7 +200,8 @@ export const portfolio: PortfolioData = {
     {
       id: 'wall-birds',
       title: 'Birds',
-      description: 'Коллекция обоев с птицами.',
+      description:
+        'Тестовое задание с которого началась моё взаимодействие с компанией по производству обоев. Сюжет на три метра в натуральную величину отрисован почти полностью вручную за 3 дня',
       image: images._BirdsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Nature', 'Birds'],
@@ -207,7 +210,9 @@ export const portfolio: PortfolioData = {
     {
       id: 'wall-chinoiserie',
       title: 'Chinoiserie',
-      description: 'Коллекция обоев в стиле шинуази.',
+      description: 'В стиле шинуази.',
+      summary:
+        'Изображение имеет натуралистичную акварельную фактуру. В основе концепции — баланс между декоративностью и минимализмом: выразительные линии ветвей поддерживают архитектуру пространства, а небольшие цветовые акценты добавляют композиции ритм и живость.',
       image: images._ChinoiserieUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Chinoiserie', 'Classic'],
@@ -216,7 +221,9 @@ export const portfolio: PortfolioData = {
     {
       id: 'wall-forest',
       title: 'Forest',
-      description: 'Коллекция обоев с лесными мотивами.',
+      description: 'По мотивам классики.',
+      summary:
+        'Коллекция панорамных обоев, вдохновлённая классической пейзажной живописью. Спокойный природный сюжет с деревьями, холмами и извилистым ручьём создаёт ощущение глубины и визуально расширяет пространство. Приглушённая палитра построена на сложных серо-зелёных, песочных и дымчатых оттенках.',
       image: images._ForestUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Nature', 'Forest'],
