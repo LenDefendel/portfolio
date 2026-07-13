@@ -65,10 +65,6 @@ import SidebarMenu from '@/components/SidebarMenu.vue'
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   font-family:
     'Inter',
