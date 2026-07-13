@@ -199,6 +199,7 @@ defineExpose({ open, close })
   position: absolute;
   top: 1rem;
   right: 1rem;
+  z-index: 2;
   display: grid;
   place-items: center;
   width: 2.5rem;

@@ -191,13 +191,13 @@ watch(
       </button>
 
       <div class="sidebar-top">
-        <router-link to="/" class="profile" @click="close">
+        <div class="profile">
           <div class="avatar">
             <img class="avatar-img" :src="avatarSrc" alt="Avatar" />
           </div>
           <h1 class="name">{{ portfolio.name }}</h1>
           <p class="title">{{ portfolio.title }}</p>
-        </router-link>
+        </div>
 
         <nav class="nav">
           <router-link to="/" class="nav-item" :class="{ active: isActive('/') }" @click="close">
@@ -449,7 +449,7 @@ watch(
   flex-direction: column;
   align-items: center;
   padding: 0 1.25rem 1rem;
-  cursor: pointer;
+  cursor: default;
 }
 
 .avatar {
