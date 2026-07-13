@@ -24,6 +24,9 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
       - run: yarn build
+      - name: Create SPA fallback
+        run: cp dist/index.html dist/404.html
+      - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
