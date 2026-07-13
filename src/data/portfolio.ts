@@ -131,11 +131,6 @@ export const portfolio: PortfolioData = {
           summary: 'Работы периода обучения в КХУ.',
         },
         {
-          id: 'misc',
-          name: 'Разное',
-          summary: 'Небольшие визуальные задачи и эксперименты вне основных серий.',
-        },
-        {
           id: 'arts-concepts',
           name: 'Арты, концепты',
           summary: 'Иллюстрации и концепты, выполненные в Photoshop и Procreate.',
