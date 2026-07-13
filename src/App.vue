@@ -4,10 +4,12 @@ import SidebarMenu from '@/components/SidebarMenu.vue'
 
 <template>
   <div class="app-layout">
-    <SidebarMenu />
-    <main class="main-content">
-      <RouterView />
-    </main>
+    <div class="app-shell">
+      <SidebarMenu />
+      <main class="main-content">
+        <RouterView />
+      </main>
+    </div>
   </div>
 </template>
 
@@ -89,10 +91,17 @@ html.theme-transition body {
 }
 
 .app-layout {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--bg);
+}
+
+.app-shell {
   display: flex;
   width: min(100%, 1920px);
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: inherit;
 }
 
 .main-content {
@@ -110,13 +119,45 @@ button:focus-visible {
   box-shadow: var(--focus-ring);
 }
 
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.45s;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation-name: theme-radial-reveal;
+  animation-fill-mode: both;
+  clip-path: circle(0 at var(--theme-transition-x) var(--theme-transition-y));
+}
+
 @media (max-width: 768px) {
-  .app-layout {
+  .app-shell {
     width: 100%;
   }
 
   .main-content {
     margin-left: 0;
+  }
+}
+
+@keyframes theme-radial-reveal {
+  from {
+    clip-path: circle(0 at var(--theme-transition-x) var(--theme-transition-y));
+  }
+
+  to {
+    clip-path: circle(150vmax at var(--theme-transition-x) var(--theme-transition-y));
   }
 }
 

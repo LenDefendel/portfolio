@@ -13,24 +13,65 @@ function applyTheme(dark: boolean) {
 }
 
 export function useTheme() {
-  watch(isDark, (val) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, val ? 'dark' : 'light')
-    } catch (_error) {
-      // Theme switching still works when storage is unavailable.
+  watch(
+    isDark,
+    (val) => {
+      try {
+        localStorage.setItem(STORAGE_KEY, val ? 'dark' : 'light')
+      } catch (_error) {
+        // Theme switching still works when storage is unavailable.
+      }
+
+      applyTheme(val)
+    },
+    { flush: 'sync' },
+  )
+
+  function toggle(event?: MouseEvent) {
+    const updateTheme = () => {
+      isDark.value = !isDark.value
+    }
+    const isMobile = window.matchMedia('(max-width: 768px)').matches
+    const transitionRoot = document.querySelector<HTMLElement>(
+      isMobile ? '.sidebar-theme-surface' : '.app-layout',
+    )
+    const viewTransition = (
+      transitionRoot as (HTMLElement & {
+        startViewTransition?: (update: () => void) => unknown
+      }) | null
+    )?.startViewTransition
+
+    if (transitionRoot && viewTransition) {
+      const target = event?.currentTarget
+      const element = target instanceof HTMLElement ? target : null
+      const buttonRect = element?.getBoundingClientRect()
+      const surfaceRect = transitionRoot.getBoundingClientRect()
+      const clientX =
+        event?.clientX ||
+        (buttonRect ? buttonRect.left + buttonRect.width / 2 : window.innerWidth / 2)
+      const clientY =
+        event?.clientY ||
+        (buttonRect ? buttonRect.top + buttonRect.height / 2 : window.innerHeight / 2)
+
+      document.documentElement.style.setProperty(
+        '--theme-transition-x',
+        `${clientX - surfaceRect.left}px`,
+      )
+      document.documentElement.style.setProperty(
+        '--theme-transition-y',
+        `${clientY - surfaceRect.top}px`,
+      )
+      viewTransition.call(transitionRoot, updateTheme)
+      return
     }
 
     document.documentElement.classList.add('theme-transition')
-    applyTheme(val)
+    updateTheme()
 
     clearTimeout(transitionTimer)
     transitionTimer = setTimeout(() => {
       document.documentElement.classList.remove('theme-transition')
     }, TRANSITION_DURATION)
-  })
-
-  function toggle() {
-    isDark.value = !isDark.value
   }
 
   return { isDark, toggle }

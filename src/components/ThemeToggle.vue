@@ -1,24 +1,32 @@
 <script setup lang="ts">
 import { useTheme } from '@/composables/useTheme'
 
+withDefaults(defineProps<{ visible?: boolean; teleportDisabled?: boolean }>(), {
+  visible: true,
+  teleportDisabled: false,
+})
+
 const { isDark, toggle } = useTheme()
 </script>
 
 <template>
-  <button
-    class="theme-toggle"
-    @click="toggle"
-    :title="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
-  >
-    <span class="material-symbols-outlined icon">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
-  </button>
+  <Teleport to="body" :disabled="teleportDisabled">
+    <button
+      v-if="visible"
+      class="theme-toggle"
+      @click="toggle"
+      :title="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
+    >
+      <span class="material-symbols-outlined icon">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
+    </button>
+  </Teleport>
 </template>
 
 <style scoped>
 .theme-toggle {
-  position: absolute;
+  position: fixed;
   top: 0.75rem;
-  right: 0.75rem;
+  left: calc(max(0px, calc(50vw - 960px)) + var(--sidebar-width) - 3.25rem);
   z-index: 200;
   width: 40px;
   height: 40px;
@@ -43,5 +51,13 @@ const { isDark, toggle } = useTheme()
 .theme-toggle:hover {
   border-color: var(--border-hover);
   transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    position: absolute;
+    right: 0.75rem;
+    left: auto;
+  }
 }
 </style>

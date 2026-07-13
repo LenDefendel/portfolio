@@ -83,7 +83,6 @@ h2 {
   padding: 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: var(--bg);
 }
 
 .stat-value {

@@ -13,7 +13,7 @@ const MAX_SIDEBAR_WIDTH = 420
 const MOBILE_MEDIA_QUERY = '(max-width: 768px)'
 
 const isOpen = ref(false)
-const isMobile = ref(false)
+const isMobile = ref(window.matchMedia(MOBILE_MEDIA_QUERY).matches)
 const sidebarWidth = ref(DEFAULT_SIDEBAR_WIDTH)
 const isResizing = ref(false)
 const openDropdownIds = ref<string[]>([])
@@ -164,11 +164,10 @@ watch(
 
 <template>
   <button
-    v-if="isMobile"
+    v-if="isMobile && !isOpen"
     class="hamburger"
-    :class="{ 'hamburger--open': isOpen }"
     @click="toggle"
-    aria-label="Toggle menu"
+    aria-label="Открыть меню"
   >
     <span class="hamburger-line" />
     <span class="hamburger-line" />
@@ -180,17 +179,30 @@ watch(
   </Teleport>
 
   <aside class="sidebar" :class="{ 'sidebar--open': isOpen, 'sidebar--resizing': isResizing }">
-    <ThemeToggle />
-    <div class="sidebar-top">
-      <router-link to="/" class="profile" @click="close">
-        <div class="avatar">
-          <span>{{ portfolio.name.charAt(0) }}</span>
-        </div>
-        <h1 class="name">{{ portfolio.name }}</h1>
-        <p class="title">{{ portfolio.title }}</p>
-      </router-link>
+    <ThemeToggle :teleport-disabled="isMobile" />
+    <div class="sidebar-theme-surface">
+      <button
+        v-if="isMobile"
+        class="hamburger hamburger--open sidebar-close"
+        type="button"
+        aria-label="Закрыть меню"
+        @click="close"
+      >
+        <span class="hamburger-line" />
+        <span class="hamburger-line" />
+        <span class="hamburger-line" />
+      </button>
 
-      <nav class="nav">
+      <div class="sidebar-top">
+        <router-link to="/" class="profile" @click="close">
+          <div class="avatar">
+            <span>{{ portfolio.name.charAt(0) }}</span>
+          </div>
+          <h1 class="name">{{ portfolio.name }}</h1>
+          <p class="title">{{ portfolio.title }}</p>
+        </router-link>
+
+        <nav class="nav">
         <router-link
           to="/category/all"
           class="nav-item"
@@ -282,7 +294,8 @@ watch(
           <span class="material-symbols-outlined">mail</span>
           <span>Контакты</span>
         </router-link>
-      </nav>
+        </nav>
+      </div>
     </div>
 
     <button
@@ -363,7 +376,6 @@ watch(
   left: 0;
   bottom: 0;
   width: var(--sidebar-width);
-  background: var(--bg);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -432,6 +444,11 @@ watch(
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.sidebar-theme-surface {
+  position: relative;
+  min-width: 0;
 }
 
 .profile {
@@ -675,12 +692,24 @@ button.nav-item {
 }
 
 @media (max-width: 768px) {
+  .overlay {
+    background: transparent;
+    backdrop-filter: none;
+  }
+
   .hamburger {
     display: flex;
   }
 
+  .sidebar-close {
+    position: absolute;
+  }
+
   .sidebar {
     width: 100vw;
+    background: var(--bg);
+    padding: 0;
+    overflow: hidden;
     transform: translateX(-100%);
     visibility: hidden;
     pointer-events: none;
@@ -693,6 +722,14 @@ button.nav-item {
     visibility: visible;
     pointer-events: auto;
     transition: transform 0.3s ease;
+  }
+
+  .sidebar-theme-surface {
+    width: 100%;
+    height: 100%;
+    padding: 1.25rem 0;
+    overflow-y: auto;
+    background: var(--bg);
   }
 
   .avatar {
