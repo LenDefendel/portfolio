@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { portfolio } from '@/data/portfolio'
 import ProjectsGrid from '@/components/ProjectsGrid.vue'
@@ -10,12 +10,12 @@ import HomeSections from '@/components/HomeSections.vue'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/category/all',
+    name: 'home',
+    component: HomeSections,
   },
   {
     path: '/category/all',
-    name: 'home',
-    component: HomeSections,
+    redirect: '/',
   },
   {
     path: '/category/:id/:subcategoryId?',
@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/workplace/all',
-    redirect: '/category/all',
+    redirect: '/',
   },
   {
     path: '/workplace/:id',
@@ -63,13 +63,13 @@ const routes: RouteRecordRaw[] = [
             },
             hash: `#${project.id}-image-0`,
           }
-        : '/category/all'
+        : '/'
     },
   },
 ]
 
 const router = createRouter({
-  history: createWebHashHistory('/portfolio/'),
+  history: createWebHistory('/'),
   routes,
   scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) return savedPosition

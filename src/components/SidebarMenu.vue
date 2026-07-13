@@ -204,9 +204,9 @@ watch(
 
         <nav class="nav">
         <router-link
-          to="/category/all"
+          to="/"
           class="nav-item"
-          :class="{ active: isActive('/category/all') }"
+          :class="{ active: isActive('/') }"
           @click="close"
         >
           <span class="material-symbols-outlined">grid_view</span>
