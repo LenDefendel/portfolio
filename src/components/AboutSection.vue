@@ -28,7 +28,7 @@ import { portfolio } from '@/data/portfolio'
 .about-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 2.5rem);
+  gap: clamp(2rem, 5vw, 3.5rem);
   align-items: start;
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border: 1px solid var(--border);
@@ -38,7 +38,7 @@ import { portfolio } from '@/data/portfolio'
 }
 
 h2 {
-  margin-bottom: 0.85rem;
+  margin-bottom: 1rem;
   text-align: left;
 }
 
@@ -88,7 +88,7 @@ h2 {
   }
 
   .about-layout {
-    gap: 1.5rem;
+    gap: 2rem;
     padding: 1.5rem;
   }
 
@@ -100,7 +100,7 @@ h2 {
   }
 
   .about-layout {
-    gap: 1.25rem;
+    gap: 1.5rem;
     padding: 1.25rem;
   }
 
