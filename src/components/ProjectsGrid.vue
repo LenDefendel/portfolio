@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { portfolio, type Project, type ProjectImage, type ProjectMedia } from '@/data/portfolio'
+import { portfolio, type Project, type ProjectMedia } from '@/data/portfolio'
+import ImageLightbox from '@/components/ImageLightbox.vue'
 import ProjectCard from '@/components/ProjectCard.vue'
 
 interface GalleryItem {
@@ -119,25 +120,7 @@ function descriptionParts(text: string): DescriptionPart[] {
   return parts
 }
 
-const lightboxImage = ref<ProjectImage | null>(null)
-
-function openLightbox(image: ProjectMedia): void {
-  if (isVideo(image)) return
-  lightboxImage.value = image as ProjectImage
-}
-
-function closeLightbox(): void {
-  lightboxImage.value = null
-}
-
-function onKeyDown(e: KeyboardEvent): void {
-  if (e.key === 'Escape') {
-    closeLightbox()
-  }
-}
-
-onMounted(() => document.addEventListener('keydown', onKeyDown))
-onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
+const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
 </script>
 
 <template>
@@ -222,7 +205,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
               class="project-image"
               :style="mediaPreviewStyle(image)"
               loading="lazy"
-              @click="openLightbox(image)"
+              @click="imageLightbox?.open(image)"
             />
           </template>
         </div>
@@ -240,25 +223,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
     <p>Категория не найдена</p>
   </div>
 
-  <Teleport to="body">
-    <div
-      v-if="lightboxImage"
-      class="lightbox-overlay"
-      @click="closeLightbox"
-      @keydown.escape="closeLightbox"
-    >
-      <button class="lightbox-close" @click="closeLightbox">
-        <span class="material-symbols-outlined">close</span>
-      </button>
-      <img
-        :src="lightboxImage.fullSrc ?? lightboxImage.src"
-        :width="lightboxImage.fullWidth ?? lightboxImage.width"
-        :height="lightboxImage.fullHeight ?? lightboxImage.height"
-        class="lightbox-image"
-        alt="Полноразмерное изображение"
-      />
-    </div>
-  </Teleport>
+  <ImageLightbox ref="imageLightbox" />
 </template>
 
 <style scoped>
@@ -384,47 +349,6 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
 .empty-icon {
   margin-bottom: 1rem;
   font-size: 3rem;
-}
-
-.lightbox-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.9);
-  cursor: zoom-out;
-  padding: 2rem;
-}
-
-.lightbox-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: grid;
-  place-items: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.lightbox-close:hover {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.lightbox-image {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: var(--radius-sm);
-  cursor: zoom-out;
 }
 
 @media (min-width: 769px) and (max-height: 760px) {
