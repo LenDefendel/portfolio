@@ -363,6 +363,15 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   transform: translateY(-1px);
 }
 
+.project-video,
+.project-video:hover {
+  cursor: default;
+  border-color: var(--border);
+  filter: none;
+  pointer-events: none;
+  transform: none;
+}
+
 .empty {
   display: flex;
   flex-direction: column;

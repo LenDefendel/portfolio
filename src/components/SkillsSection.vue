@@ -83,16 +83,6 @@ h2 {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 1.5rem;
-  transition:
-    background 0.2s,
-    border-color 0.3s,
-    transform 0.2s;
-}
-
-.skill-group:hover {
-  background: var(--bg-elevated);
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
 }
 
 .group-heading {
@@ -126,6 +116,8 @@ h3 {
   font-size: 0.95rem;
   font-weight: 500;
   overflow-wrap: anywhere;
+  cursor: default;
+  pointer-events: none;
 }
 
 @media (max-width: 860px) {

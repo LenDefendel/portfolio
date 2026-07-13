@@ -23,27 +23,13 @@ const target = {
 
 <template>
   <router-link
+    v-if="!isVideo(image)"
     :to="target"
     class="project-card"
     :style="{ '--image-ratio': `${image.width || 4} / ${image.height || 3}` }"
   >
     <div class="card-image">
-      <video
-        v-if="isVideo(image)"
-        :src="image.src"
-        :height="image.height"
-        :width="image.width"
-        class="card-img"
-        autoplay
-        disablepictureinpicture
-        muted
-        loop
-        playsinline
-        controlslist="nodownload nofullscreen noremoteplayback"
-        preload="auto"
-      />
       <img
-        v-else
         :src="image.src"
         :height="image.height"
         :width="image.width"
@@ -56,6 +42,31 @@ const target = {
       </div>
     </div>
   </router-link>
+
+  <div
+    v-else
+    class="project-card project-card--static"
+    :style="{ '--image-ratio': `${image.width || 4} / ${image.height || 3}` }"
+  >
+    <div class="card-image">
+      <video
+        :src="image.src"
+        :height="image.height"
+        :width="image.width"
+        class="card-img"
+        autoplay
+        disablepictureinpicture
+        muted
+        loop
+        playsinline
+        controlslist="nodownload nofullscreen noremoteplayback"
+        preload="auto"
+      />
+      <div class="card-overlay">
+        <h3 class="card-title">{{ project.title }}</h3>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -80,6 +91,21 @@ const target = {
   transform: translateY(-2px);
 }
 
+.project-card--static,
+.project-card--static .card-img {
+  cursor: default;
+}
+
+.project-card--static video {
+  pointer-events: none;
+}
+
+.project-card--static:hover {
+  border-color: var(--border);
+  box-shadow: none;
+  transform: none;
+}
+
 .card-image {
   position: relative;
   width: 100%;
@@ -99,6 +125,11 @@ const target = {
 .project-card:focus-visible .card-img {
   filter: brightness(0.78);
   transform: scale(1.015);
+}
+
+.project-card--static:hover .card-img {
+  filter: none;
+  transform: none;
 }
 
 .card-overlay {
