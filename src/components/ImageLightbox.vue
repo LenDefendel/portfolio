@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type { ProjectImage, ProjectMedia } from '@/data/portfolio'
 
@@ -28,26 +28,35 @@ const image = computed<ProjectImage | null>(() => {
 })
 
 const isZoomed = ref(false)
-const imageElement = ref<HTMLImageElement | null>(null)
-const imageBounds = ref<DOMRect | null>(null)
+const isDragging = ref(false)
+const panX = ref(0)
+const panY = ref(0)
 
-function updateImageBounds(): void {
-  if (imageElement.value && !isZoomed.value) {
-    imageBounds.value = imageElement.value.getBoundingClientRect()
-  }
+let pointerStartX = 0
+let pointerStartY = 0
+let panStartX = 0
+let panStartY = 0
+let didDrag = false
+
+const imageTransform = computed(() =>
+  isZoomed.value ? `translate3d(${panX.value}px, ${panY.value}px, 0) scale(2)` : undefined,
+)
+
+function resetView(): void {
+  isZoomed.value = false
+  isDragging.value = false
+  panX.value = 0
+  panY.value = 0
+  didDrag = false
 }
 
-watch(image, async () => {
-  isZoomed.value = false
-  await nextTick()
-  updateImageBounds()
-})
+watch(image, resetView)
 
 function open(imageId: string): void {
   const item = props.items.find((candidate) => candidate.id === imageId)
   if (!item || !isImage(item.media)) return
 
-  isZoomed.value = false
+  resetView()
 
   router.push({
     query: {
@@ -60,7 +69,7 @@ function open(imageId: string): void {
 function close(): void {
   if (!image.value) return
 
-  isZoomed.value = false
+  resetView()
 
   const query = { ...route.query }
   delete query.image
@@ -68,32 +77,67 @@ function close(): void {
 }
 
 function toggleZoom(): void {
-  updateImageBounds()
   isZoomed.value = !isZoomed.value
+  if (!isZoomed.value) {
+    panX.value = 0
+    panY.value = 0
+  }
 }
 
-function isImageClick(event: MouseEvent): boolean {
-  if (!isZoomed.value) updateImageBounds()
+function onImageClick(event: MouseEvent): void {
+  event.stopPropagation()
 
-  const bounds = imageBounds.value
-  if (!bounds) return false
-
-  return (
-    event.clientX >= bounds.left &&
-    event.clientX <= bounds.right &&
-    event.clientY >= bounds.top &&
-    event.clientY <= bounds.bottom
-  )
-}
-
-function onOverlayClick(event: MouseEvent): void {
-  if (isImageClick(event)) {
-    toggleZoom()
+  if (didDrag) {
+    didDrag = false
     return
   }
 
-  close()
+  toggleZoom()
 }
+
+function onPointerDown(event: PointerEvent): void {
+  if (!isZoomed.value || event.button !== 0) return
+
+  event.preventDefault()
+  isDragging.value = true
+  didDrag = false
+  pointerStartX = event.clientX
+  pointerStartY = event.clientY
+  panStartX = panX.value
+  panStartY = panY.value
+  const target = event.currentTarget as HTMLImageElement
+  target.setPointerCapture(event.pointerId)
+}
+
+function onPointerMove(event: PointerEvent): void {
+  if (!isDragging.value) return
+
+  const deltaX = event.clientX - pointerStartX
+  const deltaY = event.clientY - pointerStartY
+
+  if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+    didDrag = true
+  }
+
+  panX.value = panStartX + deltaX
+  panY.value = panStartY + deltaY
+}
+
+function onPointerUp(event: PointerEvent): void {
+  if (!isDragging.value) return
+
+  isDragging.value = false
+  const target = event.currentTarget as HTMLImageElement
+  if (target.hasPointerCapture(event.pointerId)) {
+    target.releasePointerCapture(event.pointerId)
+  }
+}
+
+function onPointerCancel(): void {
+  isDragging.value = false
+  didDrag = false
+}
+
 
 function onKeyDown(event: KeyboardEvent): void {
   if (event.key === 'Escape' && image.value) close()
@@ -107,7 +151,7 @@ defineExpose({ open, close })
 
 <template>
   <Teleport to="body">
-    <div v-if="image" class="lightbox-overlay" @click="onOverlayClick">
+    <div v-if="image" class="lightbox-overlay" @click.self="close">
       <button
         class="lightbox-close"
         type="button"
@@ -117,14 +161,22 @@ defineExpose({ open, close })
         <span class="material-symbols-outlined">close</span>
       </button>
       <img
-        ref="imageElement"
         :src="image.fullSrc ?? image.src"
         :width="image.fullWidth ?? image.width"
         :height="image.fullHeight ?? image.height"
         class="lightbox-image"
-        :class="{ 'lightbox-image--zoomed': isZoomed }"
+        :class="{
+          'lightbox-image--zoomed': isZoomed,
+          'lightbox-image--dragging': isDragging,
+        }"
+        :style="{ transform: imageTransform }"
         alt="Полноразмерное изображение"
-        @load="updateImageBounds"
+        draggable="false"
+        @click="onImageClick"
+        @pointerdown="onPointerDown"
+        @pointermove="onPointerMove"
+        @pointerup="onPointerUp"
+        @pointercancel="onPointerCancel"
       />
     </div>
   </Teleport>
@@ -171,11 +223,17 @@ defineExpose({ open, close })
   max-height: 100%;
   border-radius: var(--radius-sm);
   cursor: zoom-in;
+  touch-action: none;
+  user-select: none;
   transition: transform 0.25s ease;
 }
 
 .lightbox-image--zoomed {
-  cursor: zoom-out;
-  transform: scale(2);
+  cursor: grab;
+}
+
+.lightbox-image--dragging {
+  cursor: grabbing;
+  transition: none;
 }
 </style>
