@@ -244,7 +244,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
     <div
       v-if="lightboxImage"
       class="lightbox-overlay"
-      @click.self="closeLightbox"
+      @click="closeLightbox"
       @keydown.escape="closeLightbox"
     >
       <button class="lightbox-close" @click="closeLightbox">
@@ -415,7 +415,7 @@ onUnmounted(() => document.removeEventListener('keydown', onKeyDown))
   max-height: 100%;
   object-fit: contain;
   border-radius: var(--radius-sm);
-  cursor: default;
+  cursor: zoom-out;
 }
 
 @media (min-width: 769px) and (max-height: 760px) {
