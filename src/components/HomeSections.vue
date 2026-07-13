@@ -61,6 +61,7 @@ const homeSections = sections.flatMap((section) => {
 .home-sections {
   width: 100%;
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   padding: 32px;
 }
@@ -74,6 +75,11 @@ const homeSections = sections.flatMap((section) => {
   color: #fff;
   isolation: isolate;
   text-decoration: none;
+}
+
+.home-section:first-child,
+.home-section:nth-child(4) {
+  grid-column: 1 / -1;
 }
 
 .home-section-image,
@@ -155,6 +161,16 @@ const homeSections = sections.flatMap((section) => {
 }
 
 @media (max-width: 768px) {
+  .home-sections {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .home-section:first-child,
+  .home-section:nth-child(4) {
+    grid-column: auto;
+  }
+
   .home-section {
     height: 180px;
     border-radius: 16px;
