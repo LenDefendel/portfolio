@@ -32,7 +32,6 @@ const groupedSkills = computed(() => {
         :class="{ 'skill-group--design': group.category === 'Design' }"
       >
         <div class="group-heading">
-          <span class="material-symbols-outlined group-icon">category</span>
           <h3>{{ group.category }}</h3>
         </div>
         <div class="skill-list">
@@ -101,17 +100,6 @@ h2 {
   align-items: center;
   gap: 0.7rem;
   margin-bottom: 1rem;
-}
-
-.group-icon {
-  display: grid;
-  width: 2rem;
-  height: 2rem;
-  place-items: center;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-size: 1.1rem;
 }
 
 h3 {
