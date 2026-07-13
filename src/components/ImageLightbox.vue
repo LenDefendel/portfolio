@@ -1,20 +1,53 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import type { ProjectImage, ProjectMedia } from '@/data/portfolio'
 
-const image = ref<ProjectImage | null>(null)
+interface LightboxItem {
+  id: string
+  media: ProjectMedia
+}
 
-function open(media: ProjectMedia): void {
-  if (media.type === 'video') return
-  image.value = media
+const props = defineProps<{
+  items: LightboxItem[]
+}>()
+
+const route = useRoute()
+const router = useRouter()
+
+function isImage(media: ProjectMedia): media is ProjectImage {
+  return media.type !== 'video'
+}
+
+const image = computed<ProjectImage | null>(() => {
+  const imageId = route.query.image
+  if (typeof imageId !== 'string') return null
+
+  const item = props.items.find((candidate) => candidate.id === imageId)
+  return item && isImage(item.media) ? item.media : null
+})
+
+function open(imageId: string): void {
+  const item = props.items.find((candidate) => candidate.id === imageId)
+  if (!item || !isImage(item.media)) return
+
+  router.push({
+    query: {
+      ...route.query,
+      image: imageId,
+    },
+  })
 }
 
 function close(): void {
-  image.value = null
+  if (!image.value) return
+
+  const { image: _image, ...query } = route.query
+  router.replace({ query })
 }
 
 function onKeyDown(event: KeyboardEvent): void {
-  if (event.key === 'Escape') close()
+  if (event.key === 'Escape' && image.value) close()
 }
 
 onMounted(() => document.addEventListener('keydown', onKeyDown))
@@ -26,7 +59,12 @@ defineExpose({ open, close })
 <template>
   <Teleport to="body">
     <div v-if="image" class="lightbox-overlay" @click="close">
-      <button class="lightbox-close" type="button" aria-label="Закрыть изображение" @click="close">
+      <button
+        class="lightbox-close"
+        type="button"
+        aria-label="Закрыть изображение"
+        @click.stop="close"
+      >
         <span class="material-symbols-outlined">close</span>
       </button>
       <img

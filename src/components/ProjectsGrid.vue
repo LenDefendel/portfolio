@@ -83,6 +83,19 @@ function imageAnchor(projectId: string, imageIndex: number): string {
   return `${projectId}-image-${imageIndex}`
 }
 
+function lightboxImageId(projectId: string, imageIndex: number): string {
+  return `${projectId}-${imageIndex}`
+}
+
+const lightboxItems = computed(() =>
+  categoryProjects.value.flatMap((project) =>
+    projectImages(project).map((media, imageIndex) => ({
+      id: lightboxImageId(project.id, imageIndex),
+      media,
+    })),
+  ),
+)
+
 function descriptionParts(text: string): DescriptionPart[] {
   const parts: DescriptionPart[] = []
   const urlPattern = /https?:\/\/[^\s,)]+/g
@@ -205,7 +218,7 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
               class="project-image"
               :style="mediaPreviewStyle(image)"
               loading="lazy"
-              @click="imageLightbox?.open(image)"
+              @click="imageLightbox?.open(lightboxImageId(project.id, imageIndex))"
             />
           </template>
         </div>
@@ -223,7 +236,7 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
     <p>Категория не найдена</p>
   </div>
 
-  <ImageLightbox ref="imageLightbox" />
+  <ImageLightbox ref="imageLightbox" :items="lightboxItems" />
 </template>
 
 <style scoped>
