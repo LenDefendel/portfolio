@@ -249,7 +249,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-tropicalBirds',
-      title: 'Tropical Birds',
+      title: 'Tropical herbarium',
       description: 'Коллекция обоев с тропическими птицами.',
       summary:
         'Коллекция обоев, вдохновлённая старинными ботаническими иллюстрациями и атмосферой экзотического сада. Изображение имеет паттерн и детальную проработку.',
