@@ -155,7 +155,7 @@ function onPreviewPointerUp(event: PointerEvent, imageId: string): void {
 
   event.preventDefault()
   ignorePreviewClickUntil = Date.now() + 500
-  imageLightbox.value?.open(imageId)
+  imageLightbox.value?.open(imageId, true)
 }
 
 function onPreviewPointerCancel(event: PointerEvent): void {

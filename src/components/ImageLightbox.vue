@@ -54,11 +54,12 @@ function resetView(): void {
 
 watch(image, resetView)
 
-function open(imageId: string): void {
+function open(imageId: string, suppressInitialClick = false): void {
   const item = props.items.find((candidate) => candidate.id === imageId)
   if (!item || !isImage(item.media)) return
 
   resetView()
+  ignoreClickUntil = suppressInitialClick ? Date.now() + 700 : 0
 
   router.push({
     query: {
@@ -97,6 +98,11 @@ function onImageClick(event: MouseEvent): void {
   }
 
   toggleZoom()
+}
+
+function onOverlayClick(): void {
+  if (Date.now() < ignoreClickUntil) return
+  close()
 }
 
 function onPointerDown(event: PointerEvent): void {
@@ -208,7 +214,7 @@ defineExpose({ open, close })
 
 <template>
   <Teleport to="body">
-    <div v-if="image" class="lightbox-overlay" @click.self="close">
+    <div v-if="image" class="lightbox-overlay" @click.self="onOverlayClick">
       <button
         class="lightbox-close"
         type="button"
