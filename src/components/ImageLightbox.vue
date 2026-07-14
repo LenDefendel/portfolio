@@ -39,6 +39,7 @@ let panStartY = 0
 let didDrag = false
 let activeTouchIdentifier: number | null = null
 let ignoreClickUntil = 0
+let ignoreZoomControlClickUntil = 0
 
 const imageTransform = computed(() =>
   isZoomed.value ? `translate3d(${panX.value}px, ${panY.value}px, 0) scale(2)` : undefined,
@@ -224,6 +225,19 @@ function onTouchCancel(): void {
   didDrag = false
 }
 
+function onZoomControlClick(event: MouseEvent): void {
+  event.stopPropagation()
+  if (Date.now() < ignoreZoomControlClickUntil) return
+  toggleZoom()
+}
+
+function onZoomControlTouchEnd(event: TouchEvent): void {
+  event.preventDefault()
+  event.stopPropagation()
+  ignoreZoomControlClickUntil = Date.now() + 700
+  toggleZoom()
+}
+
 
 function onKeyDown(event: KeyboardEvent): void {
   if (event.key === 'Escape' && image.value) close()
@@ -245,6 +259,17 @@ defineExpose({ open, close })
         @click.stop="close"
       >
         <span class="material-symbols-outlined">close</span>
+      </button>
+      <button
+        class="lightbox-zoom-control"
+        type="button"
+        :aria-label="isZoomed ? 'Уменьшить изображение' : 'Увеличить изображение'"
+        @click="onZoomControlClick"
+        @touchend="onZoomControlTouchEnd"
+      >
+        <span class="material-symbols-outlined">
+          {{ isZoomed ? 'zoom_out' : 'zoom_in' }}
+        </span>
       </button>
       <img
         :src="image.fullSrc ?? image.src"
@@ -307,6 +332,10 @@ defineExpose({ open, close })
   background: rgba(255, 255, 255, 0.14);
 }
 
+.lightbox-zoom-control {
+  display: none;
+}
+
 .lightbox-image {
   width: auto;
   height: auto;
@@ -326,5 +355,34 @@ defineExpose({ open, close })
 .lightbox-image--dragging {
   cursor: grabbing;
   transition: none;
+}
+
+@media (max-width: 768px) {
+  .lightbox-overlay {
+    padding: 1rem;
+  }
+
+  .lightbox-close,
+  .lightbox-zoom-control {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .lightbox-zoom-control {
+    position: absolute;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    left: 50%;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    background: rgba(20, 20, 20, 0.78);
+    color: #fff;
+    cursor: pointer;
+    transform: translateX(-50%);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
 }
 </style>
