@@ -80,12 +80,6 @@ body {
   letter-spacing: 0;
 }
 
-html.theme-transition body {
-  transition:
-    background 0.3s,
-    color 0.3s;
-}
-
 .app-layout {
   width: 100%;
   min-height: 100vh;
@@ -116,28 +110,6 @@ button:focus-visible {
   box-shadow: var(--focus-ring);
 }
 
-::view-transition {
-  pointer-events: none;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.45s;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(root) {
-  animation: none;
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 2;
-  animation-name: theme-radial-reveal;
-  animation-fill-mode: both;
-  clip-path: circle(0 at var(--theme-transition-x) var(--theme-transition-y));
-}
-
 @media (max-width: 768px) {
   .app-shell {
     width: 100%;
@@ -145,16 +117,6 @@ button:focus-visible {
 
   .main-content {
     margin-left: 0;
-  }
-}
-
-@keyframes theme-radial-reveal {
-  from {
-    clip-path: circle(0 at var(--theme-transition-x) var(--theme-transition-y));
-  }
-
-  to {
-    clip-path: circle(150vmax at var(--theme-transition-x) var(--theme-transition-y));
   }
 }
 
