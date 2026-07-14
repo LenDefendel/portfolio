@@ -176,7 +176,7 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
           <h2>{{ project.title }}</h2>
           <p class="description">
             <template
-              v-for="(part, partIndex) in descriptionParts(project.description)"
+              v-for="(part, partIndex) in descriptionParts(project.description ?? '')"
               :key="`${project.id}-description-${partIndex}`"
             >
               <a
