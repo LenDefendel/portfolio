@@ -37,6 +37,8 @@ let pointerStartY = 0
 let panStartX = 0
 let panStartY = 0
 let didDrag = false
+let activeTouchPointerId: number | null = null
+let ignoreClickUntil = 0
 
 const imageTransform = computed(() =>
   isZoomed.value ? `translate3d(${panX.value}px, ${panY.value}px, 0) scale(2)` : undefined,
@@ -87,6 +89,8 @@ function toggleZoom(): void {
 function onImageClick(event: MouseEvent): void {
   event.stopPropagation()
 
+  if (Date.now() < ignoreClickUntil) return
+
   if (didDrag) {
     didDrag = false
     return
@@ -96,6 +100,26 @@ function onImageClick(event: MouseEvent): void {
 }
 
 function onPointerDown(event: PointerEvent): void {
+  if (event.pointerType !== 'mouse') {
+    if (!event.isPrimary) return
+
+    activeTouchPointerId = event.pointerId
+    didDrag = false
+    pointerStartX = event.clientX
+    pointerStartY = event.clientY
+    panStartX = panX.value
+    panStartY = panY.value
+
+    if (isZoomed.value) {
+      event.preventDefault()
+      isDragging.value = true
+      const target = event.currentTarget as HTMLImageElement
+      target.setPointerCapture(event.pointerId)
+    }
+
+    return
+  }
+
   if (!isZoomed.value || event.button !== 0) return
 
   event.preventDefault()
@@ -110,6 +134,21 @@ function onPointerDown(event: PointerEvent): void {
 }
 
 function onPointerMove(event: PointerEvent): void {
+  if (event.pointerType !== 'mouse' && activeTouchPointerId === event.pointerId) {
+    const deltaX = event.clientX - pointerStartX
+    const deltaY = event.clientY - pointerStartY
+
+    if (Math.abs(deltaX) > 6 || Math.abs(deltaY) > 6) {
+      didDrag = true
+    }
+
+    if (isZoomed.value) {
+      panX.value = panStartX + deltaX
+      panY.value = panStartY + deltaY
+    }
+    return
+  }
+
   if (!isDragging.value) return
 
   const deltaX = event.clientX - pointerStartX
@@ -124,6 +163,23 @@ function onPointerMove(event: PointerEvent): void {
 }
 
 function onPointerUp(event: PointerEvent): void {
+  if (event.pointerType !== 'mouse' && activeTouchPointerId === event.pointerId) {
+    const target = event.currentTarget as HTMLImageElement
+    if (target.hasPointerCapture(event.pointerId)) {
+      target.releasePointerCapture(event.pointerId)
+    }
+
+    event.preventDefault()
+    event.stopPropagation()
+    isDragging.value = false
+    activeTouchPointerId = null
+    ignoreClickUntil = Date.now() + 500
+
+    if (!didDrag) toggleZoom()
+    didDrag = false
+    return
+  }
+
   if (!isDragging.value) return
 
   isDragging.value = false
@@ -136,6 +192,7 @@ function onPointerUp(event: PointerEvent): void {
 function onPointerCancel(): void {
   isDragging.value = false
   didDrag = false
+  activeTouchPointerId = null
 }
 
 

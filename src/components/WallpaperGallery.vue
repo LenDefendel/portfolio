@@ -86,6 +86,41 @@ const lightboxItems = computed(() =>
 
 const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
 const compactLayout = ref(typeof window !== 'undefined' && window.innerWidth <= 1000)
+const previewTouchStarts = new Map<number, { x: number; y: number }>()
+let ignorePreviewClickUntil = 0
+
+function openPreview(imageId: string): void {
+  if (Date.now() < ignorePreviewClickUntil) return
+  imageLightbox.value?.open(imageId)
+}
+
+function onPreviewPointerDown(event: PointerEvent): void {
+  if (event.pointerType !== 'touch') return
+
+  previewTouchStarts.set(event.pointerId, {
+    x: event.clientX,
+    y: event.clientY,
+  })
+}
+
+function onPreviewPointerUp(event: PointerEvent, imageId: string): void {
+  if (event.pointerType !== 'touch') return
+
+  const start = previewTouchStarts.get(event.pointerId)
+  previewTouchStarts.delete(event.pointerId)
+  if (!start) return
+
+  const moved = Math.hypot(event.clientX - start.x, event.clientY - start.y)
+  if (moved > 10) return
+
+  event.preventDefault()
+  ignorePreviewClickUntil = Date.now() + 500
+  imageLightbox.value?.open(imageId)
+}
+
+function onPreviewPointerCancel(event: PointerEvent): void {
+  previewTouchStarts.delete(event.pointerId)
+}
 
 function updateCompactLayout(): void {
   compactLayout.value = window.innerWidth <= 1000
@@ -155,7 +190,15 @@ onBeforeUnmount(() => {
                   :alt="`${project.title}, изображение ${item.imageIndex + 1}`"
                   class="project-image"
                   loading="lazy"
-                  @click="imageLightbox?.open(lightboxImageId(project.id, item.imageIndex))"
+                  @click="openPreview(lightboxImageId(project.id, item.imageIndex))"
+                  @pointerdown="onPreviewPointerDown"
+                  @pointerup="
+                    onPreviewPointerUp(
+                      $event,
+                      lightboxImageId(project.id, item.imageIndex),
+                    )
+                  "
+                  @pointercancel="onPreviewPointerCancel"
                 />
                 <video
                   v-else
@@ -206,7 +249,12 @@ onBeforeUnmount(() => {
                 :alt="`${project.title}, изображение ${imageIndex + 1}`"
                 class="project-image"
                 loading="lazy"
-                @click="imageLightbox?.open(lightboxImageId(project.id, imageIndex))"
+                @click="openPreview(lightboxImageId(project.id, imageIndex))"
+                @pointerdown="onPreviewPointerDown"
+                @pointerup="
+                  onPreviewPointerUp($event, lightboxImageId(project.id, imageIndex))
+                "
+                @pointercancel="onPreviewPointerCancel"
               />
               <video
                 v-else
@@ -452,6 +500,7 @@ onBeforeUnmount(() => {
   border-radius: var(--radius-md);
   background: var(--bg-card);
   cursor: pointer;
+  touch-action: manipulation;
   transition:
     transform 0.25s,
     box-shadow 0.25s;
