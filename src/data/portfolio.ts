@@ -34,7 +34,7 @@ export type ProjectMedia = ProjectImage | ProjectVideo
 export interface Project {
   id: string
   title: string
-  description: string
+  description?: string
   summary?: string
   image: ProjectMedia
   categoryId: string
@@ -232,7 +232,6 @@ export const portfolio: PortfolioData = {
     {
       id: 'wall-llamaUnicorns',
       title: 'Llamas and Unicorns',
-      description: 'Коллекция обоев с ламами и единорогами.',
       image: images._LlamaUnicornsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Animals', 'Fantasy'],
@@ -240,8 +239,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-robo',
-      title: 'Robots',
-      description: 'Коллекция обоев с роботами.',
+      title: 'Star stories',
       image: images._RoboUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Tech', 'Robots'],
@@ -250,7 +248,6 @@ export const portfolio: PortfolioData = {
     {
       id: 'wall-tropicalBirds',
       title: 'Tropical herbarium',
-      description: 'Коллекция обоев с тропическими птицами.',
       summary:
         'Коллекция обоев, вдохновлённая старинными ботаническими иллюстрациями и атмосферой экзотического сада. Изображение имеет паттерн и детальную проработку.',
       image: images._TropicalBirdsUrls[0] ?? { src: '', width: 0, height: 0 },
@@ -260,8 +257,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-tropics',
-      title: 'Tropics',
-      description: 'Коллекция обоев с тропическими мотивами.',
+      title: 'Botanical Eden',
       image: images._TropicsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Tropical', 'Nature'],
