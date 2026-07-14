@@ -65,6 +65,10 @@ import SidebarMenu from '@/components/SidebarMenu.vue'
   box-sizing: border-box;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 body {
   font-family:
     'Inter',
@@ -97,6 +101,7 @@ body {
 
 .main-content {
   flex: 1;
+  min-width: 0;
 }
 
 a,

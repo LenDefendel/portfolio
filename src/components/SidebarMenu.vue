@@ -205,6 +205,8 @@ watch(
   left: 0;
   bottom: 0;
   width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  max-width: var(--sidebar-width);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -502,6 +504,8 @@ button.nav-item {
 
   .sidebar {
     width: 100vw;
+    min-width: 100vw;
+    max-width: 100vw;
     background: var(--bg);
     padding: 0;
     overflow: hidden;
