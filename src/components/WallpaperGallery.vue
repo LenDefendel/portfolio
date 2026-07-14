@@ -274,8 +274,8 @@ onBeforeUnmount(() => {
 
 .header-summary {
   color: var(--text-secondary);
-  line-height: 1.8;
-  font-size: 1.05rem;
+  font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+  line-height: 1.7;
 }
 
 .wallpaper-projects {
@@ -339,7 +339,7 @@ onBeforeUnmount(() => {
   }
 
   .project-grid--single .project-figure {
-    width: 80%;
+    width: 72%;
   }
 
   .project-columns {

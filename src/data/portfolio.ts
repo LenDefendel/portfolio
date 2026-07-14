@@ -101,7 +101,7 @@ export const portfolio: PortfolioData = {
       id: 'wallpaper',
       name: 'Сюжеты для фресок',
       summary:
-        'Иллюстрации и паттерны для фресок, фотообоев и интерьерной печати, сделанные в компании Pinegin. Все превью изображений, представленные здесь, в оригинальном своём варианте имеют натуральный размер исчисляемый в метрах, а также масштабную детальную проработку',
+        'Иллюстрации и паттерны для фресок, фотообоев и интерьерной печати, сделанные в компании Pinegin',
       icon: 'wall_art',
     },
     {
@@ -189,7 +189,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'proj-freelance3d',
-      title: '3D Art',
+      title: 'Вишнёвый сад',
       description:
         'Коллекция 3D работ для мебельного магазина "Вишнёвый сад". Коллекция представлена на сайте производителя: https://вишневыйсадъ.рф/products/kreslo-albero-s, а также на 3ddd стоке для дизайнеров: https://3ddd.ru/3dmodels/show/albero_solido_loveseat_sofa_om',
       image: images._Freelance3dUrls[0] ?? { src: '', width: 0, height: 0 },

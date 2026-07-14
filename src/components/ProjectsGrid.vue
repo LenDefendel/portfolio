@@ -159,10 +159,7 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
 
   <article v-else-if="category" class="category-page">
     <header class="category-header">
-      <div>
-        <h1>{{ selectedSubcategory?.name ?? category.name }}</h1>
-        <p>{{ selectedSubcategory?.summary ?? category.summary }}</p>
-      </div>
+      <p class="header-summary">{{ selectedSubcategory?.summary ?? category.summary }}</p>
     </header>
 
     <div v-if="categoryProjects.length" class="project-list">
@@ -274,17 +271,14 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
   padding-top: 1.75rem;
 }
 
-.category-header h1 {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-size: clamp(1.65rem, 3.4vw, 3rem);
-  font-weight: 760;
-  line-height: 1.06;
-  margin-bottom: 1rem;
-}
-
-.category-header p,
+.category-header .header-summary,
 .description {
   color: var(--text-secondary);
+}
+
+.header-summary {
+  font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+  line-height: 1.7;
 }
 
 .summary {
@@ -384,11 +378,6 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
   .category-header {
     margin-bottom: 3rem;
     padding-top: 0.5rem;
-  }
-
-  .category-header h1 {
-    font-size: 1.8rem;
-    margin-bottom: 0.65rem;
   }
 
   .project-list {
