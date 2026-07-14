@@ -27,7 +27,8 @@ const image = computed<ProjectImage | null>(() => {
   return item && isImage(item.media) ? item.media : null
 })
 
-const isZoomed = ref(false)
+const zoomScale = ref(1)
+const isZoomed = computed(() => zoomScale.value > 1.01)
 const isDragging = ref(false)
 const panX = ref(0)
 const panY = ref(0)
@@ -39,18 +40,23 @@ let panStartY = 0
 let didDrag = false
 let activeTouchIdentifier: number | null = null
 let ignoreClickUntil = 0
-let ignoreZoomControlClickUntil = 0
+let isPinching = false
+let pinchStartDistance = 0
+let pinchStartScale = 1
 
 const imageTransform = computed(() =>
-  isZoomed.value ? `translate3d(${panX.value}px, ${panY.value}px, 0) scale(2)` : undefined,
+  isZoomed.value
+    ? `translate3d(${panX.value}px, ${panY.value}px, 0) scale(${zoomScale.value})`
+    : undefined,
 )
 
 function resetView(): void {
-  isZoomed.value = false
+  zoomScale.value = 1
   isDragging.value = false
   panX.value = 0
   panY.value = 0
   didDrag = false
+  isPinching = false
 }
 
 watch(image, resetView)
@@ -81,8 +87,8 @@ function close(): void {
 }
 
 function toggleZoom(): void {
-  isZoomed.value = !isZoomed.value
-  if (!isZoomed.value) {
+  zoomScale.value = isZoomed.value ? 1 : 2
+  if (zoomScale.value === 1) {
     panX.value = 0
     panY.value = 0
   }
@@ -163,12 +169,36 @@ function findTouch(touches: TouchList, identifier: number): Touch | null {
   return null
 }
 
+function touchDistance(first: Touch, second: Touch): number {
+  return Math.hypot(second.clientX - first.clientX, second.clientY - first.clientY)
+}
+
+function setZoomScale(scale: number): void {
+  zoomScale.value = Math.min(4, Math.max(1, scale))
+
+  if (zoomScale.value === 1) {
+    panX.value = 0
+    panY.value = 0
+  }
+}
+
 function onTouchStart(event: TouchEvent): void {
-  if (event.touches.length !== 1) {
+  if (event.touches.length >= 2) {
+    const first = event.touches.item(0)
+    const second = event.touches.item(1)
+    if (!first || !second) return
+
+    event.preventDefault()
     activeTouchIdentifier = null
     didDrag = true
+    isPinching = true
+    isDragging.value = true
+    pinchStartDistance = touchDistance(first, second)
+    pinchStartScale = zoomScale.value
     return
   }
+
+  if (event.touches.length !== 1) return
 
   const touch = event.touches.item(0)
   if (!touch) return
@@ -183,6 +213,16 @@ function onTouchStart(event: TouchEvent): void {
 }
 
 function onTouchMove(event: TouchEvent): void {
+  if (isPinching && event.touches.length >= 2) {
+    const first = event.touches.item(0)
+    const second = event.touches.item(1)
+    if (!first || !second || pinchStartDistance === 0) return
+
+    event.preventDefault()
+    setZoomScale(pinchStartScale * (touchDistance(first, second) / pinchStartDistance))
+    return
+  }
+
   if (activeTouchIdentifier === null) return
 
   const touch = findTouch(event.touches, activeTouchIdentifier)
@@ -204,6 +244,16 @@ function onTouchMove(event: TouchEvent): void {
 }
 
 function onTouchEnd(event: TouchEvent): void {
+  if (isPinching) {
+    event.preventDefault()
+    event.stopPropagation()
+    activeTouchIdentifier = null
+    isPinching = false
+    isDragging.value = false
+    ignoreClickUntil = Date.now() + 700
+    return
+  }
+
   if (activeTouchIdentifier === null) return
 
   const touch = findTouch(event.changedTouches, activeTouchIdentifier)
@@ -214,28 +264,14 @@ function onTouchEnd(event: TouchEvent): void {
   activeTouchIdentifier = null
   isDragging.value = false
   ignoreClickUntil = Date.now() + 700
-
-  if (!didDrag) toggleZoom()
   didDrag = false
 }
 
 function onTouchCancel(): void {
   activeTouchIdentifier = null
+  isPinching = false
   isDragging.value = false
   didDrag = false
-}
-
-function onZoomControlClick(event: MouseEvent): void {
-  event.stopPropagation()
-  if (Date.now() < ignoreZoomControlClickUntil) return
-  toggleZoom()
-}
-
-function onZoomControlTouchEnd(event: TouchEvent): void {
-  event.preventDefault()
-  event.stopPropagation()
-  ignoreZoomControlClickUntil = Date.now() + 700
-  toggleZoom()
 }
 
 
@@ -259,17 +295,6 @@ defineExpose({ open, close })
         @click.stop="close"
       >
         <span class="material-symbols-outlined">close</span>
-      </button>
-      <button
-        class="lightbox-zoom-control"
-        type="button"
-        :aria-label="isZoomed ? 'Уменьшить изображение' : 'Увеличить изображение'"
-        @click="onZoomControlClick"
-        @touchend="onZoomControlTouchEnd"
-      >
-        <span class="material-symbols-outlined">
-          {{ isZoomed ? 'zoom_out' : 'zoom_in' }}
-        </span>
       </button>
       <img
         :src="image.fullSrc ?? image.src"
@@ -332,10 +357,6 @@ defineExpose({ open, close })
   background: rgba(255, 255, 255, 0.14);
 }
 
-.lightbox-zoom-control {
-  display: none;
-}
-
 .lightbox-image {
   width: auto;
   height: auto;
@@ -362,27 +383,9 @@ defineExpose({ open, close })
     padding: 1rem;
   }
 
-  .lightbox-close,
-  .lightbox-zoom-control {
+  .lightbox-close {
     width: 3rem;
     height: 3rem;
-  }
-
-  .lightbox-zoom-control {
-    position: absolute;
-    bottom: max(1rem, env(safe-area-inset-bottom));
-    left: 50%;
-    z-index: 3;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: var(--radius-md);
-    background: rgba(20, 20, 20, 0.78);
-    color: #fff;
-    cursor: pointer;
-    transform: translateX(-50%);
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
   }
 }
 </style>
