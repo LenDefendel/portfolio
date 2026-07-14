@@ -339,7 +339,8 @@ onBeforeUnmount(() => {
   }
 
   .project-columns--fourth {
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    width: 90%;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.5fr);
     align-items: stretch;
   }
 
@@ -356,6 +357,27 @@ onBeforeUnmount(() => {
   }
 
   .project-columns--fourth .project-image {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-columns--fourth .project-column:first-child .project-figure {
+    height: auto;
+    align-self: flex-start;
+  }
+
+  .project-columns--fourth .project-column:first-child .project-image {
+    height: auto;
+    object-fit: contain;
+  }
+
+  .project-columns--fourth .project-column:nth-child(2) .project-figure {
+    height: 100%;
+    align-self: stretch;
+    overflow: hidden;
+  }
+
+  .project-columns--fourth .project-column:nth-child(2) .project-image {
     height: 100%;
     object-fit: cover;
   }
