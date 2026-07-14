@@ -37,7 +37,7 @@ let pointerStartY = 0
 let panStartX = 0
 let panStartY = 0
 let didDrag = false
-let activeTouchPointerId: number | null = null
+let activeTouchIdentifier: number | null = null
 let ignoreClickUntil = 0
 
 const imageTransform = computed(() =>
@@ -106,26 +106,7 @@ function onOverlayClick(): void {
 }
 
 function onPointerDown(event: PointerEvent): void {
-  if (event.pointerType !== 'mouse') {
-    if (!event.isPrimary) return
-
-    activeTouchPointerId = event.pointerId
-    didDrag = false
-    pointerStartX = event.clientX
-    pointerStartY = event.clientY
-    panStartX = panX.value
-    panStartY = panY.value
-
-    if (isZoomed.value) {
-      event.preventDefault()
-      isDragging.value = true
-      const target = event.currentTarget as HTMLImageElement
-      target.setPointerCapture(event.pointerId)
-    }
-
-    return
-  }
-
+  if (event.pointerType !== 'mouse') return
   if (!isZoomed.value || event.button !== 0) return
 
   event.preventDefault()
@@ -140,21 +121,7 @@ function onPointerDown(event: PointerEvent): void {
 }
 
 function onPointerMove(event: PointerEvent): void {
-  if (event.pointerType !== 'mouse' && activeTouchPointerId === event.pointerId) {
-    const deltaX = event.clientX - pointerStartX
-    const deltaY = event.clientY - pointerStartY
-
-    if (Math.abs(deltaX) > 6 || Math.abs(deltaY) > 6) {
-      didDrag = true
-    }
-
-    if (isZoomed.value) {
-      panX.value = panStartX + deltaX
-      panY.value = panStartY + deltaY
-    }
-    return
-  }
-
+  if (event.pointerType !== 'mouse') return
   if (!isDragging.value) return
 
   const deltaX = event.clientX - pointerStartX
@@ -169,23 +136,7 @@ function onPointerMove(event: PointerEvent): void {
 }
 
 function onPointerUp(event: PointerEvent): void {
-  if (event.pointerType !== 'mouse' && activeTouchPointerId === event.pointerId) {
-    const target = event.currentTarget as HTMLImageElement
-    if (target.hasPointerCapture(event.pointerId)) {
-      target.releasePointerCapture(event.pointerId)
-    }
-
-    event.preventDefault()
-    event.stopPropagation()
-    isDragging.value = false
-    activeTouchPointerId = null
-    ignoreClickUntil = Date.now() + 500
-
-    if (!didDrag) toggleZoom()
-    didDrag = false
-    return
-  }
-
+  if (event.pointerType !== 'mouse') return
   if (!isDragging.value) return
 
   isDragging.value = false
@@ -195,10 +146,82 @@ function onPointerUp(event: PointerEvent): void {
   }
 }
 
-function onPointerCancel(): void {
+function onPointerCancel(event: PointerEvent): void {
+  if (event.pointerType !== 'mouse') return
+
   isDragging.value = false
   didDrag = false
-  activeTouchPointerId = null
+}
+
+function findTouch(touches: TouchList, identifier: number): Touch | null {
+  for (let index = 0; index < touches.length; index += 1) {
+    const touch = touches.item(index)
+    if (touch?.identifier === identifier) return touch
+  }
+
+  return null
+}
+
+function onTouchStart(event: TouchEvent): void {
+  if (event.touches.length !== 1) {
+    activeTouchIdentifier = null
+    didDrag = true
+    return
+  }
+
+  const touch = event.touches.item(0)
+  if (!touch) return
+
+  activeTouchIdentifier = touch.identifier
+  pointerStartX = touch.clientX
+  pointerStartY = touch.clientY
+  panStartX = panX.value
+  panStartY = panY.value
+  didDrag = false
+  isDragging.value = isZoomed.value
+}
+
+function onTouchMove(event: TouchEvent): void {
+  if (activeTouchIdentifier === null) return
+
+  const touch = findTouch(event.touches, activeTouchIdentifier)
+  if (!touch) return
+
+  event.preventDefault()
+
+  const deltaX = touch.clientX - pointerStartX
+  const deltaY = touch.clientY - pointerStartY
+
+  if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+    didDrag = true
+  }
+
+  if (isZoomed.value) {
+    panX.value = panStartX + deltaX
+    panY.value = panStartY + deltaY
+  }
+}
+
+function onTouchEnd(event: TouchEvent): void {
+  if (activeTouchIdentifier === null) return
+
+  const touch = findTouch(event.changedTouches, activeTouchIdentifier)
+  if (!touch) return
+
+  event.preventDefault()
+  event.stopPropagation()
+  activeTouchIdentifier = null
+  isDragging.value = false
+  ignoreClickUntil = Date.now() + 700
+
+  if (!didDrag) toggleZoom()
+  didDrag = false
+}
+
+function onTouchCancel(): void {
+  activeTouchIdentifier = null
+  isDragging.value = false
+  didDrag = false
 }
 
 
@@ -240,6 +263,10 @@ defineExpose({ open, close })
         @pointermove="onPointerMove"
         @pointerup="onPointerUp"
         @pointercancel="onPointerCancel"
+        @touchstart="onTouchStart"
+        @touchmove="onTouchMove"
+        @touchend="onTouchEnd"
+        @touchcancel="onTouchCancel"
       />
     </div>
   </Teleport>
