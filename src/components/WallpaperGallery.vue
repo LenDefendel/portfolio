@@ -191,7 +191,11 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div v-else class="project-grid">
+        <div
+          v-else
+          class="project-grid"
+          :class="{ 'project-grid--single': project.id === 'wall-tropics' }"
+        >
           <template v-for="(image, imageIndex) in projectImages(project)" :key="imageIndex">
             <figure :id="imageAnchor(project.id, imageIndex)" class="project-figure">
               <img
@@ -328,6 +332,14 @@ onBeforeUnmount(() => {
 @media (min-width: 769px) {
   .project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-grid--single {
+    grid-template-columns: 1fr;
+  }
+
+  .project-grid--single .project-figure {
+    width: 80%;
   }
 
   .project-columns {
