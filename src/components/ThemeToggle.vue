@@ -24,9 +24,10 @@ const { isDark, toggle } = useTheme()
 
 <style scoped>
 .theme-toggle {
-  position: fixed;
+  position: absolute;
   top: 0.75rem;
-  left: calc(max(0px, calc(50vw - 960px)) + var(--sidebar-width) - 3.25rem);
+  right: 0.75rem;
+  left: auto;
   z-index: 200;
   width: 40px;
   height: 40px;
@@ -53,11 +54,4 @@ const { isDark, toggle } = useTheme()
   transform: translateY(-1px);
 }
 
-@media (max-width: 768px) {
-  .theme-toggle {
-    position: absolute;
-    right: 0.75rem;
-    left: auto;
-  }
-}
 </style>

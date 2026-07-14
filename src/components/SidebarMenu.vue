@@ -176,7 +176,7 @@ watch(
   </Teleport>
 
   <aside class="sidebar" :class="{ 'sidebar--open': isOpen, 'sidebar--resizing': isResizing }">
-    <ThemeToggle :teleport-disabled="isMobile" />
+    <ThemeToggle :teleport-disabled="true" />
     <div class="sidebar-theme-surface">
       <button
         v-if="isMobile"
