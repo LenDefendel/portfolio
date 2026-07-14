@@ -1,15 +1,8 @@
-export interface Subcategory {
-  id: string
-  name: string
-  summary: string
-}
-
 export interface Category {
   id: string
   name: string
   summary: string
   icon: string
-  subcategories?: Subcategory[]
 }
 
 export interface ProjectImage {
@@ -38,7 +31,6 @@ export interface Project {
   summary?: string
   image: ProjectMedia
   categoryId: string
-  subcategoryId?: string
   tags: string[]
   link?: string
   images?: ProjectMedia[]
@@ -121,23 +113,6 @@ export const portfolio: PortfolioData = {
       name: 'Другие проекты',
       summary: 'Разные визуальные задачи, эксперименты и работы вне основных направлений.',
       icon: 'category',
-      subcategories: [
-        {
-          id: 'effects',
-          name: 'Real Time VFX',
-          summary: 'Real Time VFX и визуальные эффекты для интерактивных сцен.',
-        },
-        {
-          id: 'student-khu',
-          name: 'Студенческие работы',
-          summary: 'Работы периода обучения в КХУ.',
-        },
-        {
-          id: 'arts-concepts',
-          name: 'Арты, концепты',
-          summary: 'Иллюстрации и концепты, выполненные в Photoshop и Procreate.',
-        },
-      ],
     },
   ],
   projects: [
@@ -269,7 +244,6 @@ export const portfolio: PortfolioData = {
       description: 'Видео с эффектами в реальном времени и визуальными экспериментами.',
       image: vfxVideos[0] ?? { src: '', width: 0, height: 0, type: 'video' },
       categoryId: 'other-projects',
-      subcategoryId: 'effects',
       tags: ['VFX', 'Real Time', 'Effects'],
       images: vfxVideos,
     },
@@ -279,7 +253,6 @@ export const portfolio: PortfolioData = {
       description: 'Студенческие 3D-работы, сцены и интерьерные объекты.',
       image: images._OtherProjectsStudentWork3dMaxUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'other-projects',
-      subcategoryId: 'student-khu',
       tags: ['3D Max', 'КХУ', 'Student Work'],
       images: images._OtherProjectsStudentWork3dMaxUrls,
     },
@@ -289,7 +262,6 @@ export const portfolio: PortfolioData = {
       description: 'Студенческая работа с этапами 3D-моделирования в Blender.',
       image: images._OtherProjectsStudentWorkBlenderUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'other-projects',
-      subcategoryId: 'student-khu',
       tags: ['Blender', 'КХУ', 'Student Work'],
       images: images._OtherProjectsStudentWorkBlenderUrls,
     },
@@ -299,7 +271,6 @@ export const portfolio: PortfolioData = {
       description: 'Учебные графические работы и композиции периода обучения.',
       image: images._OtherProjectsStudentWorkGraphicsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'other-projects',
-      subcategoryId: 'student-khu',
       tags: ['Graphics', 'КХУ', 'Student Work'],
       images: images._OtherProjectsStudentWorkGraphicsUrls,
     },
@@ -309,7 +280,6 @@ export const portfolio: PortfolioData = {
       description: 'Учебные живописные работы периода обучения.',
       image: images._OtherProjectsStudentWorkPaintingUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'other-projects',
-      subcategoryId: 'student-khu',
       tags: ['Painting', 'КХУ', 'Student Work'],
       images: images._OtherProjectsStudentWorkPaintingUrls,
     },
@@ -319,7 +289,6 @@ export const portfolio: PortfolioData = {
       description: 'Иллюстрации и концепты, выполненные в Photoshop и Procreate.',
       image: images._OtherProjectsArtUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'other-projects',
-      subcategoryId: 'arts-concepts',
       tags: ['Art', 'Concept', 'Photoshop', 'Procreate'],
       images: images._OtherProjectsArtUrls,
     },

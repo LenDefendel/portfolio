@@ -15,7 +15,6 @@ const target = {
   name: 'category',
   params: {
     id: props.project.categoryId,
-    ...(props.project.subcategoryId ? { subcategoryId: props.project.subcategoryId } : {}),
   },
   hash: `#${props.project.id}-image-${props.imageIndex}`,
 }

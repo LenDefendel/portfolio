@@ -20,17 +20,10 @@ interface DescriptionPart {
 const route = useRoute()
 
 const categoryId = computed(() => route.params.id as string)
-const subcategoryId = computed(() => route.params.subcategoryId as string | undefined)
 const category = computed(() => portfolio.categories.find((item) => item.id === categoryId.value))
-const selectedSubcategory = computed(() =>
-  category.value?.subcategories?.find((item) => item.id === subcategoryId.value),
-)
 const categoryProjects = computed(() =>
   portfolio.projects.filter((project) => {
-    if (project.categoryId !== categoryId.value) return false
-    if (subcategoryId.value) return project.subcategoryId === subcategoryId.value
-    if (category.value?.subcategories?.length) return !project.subcategoryId
-    return true
+    return project.categoryId === categoryId.value
   }),
 )
 
@@ -65,8 +58,6 @@ function shuffle<T>(items: T[]): T[] {
 const allImages = computed<GalleryItem[]>(() =>
   shuffle(
     portfolio.projects.flatMap((project) => {
-      if (project.subcategoryId) return []
-
       const categoryExists = portfolio.categories.some(
         (categoryItem) => categoryItem.id === project.categoryId,
       )
@@ -194,7 +185,7 @@ function onPreviewPointerCancel(event: PointerEvent): void {
 
   <article v-else-if="category" class="category-page">
     <header class="category-header">
-      <p class="header-summary">{{ selectedSubcategory?.summary ?? category.summary }}</p>
+      <p class="header-summary">{{ category.summary }}</p>
     </header>
 
     <div v-if="categoryProjects.length" class="project-list">

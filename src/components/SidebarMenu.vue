@@ -12,7 +12,6 @@ const MOBILE_MEDIA_QUERY = '(max-width: 768px)'
 
 const isOpen = ref(false)
 const isMobile = ref(window.matchMedia(MOBILE_MEDIA_QUERY).matches)
-const openDropdownIds = ref<string[]>([])
 
 const checkMobile = () => {
   isMobile.value = window.matchMedia(MOBILE_MEDIA_QUERY).matches
@@ -35,43 +34,13 @@ const close = () => {
   isOpen.value = false
 }
 
-function isDropdownOpen(id: string): boolean {
-  return openDropdownIds.value.includes(id)
-}
-
-function openDropdown(id: string): void {
-  if (isDropdownOpen(id)) return
-  openDropdownIds.value = [...openDropdownIds.value, id]
-}
-
-function toggleDropdown(id: string): void {
-  openDropdownIds.value = isDropdownOpen(id)
-    ? openDropdownIds.value.filter((item) => item !== id)
-    : [...openDropdownIds.value, id]
-}
-
-function openActiveDropdown(): void {
-  const activeCategory = portfolio.categories.find(
-    (category) => category.subcategories?.length && isCategoryActive(category.id),
-  )
-
-  if (activeCategory) {
-    openDropdown(activeCategory.id)
-  }
-}
-
 const isActive = (path: string) => route.path === path
 
-const isCategoryActive = (id: string) =>
-  route.path === `/category/${id}` || route.path.startsWith(`/category/${id}/`)
-
-const isSubcategoryActive = (categoryId: string, subcategoryId: string) =>
-  route.path === `/category/${categoryId}/${subcategoryId}`
+const isCategoryActive = (id: string) => route.path === `/category/${id}`
 
 watch(
   route,
   () => {
-    openActiveDropdown()
     if (isMobile.value) isOpen.value = false
   },
   { immediate: true },
@@ -123,7 +92,6 @@ watch(
 
           <template v-for="category in portfolio.categories" :key="category.id">
             <router-link
-              v-if="!category.subcategories?.length"
               :to="`/category/${category.id}`"
               class="nav-item"
               :class="{ active: isCategoryActive(category.id) }"
@@ -135,38 +103,6 @@ watch(
                 <span class="nav-summary">{{ category.summary }}</span>
               </div>
             </router-link>
-
-            <button
-              v-else
-              class="nav-item nav-dropdown-toggle"
-              :class="{ active: isCategoryActive(category.id), open: isDropdownOpen(category.id) }"
-              type="button"
-              :aria-expanded="isDropdownOpen(category.id)"
-              @click="toggleDropdown(category.id)"
-            >
-              <span class="material-symbols-outlined nav-icon">{{ category.icon }}</span>
-              <div class="nav-text">
-                <span class="nav-name">{{ category.name }}</span>
-                <span class="nav-summary">{{ category.summary }}</span>
-              </div>
-              <span class="material-symbols-outlined nav-chevron">expand_more</span>
-            </button>
-
-            <div
-              v-if="category.subcategories?.length && isDropdownOpen(category.id)"
-              class="nav-subitems"
-            >
-              <router-link
-                v-for="subcategory in category.subcategories"
-                :key="subcategory.id"
-                :to="`/category/${category.id}/${subcategory.id}`"
-                class="nav-subitem"
-                :class="{ active: isSubcategoryActive(category.id, subcategory.id) }"
-                @click="close"
-              >
-                {{ subcategory.name }}
-              </router-link>
-            </div>
           </template>
 
           <div class="nav-divider" />

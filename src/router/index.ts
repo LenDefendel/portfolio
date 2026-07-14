@@ -18,7 +18,15 @@ const routes: RouteRecordRaw[] = [
     redirect: '/',
   },
   {
-    path: '/category/:id/:subcategoryId?',
+    path: '/category/:id/:subcategoryId',
+    redirect: (to) => ({
+      name: 'category',
+      params: { id: to.params.id },
+      hash: to.hash,
+    }),
+  },
+  {
+    path: '/category/:id',
     name: 'category',
     component: ProjectsGrid,
   },
@@ -59,7 +67,6 @@ const routes: RouteRecordRaw[] = [
             name: 'category',
             params: {
               id: project.categoryId,
-              ...(project.subcategoryId ? { subcategoryId: project.subcategoryId } : {}),
             },
             hash: `#${project.id}-image-0`,
           }
