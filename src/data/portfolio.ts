@@ -84,17 +84,17 @@ export const portfolio: PortfolioData = {
   telegram: 'https://t.me/lenDefendel',
   categories: [
     {
-      id: 'signs',
-      name: 'Макеты вывесок',
-      summary: 'Наружная навигация, режимы работы и QR-таблички для печати и монтажа.',
-      icon: 'signpost',
-    },
-    {
       id: 'wallpaper',
       name: 'Сюжеты для фресок',
       summary:
         'Иллюстрации и паттерны для фресок, фотообоев и интерьерной печати, сделанные в компании Pinegin',
       icon: 'wall_art',
+    },
+    {
+      id: 'signs',
+      name: 'Макеты вывесок',
+      summary: 'Наружная навигация, режимы работы и QR-таблички для печати и монтажа.',
+      icon: 'signpost',
     },
     {
       id: 'marketplace-cards',
