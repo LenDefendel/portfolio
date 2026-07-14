@@ -82,7 +82,8 @@ const homeSections = sections.flatMap((section) => {
 }
 
 .home-section:first-child,
-.home-section:nth-child(4) {
+.home-section:nth-child(4),
+.home-section:last-child {
   grid-column: 1 / -1;
 }
 
@@ -171,7 +172,8 @@ const homeSections = sections.flatMap((section) => {
   }
 
   .home-section:first-child,
-  .home-section:nth-child(4) {
+  .home-section:nth-child(4),
+  .home-section:last-child {
     grid-column: auto;
   }
 
