@@ -8,109 +8,23 @@ const route = useRoute()
 
 const avatarSrc = new URL('/src/assets/photo/0061 копия 2-preview.webp', import.meta.url).href
 
-const SIDEBAR_STORAGE_KEY = 'portfolio-sidebar-width'
-const DEFAULT_SIDEBAR_WIDTH = 260
-const MIN_SIDEBAR_WIDTH = 220
-const MAX_SIDEBAR_WIDTH = 420
 const MOBILE_MEDIA_QUERY = '(max-width: 768px)'
 
 const isOpen = ref(false)
 const isMobile = ref(window.matchMedia(MOBILE_MEDIA_QUERY).matches)
-const sidebarWidth = ref(DEFAULT_SIDEBAR_WIDTH)
-const isResizing = ref(false)
 const openDropdownIds = ref<string[]>([])
-
-function clampSidebarWidth(width: number): number {
-  return Math.min(Math.max(width, MIN_SIDEBAR_WIDTH), MAX_SIDEBAR_WIDTH)
-}
-
-function setSidebarWidth(width: number, shouldSave = true): void {
-  const nextWidth = clampSidebarWidth(Math.round(width))
-
-  sidebarWidth.value = nextWidth
-  document.documentElement.style.setProperty('--sidebar-width', `${nextWidth}px`)
-
-  if (shouldSave) {
-    localStorage.setItem(SIDEBAR_STORAGE_KEY, String(nextWidth))
-  }
-}
 
 const checkMobile = () => {
   isMobile.value = window.matchMedia(MOBILE_MEDIA_QUERY).matches
 }
 
-function onResizeMove(e: PointerEvent): void {
-  setSidebarWidth(e.clientX)
-}
-
-function stopResize(): void {
-  if (!isResizing.value) return
-
-  isResizing.value = false
-  document.body.classList.remove('sidebar-resizing')
-  window.removeEventListener('pointermove', onResizeMove)
-  window.removeEventListener('pointerup', stopResize)
-  window.removeEventListener('pointercancel', stopResize)
-}
-
-function startResize(e: PointerEvent): void {
-  if (isMobile.value) return
-
-  e.preventDefault()
-  isResizing.value = true
-  document.body.classList.add('sidebar-resizing')
-  setSidebarWidth(e.clientX)
-  window.addEventListener('pointermove', onResizeMove)
-  window.addEventListener('pointerup', stopResize)
-  window.addEventListener('pointercancel', stopResize)
-}
-
-function onResizeKeyDown(e: KeyboardEvent): void {
-  const step = e.shiftKey ? 32 : 12
-
-  if (e.key === 'ArrowLeft') {
-    e.preventDefault()
-    setSidebarWidth(sidebarWidth.value - step)
-  }
-
-  if (e.key === 'ArrowRight') {
-    e.preventDefault()
-    setSidebarWidth(sidebarWidth.value + step)
-  }
-
-  if (e.key === 'Home') {
-    e.preventDefault()
-    setSidebarWidth(MIN_SIDEBAR_WIDTH)
-  }
-
-  if (e.key === 'End') {
-    e.preventDefault()
-    setSidebarWidth(MAX_SIDEBAR_WIDTH)
-  }
-
-  if (e.key === 'Enter') {
-    e.preventDefault()
-    setSidebarWidth(DEFAULT_SIDEBAR_WIDTH)
-  }
-}
-
 onMounted(() => {
-  const savedSidebarWidth = localStorage.getItem(SIDEBAR_STORAGE_KEY)
-  const savedWidth = savedSidebarWidth === null ? Number.NaN : Number(savedSidebarWidth)
-
-  if (Number.isFinite(savedWidth)) {
-    setSidebarWidth(savedWidth, false)
-  } else {
-    setSidebarWidth(DEFAULT_SIDEBAR_WIDTH, false)
-  }
-
   checkMobile()
   window.addEventListener('resize', checkMobile)
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', checkMobile)
-  stopResize()
 })
 
 const toggle = () => {
@@ -175,7 +89,7 @@ watch(
     <div v-if="isMobile && isOpen" class="overlay" @click="close" />
   </Teleport>
 
-  <aside class="sidebar" :class="{ 'sidebar--open': isOpen, 'sidebar--resizing': isResizing }">
+  <aside class="sidebar" :class="{ 'sidebar--open': isOpen }">
     <ThemeToggle :teleport-disabled="true" />
     <div class="sidebar-theme-surface">
       <button
@@ -290,19 +204,6 @@ watch(
       </div>
     </div>
 
-    <button
-      v-if="!isMobile"
-      class="resize-handle"
-      type="button"
-      aria-label="Изменить ширину меню"
-      role="separator"
-      aria-orientation="vertical"
-      :aria-valuemin="MIN_SIDEBAR_WIDTH"
-      :aria-valuemax="MAX_SIDEBAR_WIDTH"
-      :aria-valuenow="sidebarWidth"
-      @pointerdown="startResize"
-      @keydown="onResizeKeyDown"
-    />
   </aside>
 </template>
 
@@ -390,46 +291,6 @@ watch(
     pointer-events: auto;
     transition: none;
   }
-}
-
-.sidebar--resizing {
-  border-right-color: var(--border-hover);
-}
-
-.resize-handle {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 10px;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  cursor: col-resize;
-  touch-action: none;
-  z-index: 2;
-}
-
-.resize-handle::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 2px;
-  background: transparent;
-  transition: background 0.2s;
-}
-
-.resize-handle:hover::after,
-.resize-handle:focus-visible::after,
-.sidebar--resizing .resize-handle::after {
-  background: var(--border-hover);
-}
-
-:global(body.sidebar-resizing) {
-  cursor: col-resize;
-  user-select: none;
 }
 
 .sidebar-top {
