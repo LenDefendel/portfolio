@@ -251,6 +251,8 @@ export const portfolio: PortfolioData = {
       id: 'wall-tropicalBirds',
       title: 'Tropical Birds',
       description: 'Коллекция обоев с тропическими птицами.',
+      summary:
+        'Коллекция обоев, вдохновлённая старинными ботаническими иллюстрациями и атмосферой экзотического сада. Изображение имеет паттерн и детальную проработку.',
       image: images._TropicalBirdsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'wallpaper',
       tags: ['Wallpaper', 'Nature', 'Tropical'],

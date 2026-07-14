@@ -174,7 +174,15 @@ onBeforeUnmount(() => {
               </figure>
 
               <div
-                v-if="columnIndex === 1 && item.imageIndex === 1 && project.summary"
+                v-if="
+                  project.summary &&
+                  ((project.id !== 'wall-tropicalBirds' &&
+                    columnIndex === 1 &&
+                    item.imageIndex === 1) ||
+                    (project.id === 'wall-tropicalBirds' &&
+                      columnIndex === 2 &&
+                      item.imageIndex === 3))
+                "
                 class="summary-card"
               >
                 <p class="summary-text">{{ project.summary }}</p>
