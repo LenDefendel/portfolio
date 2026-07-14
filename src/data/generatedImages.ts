@@ -30,7 +30,6 @@ import _img_wallpaper_forest_forest3_preview_webp_1yj63cb from '@/assets/wallpap
 import _img_wallpaper_forest_forest4_preview_webp_1q667t6 from '@/assets/wallpaper/forest/forest4-preview.webp?url'
 import _img_wallpaper_llamaUnicorns_llamaUnicorns1_preview_webp_u5tfjj from '@/assets/wallpaper/llamaUnicorns/llamaUnicorns1-preview.webp?url'
 import _img_wallpaper_llamaUnicorns_llamaUnicorns2_preview_webp_lstk0e from '@/assets/wallpaper/llamaUnicorns/llamaUnicorns2-preview.webp?url'
-import _img_wallpaper_llamaUnicorns_llamaUnicorns3_preview_webp_dftoh9 from '@/assets/wallpaper/llamaUnicorns/llamaUnicorns3-preview.webp?url'
 import _img_wallpaper_robo_robo1_preview_webp_2kb5xp from '@/assets/wallpaper/robo/robo1-preview.webp?url'
 import _img_wallpaper_robo_robo2_preview_webp_1t8fcdo from '@/assets/wallpaper/robo/robo2-preview.webp?url'
 import _img_wallpaper_tropicalBirds_tropicalBirds2_preview_webp_1genumy from '@/assets/wallpaper/tropicalBirds/tropicalBirds2-preview.webp?url'
@@ -137,7 +136,6 @@ import _img_wallpaper_full_forest_forest3_full_webp_1d4ad3m from '@/assets/wallp
 import _img_wallpaper_full_forest_forest4_full_webp_jefgk3 from '@/assets/wallpaper/forest/forest4-full.webp?url'
 import _img_wallpaper_full_llamaUnicorns_llamaUnicorns1_full_webp_1bwt1am from '@/assets/wallpaper/llamaUnicorns/llamaUnicorns1-full.webp?url'
 import _img_wallpaper_full_llamaUnicorns_llamaUnicorns2_full_webp_i6y4r3 from '@/assets/wallpaper/llamaUnicorns/llamaUnicorns2-full.webp?url'
-import _img_wallpaper_full_llamaUnicorns_llamaUnicorns3_full_webp_1ni7a6o from '@/assets/wallpaper/llamaUnicorns/llamaUnicorns3-full.webp?url'
 import _img_wallpaper_full_robo_robo1_full_webp_15zh12o from '@/assets/wallpaper/robo/robo1-full.webp?url'
 import _img_wallpaper_full_robo_robo2_full_webp_c9m4j5 from '@/assets/wallpaper/robo/robo2-full.webp?url'
 import _img_wallpaper_full_tropicalBirds_tropicalBirds2_full_webp_fa0ber from '@/assets/wallpaper/tropicalBirds/tropicalBirds2-full.webp?url'
@@ -471,14 +469,6 @@ export const _LlamaUnicornsUrls: ProjectImage[] = [
     _img_wallpaper_full_llamaUnicorns_llamaUnicorns2_full_webp_i6y4r3,
     2400,
     1600,
-  ),
-  image(
-    _img_wallpaper_llamaUnicorns_llamaUnicorns3_preview_webp_dftoh9,
-    1200,
-    1029,
-    _img_wallpaper_full_llamaUnicorns_llamaUnicorns3_full_webp_1ni7a6o,
-    2400,
-    2057,
   ),
 ]
 
