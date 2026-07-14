@@ -40,6 +40,8 @@ let panStartY = 0
 let didDrag = false
 let activeTouchIdentifier: number | null = null
 let ignoreClickUntil = 0
+let activeMousePointerId: number | null = null
+let ignoreMouseClickUntil = 0
 let isPinching = false
 let pinchStartDistance = 0
 let pinchStartScale = 1
@@ -57,6 +59,8 @@ function resetView(): void {
   panY.value = 0
   didDrag = false
   isPinching = false
+  activeMousePointerId = null
+  ignoreMouseClickUntil = 0
 }
 
 watch(image, resetView)
@@ -97,7 +101,7 @@ function toggleZoom(): void {
 function onImageClick(event: MouseEvent): void {
   event.stopPropagation()
 
-  if (Date.now() < ignoreClickUntil) return
+  if (Date.now() < ignoreClickUntil || Date.now() < ignoreMouseClickUntil) return
 
   if (didDrag) {
     didDrag = false
@@ -114,10 +118,11 @@ function onOverlayClick(): void {
 
 function onPointerDown(event: PointerEvent): void {
   if (event.pointerType !== 'mouse') return
-  if (!isZoomed.value || event.button !== 0) return
+  if (event.button !== 0) return
 
   event.preventDefault()
-  isDragging.value = true
+  activeMousePointerId = event.pointerId
+  isDragging.value = isZoomed.value
   didDrag = false
   pointerStartX = event.clientX
   pointerStartY = event.clientY
@@ -129,7 +134,7 @@ function onPointerDown(event: PointerEvent): void {
 
 function onPointerMove(event: PointerEvent): void {
   if (event.pointerType !== 'mouse') return
-  if (!isDragging.value) return
+  if (activeMousePointerId !== event.pointerId) return
 
   const deltaX = event.clientX - pointerStartX
   const deltaY = event.clientY - pointerStartY
@@ -138,24 +143,36 @@ function onPointerMove(event: PointerEvent): void {
     didDrag = true
   }
 
-  panX.value = panStartX + deltaX
-  panY.value = panStartY + deltaY
+  if (isZoomed.value) {
+    panX.value = panStartX + deltaX
+    panY.value = panStartY + deltaY
+  }
 }
 
 function onPointerUp(event: PointerEvent): void {
   if (event.pointerType !== 'mouse') return
-  if (!isDragging.value) return
+  if (activeMousePointerId !== event.pointerId) return
 
-  isDragging.value = false
   const target = event.currentTarget as HTMLImageElement
   if (target.hasPointerCapture(event.pointerId)) {
     target.releasePointerCapture(event.pointerId)
   }
+
+  event.preventDefault()
+  event.stopPropagation()
+  const dragged = didDrag
+  activeMousePointerId = null
+  isDragging.value = false
+  didDrag = false
+  ignoreMouseClickUntil = Date.now() + 500
+
+  if (!dragged) toggleZoom()
 }
 
 function onPointerCancel(event: PointerEvent): void {
   if (event.pointerType !== 'mouse') return
 
+  activeMousePointerId = null
   isDragging.value = false
   didDrag = false
 }
