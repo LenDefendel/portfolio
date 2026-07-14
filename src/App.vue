@@ -18,7 +18,7 @@ import SidebarMenu from '@/components/SidebarMenu.vue'
   --accent: #2563eb;
   --accent-hover: #1d4ed8;
   --accent-soft: rgba(37, 99, 235, 0.1);
-  --sidebar-width: 260px;
+  --sidebar-width: 264px;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
