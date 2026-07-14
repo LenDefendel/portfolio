@@ -9,19 +9,23 @@ interface HomeSection {
 const sections: HomeSection[] = [
   {
     categoryId: 'wallpaper',
-    image: new URL('../assets/pre/wall 1-preview.webp', import.meta.url).href,
+    image: new URL('../assets/pre/wall 1-full.webp', import.meta.url).href,
   },
   {
     categoryId: 'signs',
-    image: new URL('../assets/pre/metka-preview.webp', import.meta.url).href,
+    image: new URL('../assets/pre/metka-full.webp', import.meta.url).href,
   },
   {
     categoryId: 'marketplace-cards',
-    image: new URL('../assets/pre/card-preview.webp', import.meta.url).href,
+    image: new URL('../assets/pre/card-full.webp', import.meta.url).href,
   },
   {
     categoryId: 'freelance3d',
-    image: new URL('../assets/pre/3d-preview.webp', import.meta.url).href,
+    image: new URL('../assets/pre/3d-full.webp', import.meta.url).href,
+  },
+  {
+    categoryId: 'other-projects',
+    image: new URL('../assets/pre/other-full.webp', import.meta.url).href,
   },
 ]
 
