@@ -199,7 +199,7 @@ export const portfolio: PortfolioData = {
     },
     {
       id: 'wall-birds',
-      title: 'Birds',
+      title: 'Тест',
       description:
         'Тестовое задание с которого началась моё взаимодействие с компанией по производству обоев. Сюжет на три метра в натуральную величину отрисован почти полностью вручную за 3 дня',
       image: images._BirdsUrls[0] ?? { src: '', width: 0, height: 0 },
