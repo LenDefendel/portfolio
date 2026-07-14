@@ -21,7 +21,7 @@ const sections: HomeSection[] = [
   },
   {
     categoryId: 'freelance3d',
-    image: new URL('../assets/pre/3d-full.webp', import.meta.url).href,
+    image: new URL('../assets/pre/3d2-full.webp', import.meta.url).href,
   },
   {
     categoryId: 'other-projects',
