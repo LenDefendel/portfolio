@@ -1,17 +1,66 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { portfolio, type Project, type ProjectMedia } from '@/data/portfolio'
 import ImageLightbox from '@/components/ImageLightbox.vue'
 
-const category = computed(() =>
-  portfolio.categories.find((c) => c.id === 'wallpaper'),
-)
-const projects = computed(() =>
-  portfolio.projects.filter((p) => p.categoryId === 'wallpaper'),
-)
+const category = computed(() => portfolio.categories.find((c) => c.id === 'wallpaper'))
+const projects = computed(() => {
+  const items = portfolio.projects.filter((p) => p.categoryId === 'wallpaper')
+  const [first, ...rest] = items
+
+  return first ? [...rest, first] : items
+})
 
 function projectImages(project: Project) {
-  return project.images?.length ? project.images : [project.image]
+  const images = project.images?.length ? [...project.images] : [project.image]
+
+  if (project.id === 'wall-forest' && images.length > 1) {
+    const lastIndex = images.length - 1
+    const previousImage = images[lastIndex - 1]
+    const lastImage = images[lastIndex]
+
+    if (previousImage && lastImage) {
+      images[lastIndex - 1] = lastImage
+      images[lastIndex] = previousImage
+    }
+  }
+
+  return images
+}
+
+interface FeaturedColumnItem {
+  media: ProjectMedia
+  imageIndex: number
+}
+
+function featuredColumns(project: Project): FeaturedColumnItem[][] {
+  const columns: FeaturedColumnItem[][] =
+    project.id === 'wall-tropicalBirds' ? [[], [], []] : [[], []]
+
+  projectImages(project).forEach((media, imageIndex) => {
+    const columnIndex =
+      project.id === 'wall-llamaUnicorns' && imageIndex > 0
+        ? 1
+        : project.id === 'wall-tropicalBirds' && imageIndex === 2
+          ? 1
+          : project.id === 'wall-tropicalBirds' && imageIndex === 3
+            ? 2
+          : imageIndex % 2
+
+    columns[columnIndex]!.push({ media, imageIndex })
+  })
+
+  return columns
+}
+
+function isFeaturedProject(project: Project): boolean {
+  return (
+    project.id === 'wall-chinoiserie' ||
+    project.id === 'wall-forest' ||
+    project.id === 'wall-llamaUnicorns' ||
+    project.id === 'wall-robo' ||
+    project.id === 'wall-tropicalBirds'
+  )
 }
 
 function isVideo(media: ProjectMedia): boolean {
@@ -26,10 +75,6 @@ function lightboxImageId(projectId: string, imageIndex: number): string {
   return `${projectId}-${imageIndex}`
 }
 
-function hasMainImage(project: Project): boolean {
-  return projectImages(project).length > 1
-}
-
 const lightboxItems = computed(() =>
   projects.value.flatMap((project) =>
     projectImages(project).map((media, imageIndex) => ({
@@ -40,14 +85,25 @@ const lightboxItems = computed(() =>
 )
 
 const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
+const compactLayout = ref(typeof window !== 'undefined' && window.innerWidth <= 1000)
+
+function updateCompactLayout(): void {
+  compactLayout.value = window.innerWidth <= 1000
+}
+
+onMounted(() => {
+  window.addEventListener('resize', updateCompactLayout)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateCompactLayout)
+})
 </script>
 
 <template>
   <article v-if="category" class="wallpaper-page">
     <header class="wallpaper-header">
       <div class="header-content">
-        <span class="material-symbols-outlined header-icon">wall_art</span>
-        <h1>{{ category.name }}</h1>
         <p class="header-summary">{{ category.summary }}</p>
       </div>
     </header>
@@ -64,45 +120,109 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
           <p class="project-desc">{{ project.description }}</p>
         </div>
 
-        <div class="project-grid">
-          <figure
-            v-for="(image, imageIndex) in projectImages(project)"
-            :key="imageIndex"
-            :id="imageAnchor(project.id, imageIndex)"
-            class="project-figure"
-            :class="{
-              'is-main': imageIndex === 0 && hasMainImage(project) && !isVideo(image),
-            }"
+        <div
+          v-if="isFeaturedProject(project) && !compactLayout"
+          class="project-columns"
+          :class="{
+            'project-columns--third': project.id === 'wall-llamaUnicorns',
+            'project-columns--fourth': project.id === 'wall-robo',
+            'project-columns--fifth': project.id === 'wall-tropicalBirds',
+          }"
+        >
+          <div
+            v-for="(column, columnIndex) in featuredColumns(project)"
+            :key="columnIndex"
+            class="project-column"
           >
-            <img
-              v-if="!isVideo(image)"
-              :src="image.src"
-              :width="image.width"
-              :height="image.height"
-              :alt="`${project.title}, изображение ${imageIndex + 1}`"
-              class="project-image"
-              loading="lazy"
-              @click="
-                imageLightbox?.open(lightboxImageId(project.id, imageIndex))
-              "
-            />
-            <video
-              v-else
-              :src="image.src"
-              :width="image.width"
-              :height="image.height"
-              class="project-image project-video"
-              autoplay
-              disablepictureinpicture
-              muted
-              loop
-              playsinline
-              controlslist="nodownload nofullscreen noremoteplayback"
-              preload="auto"
-            />
-          </figure>
+            <template v-for="item in column" :key="item.imageIndex">
+              <figure
+                :id="imageAnchor(project.id, item.imageIndex)"
+                class="project-figure"
+                :class="{
+                  'is-tropical-right-item': project.id === 'wall-tropicalBirds' && columnIndex > 0,
+                  'is-tropical-cropped':
+                    project.id === 'wall-tropicalBirds' &&
+                    (item.imageIndex === 0 || item.imageIndex === 2),
+                  'is-third-project-following':
+                    project.id === 'wall-llamaUnicorns' && item.imageIndex === 2,
+                }"
+              >
+                <img
+                  v-if="!isVideo(item.media)"
+                  :src="item.media.src"
+                  :width="item.media.width"
+                  :height="item.media.height"
+                  :alt="`${project.title}, изображение ${item.imageIndex + 1}`"
+                  class="project-image"
+                  loading="lazy"
+                  @click="imageLightbox?.open(lightboxImageId(project.id, item.imageIndex))"
+                />
+                <video
+                  v-else
+                  :src="item.media.src"
+                  :width="item.media.width"
+                  :height="item.media.height"
+                  class="project-image project-video"
+                  autoplay
+                  disablepictureinpicture
+                  muted
+                  loop
+                  playsinline
+                  controlslist="nodownload nofullscreen noremoteplayback"
+                  preload="auto"
+                />
+              </figure>
 
-          <div v-if="project.summary" class="summary-card">
+              <div
+                v-if="columnIndex === 1 && item.imageIndex === 1 && project.summary"
+                class="summary-card"
+              >
+                <p class="summary-text">{{ project.summary }}</p>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <div v-else class="project-grid">
+          <template v-for="(image, imageIndex) in projectImages(project)" :key="imageIndex">
+            <figure :id="imageAnchor(project.id, imageIndex)" class="project-figure">
+              <img
+                v-if="!isVideo(image)"
+                :src="image.src"
+                :width="image.width"
+                :height="image.height"
+                :alt="`${project.title}, изображение ${imageIndex + 1}`"
+                class="project-image"
+                loading="lazy"
+                @click="imageLightbox?.open(lightboxImageId(project.id, imageIndex))"
+              />
+              <video
+                v-else
+                :src="image.src"
+                :width="image.width"
+                :height="image.height"
+                class="project-image project-video"
+                autoplay
+                disablepictureinpicture
+                muted
+                loop
+                playsinline
+                controlslist="nodownload nofullscreen noremoteplayback"
+                preload="auto"
+              />
+            </figure>
+
+            <div
+              v-if="
+                isFeaturedProject(project) && compactLayout && imageIndex === 1 && project.summary
+              "
+              class="summary-card"
+            >
+              <p class="summary-text">{{ project.summary }}</p>
+            </div>
+          </template>
+
+          <div v-if="project.summary && !isFeaturedProject(project)" class="summary-card">
             <p class="summary-text">{{ project.summary }}</p>
           </div>
         </div>
@@ -140,22 +260,6 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
   max-width: 680px;
 }
 
-.header-icon {
-  display: inline-flex;
-  font-size: 2.5rem;
-  margin-bottom: 0.65rem;
-  color: var(--accent);
-  opacity: 0.85;
-}
-
-.wallpaper-header h1 {
-  font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-size: clamp(1.85rem, 3.8vw, 3.25rem);
-  font-weight: 760;
-  line-height: 1.06;
-  margin-bottom: 0.85rem;
-}
-
 .header-summary {
   color: var(--text-secondary);
   line-height: 1.8;
@@ -165,7 +269,7 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
 .wallpaper-projects {
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 5rem;
 }
 
 .project-section {
@@ -174,15 +278,16 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
 
 .project-head {
   max-width: 640px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .project-title {
   font-family: 'Archivo', 'Inter', system-ui, sans-serif;
-  font-size: clamp(1.35rem, 2.2vw, 1.9rem);
+  font-size: clamp(1.65rem, 2.8vw, 2.3rem);
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   line-height: 1.15;
+  text-align: left;
 }
 
 .project-desc {
@@ -199,21 +304,106 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
   align-items: start;
 }
 
+.project-columns {
+  display: grid;
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.project-column {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
 @media (min-width: 769px) {
   .project-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-columns--third {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  }
+
+  .project-columns--fourth {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    align-items: stretch;
+  }
+
+  .project-columns--fifth {
+    grid-template-columns: minmax(0, 42%) repeat(2, minmax(0, 1fr));
+  }
+
+  .project-columns--fourth .project-column {
+    display: contents;
+  }
+
+  .project-columns--fourth .project-figure {
+    height: 100%;
+  }
+
+  .project-columns--fourth .project-image {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-columns--third .is-third-project-following {
+    width: 100%;
+    align-self: flex-start;
+  }
+
+  .project-columns--fifth .project-column:first-child .project-figure {
+    width: 100%;
+    align-self: stretch;
+  }
+
+  .project-columns--fifth .is-tropical-cropped {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .project-columns--fifth .is-tropical-cropped .project-image {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-columns--fifth .is-tropical-right-item {
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  .project-columns--fifth .is-tropical-right-item .project-image {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1000px) {
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-grid .summary-card {
+    padding: 1.2rem 1.35rem;
   }
 }
 
 .project-figure {
   margin: 0;
   display: flex;
+  min-width: 0;
   scroll-margin-top: 2rem;
 }
 
 .project-image {
   display: block;
   width: 100%;
+  max-width: 100%;
   height: auto;
   max-height: 75vh;
   object-fit: contain;
@@ -238,20 +428,14 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
   box-shadow: none;
 }
 
-@media (min-width: 769px) {
-  .is-main {
-    grid-column: span 2;
-  }
-}
-
 /* ---------- summary card ---------- */
 
 .summary-card {
-  padding: 1rem 1.25rem;
+  padding: 1.5rem 1.75rem;
   border-radius: var(--radius-md);
   background: var(--bg-card);
   border: 1px solid var(--border);
-  align-self: center;
+  align-self: stretch;
 }
 
 .summary-text {
@@ -291,15 +475,19 @@ const imageLightbox = ref<InstanceType<typeof ImageLightbox> | null>(null)
   }
 
   .wallpaper-projects {
-    gap: 3rem;
+    gap: 4rem;
   }
 
   .project-grid {
     grid-template-columns: 1fr;
   }
 
+  .project-columns {
+    grid-template-columns: 1fr;
+  }
+
   .summary-card {
-    padding: 0.85rem 1rem;
+    padding: 1rem 1.25rem;
   }
 }
 

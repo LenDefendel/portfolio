@@ -33,7 +33,6 @@ import _img_wallpaper_llamaUnicorns_llamaUnicorns2_preview_webp_lstk0e from '@/a
 import _img_wallpaper_llamaUnicorns_llamaUnicorns3_preview_webp_dftoh9 from '@/assets/wallpaper/llamaUnicorns/llamaUnicorns3-preview.webp?url'
 import _img_wallpaper_robo_robo1_preview_webp_2kb5xp from '@/assets/wallpaper/robo/robo1-preview.webp?url'
 import _img_wallpaper_robo_robo2_preview_webp_1t8fcdo from '@/assets/wallpaper/robo/robo2-preview.webp?url'
-import _img_wallpaper_tropicalBirds_tropicalBirds1_preview_webp_1ornq63 from '@/assets/wallpaper/tropicalBirds/tropicalBirds1-preview.webp?url'
 import _img_wallpaper_tropicalBirds_tropicalBirds2_preview_webp_1genumy from '@/assets/wallpaper/tropicalBirds/tropicalBirds2-preview.webp?url'
 import _img_wallpaper_tropicalBirds_tropicalBirds3_preview_webp_181nz3t from '@/assets/wallpaper/tropicalBirds/tropicalBirds3-preview.webp?url'
 import _img_wallpaper_tropicalBirds_tropicalBirds4_preview_webp_zoo3ko from '@/assets/wallpaper/tropicalBirds/tropicalBirds4-preview.webp?url'
@@ -141,7 +140,6 @@ import _img_wallpaper_full_llamaUnicorns_llamaUnicorns2_full_webp_i6y4r3 from '@
 import _img_wallpaper_full_llamaUnicorns_llamaUnicorns3_full_webp_1ni7a6o from '@/assets/wallpaper/llamaUnicorns/llamaUnicorns3-full.webp?url'
 import _img_wallpaper_full_robo_robo1_full_webp_15zh12o from '@/assets/wallpaper/robo/robo1-full.webp?url'
 import _img_wallpaper_full_robo_robo2_full_webp_c9m4j5 from '@/assets/wallpaper/robo/robo2-full.webp?url'
-import _img_wallpaper_full_tropicalBirds_tropicalBirds1_full_webp_18zv7ya from '@/assets/wallpaper/tropicalBirds/tropicalBirds1-full.webp?url'
 import _img_wallpaper_full_tropicalBirds_tropicalBirds2_full_webp_fa0ber from '@/assets/wallpaper/tropicalBirds/tropicalBirds2-full.webp?url'
 import _img_wallpaper_full_tropicalBirds_tropicalBirds3_full_webp_1kl9guc from '@/assets/wallpaper/tropicalBirds/tropicalBirds3-full.webp?url'
 import _img_wallpaper_full_tropicalBirds_tropicalBirds4_full_webp_qvekat from '@/assets/wallpaper/tropicalBirds/tropicalBirds4-full.webp?url'
@@ -504,14 +502,6 @@ export const _RoboUrls: ProjectImage[] = [
 ]
 
 export const _TropicalBirdsUrls: ProjectImage[] = [
-  image(
-    _img_wallpaper_tropicalBirds_tropicalBirds1_preview_webp_1ornq63,
-    531,
-    740,
-    _img_wallpaper_full_tropicalBirds_tropicalBirds1_full_webp_18zv7ya,
-    531,
-    740,
-  ),
   image(
     _img_wallpaper_tropicalBirds_tropicalBirds2_preview_webp_1genumy,
     1198,
