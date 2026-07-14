@@ -95,7 +95,8 @@ html.theme-transition body {
 
 .app-shell {
   display: flex;
-  width: min(100%, 1920px);
+  width: 100%;
+  max-width: 1472px;
   margin: 0 auto;
   min-height: inherit;
 }
