@@ -119,7 +119,7 @@ export const portfolio: PortfolioData = {
     {
       id: 'signs-operating-mode',
       title: 'Режим работы',
-      description: 'Макеты и готовые таблички с режимом работы для входных групп.',
+      description: 'Макеты и готовые таблички с режимом работы.',
       image: images._SignsOperatingModeUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'signs',
       tags: ['Signs', 'Print', 'Outdoor'],
@@ -137,7 +137,7 @@ export const portfolio: PortfolioData = {
     {
       id: 'signs-outdoor',
       title: 'Вывески',
-      description: 'Макеты, визуализации и фотографии реализованных вывесок.',
+      description: 'Макеты и фотографии реализованных вывесок.',
       image: images._SignsSignsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'signs',
       tags: ['Signs', 'Outdoor', 'Branding'],
@@ -268,7 +268,6 @@ export const portfolio: PortfolioData = {
     {
       id: 'student-graphics',
       title: 'Графика',
-      description: 'Учебные графические работы и композиции периода обучения.',
       image: images._OtherProjectsStudentWorkGraphicsUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'other-projects',
       tags: ['Graphics', 'КХУ', 'Student Work'],
@@ -277,7 +276,6 @@ export const portfolio: PortfolioData = {
     {
       id: 'student-painting',
       title: 'Живопись',
-      description: 'Учебные живописные работы периода обучения.',
       image: images._OtherProjectsStudentWorkPaintingUrls[0] ?? { src: '', width: 0, height: 0 },
       categoryId: 'other-projects',
       tags: ['Painting', 'КХУ', 'Student Work'],
@@ -298,6 +296,7 @@ export const portfolio: PortfolioData = {
     { name: 'Procreate', category: 'Design' },
     { name: 'Illustrator', category: 'Design' },
     { name: 'Figma', category: 'Design' },
+    { name: 'Corel Draw', category: 'Design' },
     { name: 'Blender', category: 'Design' },
     { name: '3D Max', category: 'Design' },
     { name: 'Zbrush', category: 'Design' },
