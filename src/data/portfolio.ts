@@ -93,7 +93,7 @@ export const portfolio: PortfolioData = {
     {
       id: 'signs',
       name: 'Макеты вывесок',
-      summary: 'Наружная навигация, режимы работы и QR-таблички для печати и монтажа.',
+      summary: 'Наружная навигация, режимы работы и QR-таблички, сделанные в компании 3D Metka',
       icon: 'signpost',
     },
     {
