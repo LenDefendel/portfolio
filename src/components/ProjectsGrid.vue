@@ -21,6 +21,7 @@ const route = useRoute()
 
 const categoryId = computed(() => route.params.id as string)
 const category = computed(() => portfolio.categories.find((item) => item.id === categoryId.value))
+const isMarketplaceCards = computed(() => categoryId.value === 'marketplace-cards')
 const categoryProjects = computed(() =>
   portfolio.projects.filter((project) => {
     return project.categoryId === categoryId.value
@@ -184,18 +185,22 @@ function onPreviewPointerCancel(event: PointerEvent): void {
   </div>
 
   <article v-else-if="category" class="category-page">
-    <header class="category-header">
+    <header v-if="!isMarketplaceCards" class="category-header">
       <p class="header-summary">{{ category.summary }}</p>
     </header>
 
-    <div v-if="categoryProjects.length" class="project-list">
+    <div
+      v-if="categoryProjects.length"
+      class="project-list"
+      :class="{ 'project-list--images-only': isMarketplaceCards }"
+    >
       <section
         v-for="project in categoryProjects"
         :id="project.id"
         :key="project.id"
         class="project-section"
       >
-        <div class="project-heading">
+        <div v-if="!isMarketplaceCards" class="project-heading">
           <h2>{{ project.title }}</h2>
           <p class="description">
             <template
@@ -319,6 +324,10 @@ function onPreviewPointerCancel(event: PointerEvent): void {
 .project-list {
   display: grid;
   gap: 6.5rem;
+}
+
+.project-list--images-only {
+  gap: 2rem;
 }
 
 .project-section {
