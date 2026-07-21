@@ -144,6 +144,16 @@ export const portfolio: PortfolioData = {
       images: images._SignsSignsUrls,
     },
     {
+      id: 'cards-headphones',
+      title: 'Игровые наушники',
+      description:
+        'Карточки товара для маркетплейсов с инфографикой и визуальной подачей характеристик игровых наушников.',
+      image: images._CardHeadphonesUrls[0] ?? { src: '', width: 0, height: 0 },
+      categoryId: 'marketplace-cards',
+      tags: ['Marketplace', 'Cards', 'Infographics'],
+      images: images._CardHeadphonesUrls,
+    },
+    {
       id: 'cards-bowl',
       title: 'Bowl',
       description: 'Карточки товара для маркетплейсов с инфографикой и акцентом на преимущества.',

@@ -107,6 +107,9 @@ import _img_card_glasses_Glasses3_preview_webp_ggmhfl from '@/assets/card/glasse
 import _img_card_glasses_Glasses4_preview_webp_83mlwg from '@/assets/card/glasses/Glasses4-preview.webp?url'
 import _img_card_glasses_Glasses5_preview_webp_1yrqscf from '@/assets/card/glasses/Glasses5-preview.webp?url'
 import _img_card_glasses_Glasses6_preview_webp_1qeqwta from '@/assets/card/glasses/Glasses6-preview.webp?url'
+import _img_card_headphones________________1_preview_webp_11m2gtk from '@/assets/card/headphones/ИгровыеНаушники1-preview.webp?url'
+import _img_card_headphones________________2_preview_webp_t92laf from '@/assets/card/headphones/ИгровыеНаушники2-preview.webp?url'
+import _img_card_headphones________________3_preview_webp_kw2pra from '@/assets/card/headphones/ИгровыеНаушники3-preview.webp?url'
 import _img_freelance3d_full_00_full_webp_1rxwob2 from '@/assets/freelance3d/00-full.webp?url'
 import _img_freelance3d_full_01_full_webp_y81rrj from '@/assets/freelance3d/01-full.webp?url'
 import _img_freelance3d_full_02_full_webp_4i6v80 from '@/assets/freelance3d/02-full.webp?url'
@@ -213,6 +216,9 @@ import _img_card_full_glasses_Glasses3_full_webp_a9jfwc from '@/assets/card/glas
 import _img_card_full_glasses_Glasses4_full_webp_1fkslbx from '@/assets/card/glasses/Glasses4-full.webp?url'
 import _img_card_full_glasses_Glasses5_full_webp_luxose from '@/assets/card/glasses/Glasses5-full.webp?url'
 import _img_card_full_glasses_Glasses6_full_webp_1r66u7z from '@/assets/card/glasses/Glasses6-full.webp?url'
+import _img_card_full_headphones________________1_full_webp_1bhjbud from '@/assets/card/headphones/ИгровыеНаушники1-full.webp?url'
+import _img_card_full_headphones________________2_full_webp_hrofau from '@/assets/card/headphones/ИгровыеНаушники2-full.webp?url'
+import _img_card_full_headphones________________3_full_webp_1n2xkqf from '@/assets/card/headphones/ИгровыеНаушники3-full.webp?url'
 
 function image(
   src: string,
@@ -484,10 +490,10 @@ export const _RoboUrls: ProjectImage[] = [
   image(
     _img_wallpaper_robo_robo2_preview_webp_1t8fcdo,
     1200,
-    2592,
+    2066,
     _img_wallpaper_full_robo_robo2_full_webp_c9m4j5,
     2400,
-    5184,
+    4132,
   ),
 ]
 
@@ -916,10 +922,10 @@ export const _SignsOperatingModeUrls: ProjectImage[] = [
   image(
     _img_signs_operatingMode_image_2026_06_04_00_09_45_preview_webp_1pk6tif,
     1200,
-    1178,
+    931,
     _img_signs_full_operatingMode_image_2026_06_04_00_09_45_full_webp_nhmw2e,
     1224,
-    1202,
+    950,
   ),
   image(
     _img_signs_operatingMode_photo_2026_07_08_18_19_46__5__preview_webp_16xhige,
@@ -951,10 +957,10 @@ export const _SignsQrUrls: ProjectImage[] = [
   image(
     _img_signs_qr_image_2026_06_03_12_33_50_preview_webp_13jqf51,
     1200,
-    1065,
+    818,
     _img_signs_full_qr_image_2026_06_03_12_33_50_full_webp_1411p3s,
     1728,
-    1534,
+    1178,
   ),
   image(
     _img_signs_qr_photo_2026_07_08_18_19_47__2__preview_webp_q89he5,
@@ -1002,26 +1008,26 @@ export const _SignsSignsUrls: ProjectImage[] = [
   image(
     _img_signs_signs_image_2026_05_29_13_13_09_preview_webp_58etbc,
     1176,
-    1450,
+    1202,
     _img_signs_full_signs_image_2026_05_29_13_13_09_full_webp_eya0l1,
     1176,
-    1450,
+    1202,
   ),
   image(
     _img_signs_signs_image_2026_06_03_16_41_18_preview_webp_gbeg2l,
     1200,
-    1186,
+    944,
     _img_signs_full_signs_image_2026_06_03_16_41_18_full_webp_1ajck2o,
     1368,
-    1352,
+    1076,
   ),
   image(
     _img_signs_signs_image_2026_06_04_00_09_57_preview_webp_vywk4,
     1080,
-    1188,
+    969,
     _img_signs_full_signs_image_2026_06_04_00_09_57_full_webp_6pmkjt,
     1080,
-    1188,
+    969,
   ),
 ]
 
@@ -1124,5 +1130,32 @@ export const _CardGlassesUrls: ProjectImage[] = [
     _img_card_full_glasses_Glasses6_full_webp_1r66u7z,
     1800,
     2400,
+  ),
+]
+
+export const _CardHeadphonesUrls: ProjectImage[] = [
+  image(
+    _img_card_headphones________________1_preview_webp_11m2gtk,
+    900,
+    1200,
+    _img_card_full_headphones________________1_full_webp_1bhjbud,
+    900,
+    1200,
+  ),
+  image(
+    _img_card_headphones________________2_preview_webp_t92laf,
+    900,
+    1200,
+    _img_card_full_headphones________________2_full_webp_hrofau,
+    900,
+    1200,
+  ),
+  image(
+    _img_card_headphones________________3_preview_webp_kw2pra,
+    900,
+    1200,
+    _img_card_full_headphones________________3_full_webp_1n2xkqf,
+    900,
+    1200,
   ),
 ]
